@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">갤러리</string>
+
+    <string name="hello_world">안녕 세계?</string>
+    <string name="action_settings">옵션</string>
+
+    <!-- title -->
+    <string name="gallery">갤러리</string>
+</resources>
