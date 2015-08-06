@@ -17,6 +17,8 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.GalleryAdapter;
 import com.siot.sss.hsgallery.app.model.ImageSource;
+import com.siot.sss.hsgallery.app.model.unique.ImageShow;
+import com.siot.sss.hsgallery.util.navigator.Navigator;
 import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewFragment;
 
 import butterknife.ButterKnife;
@@ -31,11 +33,14 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageS
     @InjectView(R.id.gallery) protected RecyclerView gallery;
     private CompositeSubscription subscription;
     private Toolbar toolbar;
+    private Navigator navigator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.inject(this, view);
+        this.navigator = (MainActivity) this.getActivity();
+
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
         this.setupRecyclerView(this.gallery);
@@ -50,40 +55,36 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageS
         ButterKnife.reset(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     public void getImageCursor(){
-        String[] proj = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.SIZE};
-        Cursor imageCursor = this.getActivity().getContentResolver().query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, proj, null, null, null);
+        String[] proj = {MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DATA,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.SIZE};
+//        String[] proj = {MediaStore.Images.Media.BUCKET_ID, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+        Cursor imageCursor = this.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+
+//        Cursor imageCursor = this.getActivity().managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//            proj, null, null, null);
 //        Cursor imageCursor = (new CursorLoader(this.getActivity().getBaseContext(), MediaStore.Images.Media.INTERNAL_CONTENT_URI, proj, null, null, null)).loadInBackground();
 
         int num = 0;
-        Timber.d("size:%s", imageCursor.getCount());
 
         if (imageCursor != null && imageCursor.moveToFirst()){
-            String title;
-            String thumbsID;
-            String thumbsImageID;
-            String thumbsData;
-            String data;
-            String imgSize;
-
-            int thumbsIDCol = imageCursor.getColumnIndex(MediaStore.Images.Media._ID);
-            int thumbsDataCol = imageCursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            int thumbsImageIDCol = imageCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
-            int thumbsSizeCol = imageCursor.getColumnIndex(MediaStore.Images.Media.SIZE);
             do {
-                thumbsID = imageCursor.getString(thumbsIDCol);
-                thumbsData = imageCursor.getString(thumbsDataCol);
-                thumbsImageID = imageCursor.getString(thumbsImageIDCol);
-                imgSize = imageCursor.getString(thumbsSizeCol);
                 num++;
-                if (thumbsImageID != null){
-                    Timber.d("this id : %s", thumbsID);
-                    this.items.add(new ImageSource(thumbsID, thumbsData, thumbsImageID, imgSize));
+                if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID)) != null){
+                    this.items.add(new ImageSource(imageCursor));
+//                    Timber.d("name : %s", imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)));
                 }
             }while (imageCursor.moveToNext());
+            Timber.d("num : %s", num);
             this.adapter.notifyDataSetChanged();
         }
-        Timber.d("items : %s", num);
         imageCursor.close();
     }
 
@@ -99,6 +100,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageS
 
     @Override
     public void onRecyclerViewOtemClick(View view, int position) {
-
+        ImageShow.getInstance().setImageSource(this.items.get(position));
+        this.navigator.navigate(ImageFragment.class, true);
     }
 }

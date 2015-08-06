@@ -7,4 +7,18 @@
 
     <!-- title -->
     <string name="gallery">Gallery</string>
+    <string name="log">LOG</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_image_popup">ImagePopup</string>
+
+    <!-- menu item -->
+    <string name="menu_option">Menu Option</string>
+    <string name="menu_search">Menu Search</string>
+    <string name="menu_see_log">Menu log</string>
+
+    <!-- log fragment-->
+    <string name="date">DATE</string>
+    <string name="name">NAME</string>
+    <string name="picture_id">ID</string>
+
 </resources>

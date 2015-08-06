@@ -2,13 +2,19 @@ package com.siot.sss.hsgallery.app.activity;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
+import com.siot.sss.hsgallery.app.fragment.LogFragment;
+import com.siot.sss.hsgallery.app.model.unique.DisplayWindow;
 import com.siot.sss.hsgallery.util.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.navigator.Navigator;
 
@@ -17,7 +23,7 @@ import butterknife.InjectView;
 import timber.log.Timber;
 
 
-public class MainActivity extends Activity implements Navigator {
+public class MainActivity extends AppCompatActivity implements Navigator {
     @InjectView(R.id.container) protected LinearLayout container;
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
 
@@ -29,8 +35,10 @@ public class MainActivity extends Activity implements Navigator {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+        this.toolbar.inflateMenu(R.menu.menu_main);
         navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryFragment.class);
         toolbar.setOnMenuItemClickListener( super::onOptionsItemSelected );
+        this.setToolbarItem(this.toolbar.getMenu());
     }
     public Toolbar getToolbar(){
         return this.toolbar;
@@ -43,10 +51,24 @@ public class MainActivity extends Activity implements Navigator {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected void onResume() {
+        super.onResume();
+        DisplayWindow.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
+        DisplayWindow.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
+        DisplayWindow.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
+    }
+
+    private MenuItem seeLog;
+    private void setToolbarItem(Menu menu){
+        this.seeLog = menu.findItem(R.id.menu_log);
+        toolbar.setOnMenuItemClickListener(
+            item->{
+                if(item.getItemId() == seeLog.getItemId()){
+                    this.navigate(LogFragment.class, true);
+                }
+                return true;
+            }
+        );
     }
 
     private boolean terminate = false;

@@ -33,24 +33,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return new ImageViewHolder(inflater.inflate(R.layout.item_image, viewGroup,false), listener);
     }
 
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        ImageView imageView;
-//        if (convertView == null){
-//            imageView = new ImageView(parent.getContext());
-//            imageView.setLayoutParams(new RecyclerView.LayoutParams(95, 95));
-//            imageView.setAdjustViewBounds(false);
-//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            imageView.setPadding(2, 2, 2, 2);
-//        }else{
-//            imageView = (ImageView) convertView;
-//        }
-//        BitmapFactory.Options bo = new BitmapFactory.Options();
-//        bo.inSampleSize = 8;
-//        Bitmap bmp = BitmapFactory.decodeFile(imageList.get(position).data, bo);
-//        Bitmap resized = Bitmap.createScaledBitmap(bmp, 95, 95, true);
-//        imageView.setImageBitmap(resized);
-//        return imageView;
-//    }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         ((ImageViewHolder) viewHolder).bind(this.imageList.get(i));
