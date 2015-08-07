@@ -20,5 +20,6 @@
     <string name="date">DATE</string>
     <string name="name">NAME</string>
     <string name="picture_id">ID</string>
+    <string name="type">TYPE</string>
 
 </resources>

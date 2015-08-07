@@ -17,6 +17,9 @@ import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
 
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -51,11 +54,16 @@ public class ImageFragment extends Fragment {
         DBOpenHelper helper = new DBOpenHelper(this.getActivity().getBaseContext());
         helper.open();
         Timber.d("add Log");
-        helper.insertColumnUseLog(new UseLog(
-            ImageShow.getInstance().getImageSource().dateAdded,
-            ImageShow.getInstance().getImageSource().displayName,
-            ImageShow.getInstance().getImageSource().id
-        ));
+        Calendar c = Calendar.getInstance();
+        Date date = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
+        Timber.d("currnet : %s", android.text.format.DateFormat.format("yyyy/MM/dd hh:mm", date));
+        helper.insertColumnUseLog(
+            new UseLog(
+                android.text.format.DateFormat.format("yyyy/MM/dd hh:mm", date).toString(),
+                ImageShow.getInstance().getImageSource().displayName,
+                ImageShow.getInstance().getImageSource().id,
+                UseLog.getType(UseLog.Type.READ)
+            ));
         Timber.d("add Log2");
         helper.close();
 

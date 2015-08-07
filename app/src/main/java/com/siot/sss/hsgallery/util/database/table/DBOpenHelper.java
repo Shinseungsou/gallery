@@ -6,16 +6,18 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.siot.sss.hsgallery.app.model.DBModel;
 import com.siot.sss.hsgallery.app.model.UseLog;
+import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.DBHelper;
 
 
 /**
  * Created by SSS on 2015-08-06.
  */
-public class DBOpenHelper {
+public class DBOpenHelper{
     private static final String DATABASE_NAME = "gallery.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
     public static SQLiteDatabase sqlite;
     private DBHelper dbHelper;
     private Context context;
@@ -42,15 +44,17 @@ public class DBOpenHelper {
         values.put(Tables.UseLog.NAME, useLog.name);
         values.put(Tables.UseLog.DATE, useLog.date);
         values.put(Tables.UseLog.PICTUREID, useLog.pictureId);
+        values.put(Tables.UseLog.TYPE, useLog.type);
         return sqlite.insert(Tables.UseLog._TABLENAME, null, values);
     }
 
     // Update DB
-    public boolean updateColumnUseLog(long id , UseLog useLog){
+    public boolean updateColumnUseLog(long id, UseLog useLog){
         ContentValues values = new ContentValues();
         values.put(Tables.UseLog.NAME, useLog.name);
         values.put(Tables.UseLog.DATE, useLog.date);
         values.put(Tables.UseLog.PICTUREID, useLog.pictureId);
+        values.put(Tables.UseLog.TYPE, useLog.type);
         return sqlite.update(Tables.UseLog._TABLENAME, values, "_id="+id, null) > 0;
     }
 

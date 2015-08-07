@@ -11,4 +11,5 @@
     <string name="log">사용 로그</string>
     <string name="name">제목</string>
     <string name="picture_id">ID</string>
+    <string name="type">구분</string>
 </resources>

@@ -18,6 +18,7 @@ import com.siot.sss.hsgallery.app.adapter.LogAdapter;
 import com.siot.sss.hsgallery.app.model.ImageSource;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
+import com.siot.sss.hsgallery.util.database.table.Tables;
 import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewFragment;
 
 import java.sql.SQLException;
@@ -35,6 +36,11 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
     private CompositeSubscription subscription;
     private Toolbar toolbar;
 
+    private enum State{
+        ALL, SAVE, READ, UPDATE, DELETE
+    }
+    private State state;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_log, container, false);
@@ -42,6 +48,7 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.log);
         this.setupRecyclerView(this.gallery);
+        this.state = State.ALL;
         return view;
     }
 
@@ -66,12 +73,32 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
                     cursor.getInt(cursor.getColumnIndex("_id")),
                     cursor.getString(cursor.getColumnIndex("date")),
                     cursor.getString(cursor.getColumnIndex("name")),
-                    cursor.getString(cursor.getColumnIndex("picture_id"))
+                    cursor.getString(cursor.getColumnIndex("picture_id")),
+                    cursor.getString(cursor.getColumnIndex("type"))
                 )
             );
         }while (cursor.moveToNext());
 
         helper.close();
+    }
+
+    private void toolbarMenuItemChange(State state){
+        int id = 12;
+        switch (state){
+            case ALL:
+                this.toolbar.getMenu().findItem(id).setVisible(true);
+                break;
+            case SAVE:
+                this.toolbar.getMenu().findItem(id).setVisible(false);
+                break;
+            case DELETE:
+                break;
+            case READ:
+                break;
+            case UPDATE:
+                break;
+        }
+
     }
 
     @Override

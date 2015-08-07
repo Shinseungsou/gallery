@@ -10,7 +10,7 @@
         <TextView
             android:text="@string/date"
             android:gravity="center"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:layout_width="0dp"
             android:layout_height="40dp"/>
         <TextView
@@ -22,7 +22,13 @@
         <TextView
             android:text="@string/picture_id"
             android:gravity="center"
-            android:layout_weight="0.3"
+            android:layout_weight="0.1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"/>
+        <TextView
+            android:text="@string/type"
+            android:gravity="center"
+            android:layout_weight="0.1"
             android:layout_width="0dp"
             android:layout_height="40dp"/>
         </LinearLayout>

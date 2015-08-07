@@ -11,13 +11,14 @@ public class Tables {
         public static final String DATE = "date";
         public static final String NAME = "name";
         public static final String PICTUREID = "picture_id";
+        public static final String TYPE = "type";
         public static final String _TABLENAME = "uselog";
         public static final String _CREATE =
             "create table " + _TABLENAME +"( "+
                 _ID + " integer primary key autoincrement, " +
-                DATE + " text not null, " +
+                DATE + " text not null , " +
                 NAME +" text not null, " +
+                TYPE + " text not null, " +
                 PICTUREID + " text not null );";
-
     }
 }
