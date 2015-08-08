@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
@@ -23,7 +26,7 @@ import butterknife.InjectView;
 import timber.log.Timber;
 
 
-public class MainActivity extends AppCompatActivity implements Navigator {
+public class MainActivity extends AppCompatActivity implements Navigator, View.OnKeyListener {
     @InjectView(R.id.container) protected LinearLayout container;
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
 
@@ -108,5 +111,20 @@ public class MainActivity extends AppCompatActivity implements Navigator {
     @Override
     public String getBackStackNameAt(int index) {
         return this.navigator.getBackStackNameAt(index);
+    }
+
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_MENU){
+            this.getToolbar().getMenu().findItem(R.id.action_settings).setVisible(true);
+            this.getToolbar();
+        }
+        return true;
     }
 }

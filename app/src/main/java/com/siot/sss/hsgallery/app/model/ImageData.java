@@ -9,7 +9,7 @@ import android.provider.MediaStore;
  * Created by SSS on 2015-08-04.
  */
 
-public class ImageSource {
+public class ImageData {
     public String id;
     public String displayName;
     public String data;
@@ -31,14 +31,14 @@ public class ImageSource {
     public String longitude;
     public String miniThumbMagic;
 
-    public ImageSource(String id, String data, String displayName, String size){
+    public ImageData(String id, String data, String displayName, String size){
         this.id = id;
         this.data = data;
         this.displayName = displayName;
         this.size = size;
     }
 
-    public ImageSource(Cursor cursor){
+    public ImageData(Cursor cursor){
         id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._ID));
         displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
         data = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -60,7 +60,28 @@ public class ImageSource {
         longitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
         miniThumbMagic = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MINI_THUMB_MAGIC));
     }
-
+    public void setImageData(Cursor cursor){
+        id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._ID));
+        displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+        data = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        size = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.SIZE));
+//        count = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._COUNT));
+        bucketDisplayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
+        bucketId = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
+        dateAdded = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+        dateModified = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
+        dateTaken = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
+        title = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.TITLE));
+        width = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
+        height = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
+        mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
+        orientation = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
+        description = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DESCRIPTION));
+        isPrivate = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE));
+        latitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));
+        longitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
+        miniThumbMagic = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MINI_THUMB_MAGIC));
+    }
     public Bitmap getImageBitmap(){
         BitmapFactory.Options bo = new BitmapFactory.Options();
         bo.inSampleSize = 8;

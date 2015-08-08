@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.siot.sss.hsgallery.R;
-import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.ThumbnailData;
 import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewItemClickListener;
 
@@ -17,33 +16,31 @@ import butterknife.InjectView;
 /**
  * Created by SSS on 2015-08-04.
  */
-public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ThumbnailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @InjectView(R.id.image) protected ImageView image;
 
     private RecyclerViewItemClickListener listener;
-    public ImageViewHolder(View itemView) {
+    public ThumbnailViewHolder(View itemView) {
         super(itemView);
         ButterKnife.inject(this, itemView);
         itemView.setOnClickListener(this);
     }
 
-    private final int WIDTHSIZE = 300;
-
-    public ImageViewHolder(View itemView, RecyclerViewItemClickListener listener){
+    public ThumbnailViewHolder(View itemView, RecyclerViewItemClickListener listener){
         this(itemView);
         this.listener = listener;
     }
 
-    public void bind(ImageData imageData) {
+    public void bind(ThumbnailData thumbnailData) {
         BitmapFactory.Options bo = new BitmapFactory.Options();
         bo.inSampleSize = 8;
-        Bitmap bmp = BitmapFactory.decodeFile(imageData.data, bo);
-        if(imageData.width != null && imageData.height != null) {
-            int width = Integer.parseInt(imageData.width);
-            int height = Integer.parseInt(imageData.height);
-            this.image.setImageBitmap(Bitmap.createScaledBitmap(bmp, WIDTHSIZE, WIDTHSIZE * height / width, true));
-        }else
-            this.image.setImageBitmap(bmp);
+        Bitmap bmp = BitmapFactory.decodeFile(thumbnailData.data, bo);
+        this.image.setImageBitmap(bmp);
+//        Timber.d("image %s %s ", imageSource.width, imageSource.height);
+//        float scale = Integer.parseInt(imageSource.width) / Integer.parseInt(imageSource.height);
+//        ViewGroup.LayoutParams params = this.image.getLayoutParams();
+//        params.height = (int)(DisplayWindow.getInstance().getHeightDP()/scale);
+//        this.image.setLayoutParams(params);
     }
 
     @Override

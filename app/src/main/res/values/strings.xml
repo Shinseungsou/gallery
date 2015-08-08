@@ -9,7 +9,8 @@
     <string name="gallery">Gallery</string>
     <string name="log">LOG</string>
     <string name="title_activity_test">TestActivity</string>
-    <string name="title_activity_image_popup">ImagePopup</string>
+    <string name="title_activity_image_popup">Image</string>
+    <string name="image">Image</string>
 
     <!-- menu item -->
     <string name="menu_option">Menu Option</string>

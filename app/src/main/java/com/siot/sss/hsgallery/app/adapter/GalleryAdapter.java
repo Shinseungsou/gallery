@@ -1,16 +1,14 @@
 package com.siot.sss.hsgallery.app.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.adapter.viewholder.ImageViewHolder;
-import com.siot.sss.hsgallery.app.model.ImageSource;
+import com.siot.sss.hsgallery.app.adapter.viewholder.ThumbnailViewHolder;
+import com.siot.sss.hsgallery.app.model.ImageData;
+import com.siot.sss.hsgallery.app.model.ThumbnailData;
 import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewItemClickListener;
 
 import java.util.List;
@@ -19,10 +17,10 @@ import java.util.List;
  * Created by SSS on 2015-08-04.
  */
 public class GalleryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<ImageSource> imageList;
+    private List<ImageData> imageList;
     private RecyclerViewItemClickListener listener;
 
-    public GalleryAdapter(List<ImageSource> imageList, RecyclerViewItemClickListener listener){
+    public GalleryAdapter(List<ImageData> imageList, RecyclerViewItemClickListener listener){
         this.imageList = imageList;
         this.listener = listener;
     }

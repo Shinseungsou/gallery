@@ -2,8 +2,6 @@ package com.siot.sss.hsgallery.app.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,20 +11,14 @@ import android.view.ViewGroup;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
-import com.siot.sss.hsgallery.app.adapter.GalleryAdapter;
 import com.siot.sss.hsgallery.app.adapter.LogAdapter;
-import com.siot.sss.hsgallery.app.model.ImageSource;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
-import com.siot.sss.hsgallery.util.database.table.Tables;
 import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewFragment;
-
-import java.sql.SQLException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import rx.subscriptions.CompositeSubscription;
-import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-04.

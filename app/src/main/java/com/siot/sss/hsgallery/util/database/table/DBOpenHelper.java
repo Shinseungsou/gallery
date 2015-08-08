@@ -73,7 +73,6 @@ public class DBOpenHelper{
         return sqlite.query(Tables.UseLog._TABLENAME, null, null, null, null, null, null);
     }
 
-    // ID 컬럼 얻어 오기
     public Cursor getColumnUseLog(long id){
         Cursor c = sqlite.query(Tables.UseLog._TABLENAME, null,
             "_id="+id, null, null, null, null);
@@ -82,7 +81,6 @@ public class DBOpenHelper{
         return c;
     }
 
-    // 이름 검색 하기 (rawQuery)
     public Cursor getMatchNameUseLog(String name){
         Cursor c = sqlite.rawQuery( "select * from "+Tables.UseLog._TABLENAME+" where name=" + "'" + name + "'" , null);
         return c;

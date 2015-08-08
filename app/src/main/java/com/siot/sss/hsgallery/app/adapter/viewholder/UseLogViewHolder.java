@@ -48,7 +48,6 @@ public class UseLogViewHolder extends RecyclerView.ViewHolder  implements View.O
 //            myCal.get(Calendar.MINUTE));
         Date date = new Date(useLog.date);
         TimeZone timeZone = TimeZone.getTimeZone(useLog.date);
-        Timber.d("locale : %s", timeZone.getDefault());
         this.date.setText(useLog.date);
         this.name.setText(useLog.name);
         this.pictureId.setText(useLog.pictureId);

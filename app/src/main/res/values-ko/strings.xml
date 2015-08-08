@@ -4,6 +4,7 @@
 
     <string name="hello_world">안녕 세계?</string>
     <string name="action_settings">옵션</string>
+    <string name="image">이미지</string>
 
     <!-- title -->
     <string name="gallery">갤러리</string>
