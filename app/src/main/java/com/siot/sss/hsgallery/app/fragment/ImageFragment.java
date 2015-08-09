@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
+import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.UseLogManager;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
@@ -49,7 +50,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                UseLogManager.getInstance().addReadLog(getActivity().getBaseContext());
+                UseLogManager.getInstance().addLog(getActivity().getBaseContext(), UseLog.Type.READ);
             }
         });
     }

@@ -19,19 +19,24 @@ public class UseLogManager {
         if(instance == null) return UseLogManager.instance  = new UseLogManager();
         return UseLogManager.instance;
     }
+    public String currentTime(){
+        Calendar c = Calendar.getInstance();
+        Date date = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
 
-    public void addReadLog(Context context){
+        return android.text.format.DateFormat.format("yyyy/MM/dd hh:mm", date).toString();
+    }
+
+    public void addLog(Context context, UseLog.Type type){
             DBOpenHelper helper = new DBOpenHelper(context);
             helper.open();
-            Calendar c = Calendar.getInstance();
-            Date date = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
             helper.insertColumnUseLog(
                 new UseLog(
-                    android.text.format.DateFormat.format("yyyy/MM/dd hh:mm", date).toString(),
+                    this.currentTime(),
                     ImageShow.getInstance().getImageData().displayName,
                     ImageShow.getInstance().getImageData().id,
-                    UseLog.getType(UseLog.Type.READ)
+                    UseLog.getType(type)
                 ));
             helper.close();
     }
+
 }

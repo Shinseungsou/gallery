@@ -23,6 +23,7 @@ public class ImageShow {
     @Getter @Setter private ImageData imageData;
     @Getter @Setter private List<ImageData> images;
     @Getter @Setter private int position;
+    @Getter @Setter private String buketId;
 
     private static ImageShow instance = null;
     public static synchronized ImageShow getInstance(){
@@ -37,7 +38,7 @@ public class ImageShow {
             MediaStore.Images.Media.SIZE};
 //        String[] proj = {MediaStore.Images.Media.BUCKET_ID, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
         String selection = MediaStore.Images.Media._ID +" like "+ thumbnailData.imageId;
-        Cursor imageCursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, selection, null, null);
+        Cursor imageCursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
 
         int num = 0;
 
@@ -49,5 +50,14 @@ public class ImageShow {
             Timber.d("num : %s", num);
         }
         imageCursor.close();
+    }
+    public void renameImagedata(int position, String name){
+
+    }
+    public void deleteImagedata(int position){
+
+    }
+    public void addImagedata(int position){
+
     }
 }

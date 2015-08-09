@@ -70,7 +70,15 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
             item->{
                 if(item.getItemId() == seeLog.getItemId()){
                     this.navigate(LogFragment.class, true);
-                }else if(item.getItemId() == toolbar.findViewById(R.id.delete).getId()){
+                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.COPY).getItemId()){
+
+                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()){
+
+                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.PASTE).getItemId()){
+
+                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CUT).getItemId()){
+
+                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()){
 
                 }
                 return true;

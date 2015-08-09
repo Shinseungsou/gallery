@@ -20,20 +20,6 @@ public class MenuItemManager {
         this.toolbar = toolbar;
     }
 
-    public static class Item{
-        public static final int SETTING = R.id.action_settings;
-        public static final int DELETE = R.id.delete;
-        public static final int COPY = R.id.copy;
-        public static final int CUT = R.id.cut;
-        public static final int PASTE = R.id.paste;
-        public static final int RENAME = R.id.rename;
-        public static final int USELOG = R.id.menu_log;
-
-        public static MenuItem getItem(Toolbar toolbar, int menuItem){
-            return toolbar.getMenu().findItem(menuItem);
-        }
-    }
-
     public void menuItemVisible(int state){
         Item.getItem(toolbar, Item.SETTING).setVisible(false);
         Item.getItem(toolbar, Item.DELETE).setVisible(false);
@@ -56,6 +42,20 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
                 break;
 
+        }
+    }
+
+    public static class Item{
+        public static final int SETTING = R.id.action_settings;
+        public static final int DELETE = R.id.delete;
+        public static final int COPY = R.id.copy;
+        public static final int CUT = R.id.cut;
+        public static final int PASTE = R.id.paste;
+        public static final int RENAME = R.id.rename;
+        public static final int USELOG = R.id.menu_log;
+
+        public static MenuItem getItem(Toolbar toolbar, int menuItem){
+            return toolbar.getMenu().findItem(menuItem);
         }
     }
 }

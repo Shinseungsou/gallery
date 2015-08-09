@@ -14,6 +14,7 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.GalleryAdapter;
 import com.siot.sss.hsgallery.app.model.ImageData;
+import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.UseLogManager;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
@@ -22,8 +23,6 @@ import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import rx.Observable;
-import rx.Subscriber;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -101,7 +100,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         ImageShow.getInstance().setImageData(this.items.get(position));
         ImageShow.getInstance().setImages(this.items);
         ImageShow.getInstance().setPosition(position);
-        UseLogManager.getInstance().addReadLog(getActivity().getBaseContext());
+        UseLogManager.getInstance().addLog(getActivity().getBaseContext(), UseLog.Type.READ);
         this.navigator.navigate(ImageFragment.class, true);
     }
 
