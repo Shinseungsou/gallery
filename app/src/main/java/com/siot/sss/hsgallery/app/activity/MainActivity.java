@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
         return this.navigator.getBackStackNameAt(index);
     }
 
-
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         return false;
@@ -124,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
         if(keyCode == KeyEvent.KEYCODE_MENU){
             this.getToolbar().getMenu().findItem(R.id.action_settings).setVisible(true);
             this.getToolbar();
+            return true;
         }
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 }

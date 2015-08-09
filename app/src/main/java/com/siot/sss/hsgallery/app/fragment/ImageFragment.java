@@ -48,9 +48,15 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
         super.onResume();
 //        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
-        this.addLog();
         pager.setAdapter(new ViewPagerAdapter(this.getActivity().getApplicationContext(), this, ImageShow.getInstance().getImages()));
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                addLog();
+            }
+        });
     }
 
     private void addLog(){

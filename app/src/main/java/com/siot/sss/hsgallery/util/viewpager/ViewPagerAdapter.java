@@ -48,7 +48,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     private View v;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
-        View v = inflater.inflate(R.layout.fragment_image_slide, null);
+        v = inflater.inflate(R.layout.fragment_image_slide, null);
         ImageView image = (ImageView) v.findViewById(R.id.image);
         TextView title = (TextView) v.findViewById(R.id.title);
 //        ButterKnife.inject(v);
