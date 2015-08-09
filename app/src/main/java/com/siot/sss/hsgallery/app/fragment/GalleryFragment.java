@@ -14,13 +14,16 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.GalleryAdapter;
 import com.siot.sss.hsgallery.app.model.ImageData;
-import com.siot.sss.hsgallery.app.model.ThumbnailData;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
-import com.siot.sss.hsgallery.util.navigator.Navigator;
-import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewFragment;
+import com.siot.sss.hsgallery.util.database.UseLogManager;
+import com.siot.sss.hsgallery.util.view.MenuItemManager;
+import com.siot.sss.hsgallery.util.view.navigator.Navigator;
+import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Observable;
+import rx.Subscriber;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -56,6 +59,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     @Override
     public void onResume() {
         super.onResume();
+        MenuItemManager.getInstance().menuItemVisible(1);
     }
 
     public void getImageCursor(){
@@ -94,10 +98,11 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
 
     @Override
     public void onRecyclerViewOtemClick(View view, int position) {
-//        ImageShow.getInstance().selectImageData(this.items.get(position), this.getActivity().getContentResolver());
         ImageShow.getInstance().setImageData(this.items.get(position));
         ImageShow.getInstance().setImages(this.items);
         ImageShow.getInstance().setPosition(position);
+        UseLogManager.getInstance().addReadLog(getActivity().getBaseContext());
         this.navigator.navigate(ImageFragment.class, true);
     }
+
 }

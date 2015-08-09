@@ -1,8 +1,7 @@
-package com.siot.sss.hsgallery.util.viewpager;
+package com.siot.sss.hsgallery.util.view.viewpager;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,8 @@ import android.widget.TextView;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import timber.log.Timber;
 
 /**

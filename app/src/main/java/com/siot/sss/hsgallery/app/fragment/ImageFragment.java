@@ -7,22 +7,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
-import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
-import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
-import com.siot.sss.hsgallery.util.viewpager.ViewPagerAdapter;
-
-import java.util.Calendar;
-import java.util.Date;
+import com.siot.sss.hsgallery.util.database.UseLogManager;
+import com.siot.sss.hsgallery.util.view.MenuItemManager;
+import com.siot.sss.hsgallery.util.view.viewpager.ViewPagerAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-06.
@@ -46,6 +40,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        MenuItemManager.getInstance().menuItemVisible(2);
 //        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
         pager.setAdapter(new ViewPagerAdapter(this.getActivity().getApplicationContext(), this, ImageShow.getInstance().getImages()));
@@ -54,25 +49,12 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                addLog();
+                UseLogManager.getInstance().addReadLog(getActivity().getBaseContext());
             }
         });
     }
 
-    private void addLog(){
-        DBOpenHelper helper = new DBOpenHelper(this.getActivity().getBaseContext());
-        helper.open();
-        Calendar c = Calendar.getInstance();
-        Date date = new Date(c.get(Calendar.YEAR)-1900, c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
-        helper.insertColumnUseLog(
-            new UseLog(
-                android.text.format.DateFormat.format("yyyy/MM/dd hh:mm", date).toString(),
-                ImageShow.getInstance().getImageData().displayName,
-                ImageShow.getInstance().getImageData().id,
-                UseLog.getType(UseLog.Type.READ)
-            ));
-        helper.close();
-    }
+
 
     @Override
     public void onClick(View v) {

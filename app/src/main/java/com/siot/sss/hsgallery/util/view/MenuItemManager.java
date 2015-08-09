@@ -1,0 +1,61 @@
+package com.siot.sss.hsgallery.util.view;
+
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.siot.sss.hsgallery.R;
+
+/**
+ * Created by SSS on 2015-08-09.
+ */
+public class MenuItemManager {
+    private Toolbar toolbar;
+    private static MenuItemManager instance;
+    public static synchronized MenuItemManager getInstance(){
+        if(MenuItemManager.instance == null) MenuItemManager.instance = new MenuItemManager();
+        return MenuItemManager.instance;
+    }
+    public void setManager(Toolbar toolbar){
+        this.toolbar = toolbar;
+    }
+
+    public static class Item{
+        public static final int SETTING = R.id.action_settings;
+        public static final int DELETE = R.id.delete;
+        public static final int COPY = R.id.copy;
+        public static final int CUT = R.id.cut;
+        public static final int PASTE = R.id.paste;
+        public static final int RENAME = R.id.rename;
+        public static final int USELOG = R.id.menu_log;
+
+        public static MenuItem getItem(Toolbar toolbar, int menuItem){
+            return toolbar.getMenu().findItem(menuItem);
+        }
+    }
+
+    public void menuItemVisible(int state){
+        Item.getItem(toolbar, Item.SETTING).setVisible(false);
+        Item.getItem(toolbar, Item.DELETE).setVisible(false);
+        Item.getItem(toolbar, Item.COPY).setVisible(false);
+        Item.getItem(toolbar, Item.CUT).setVisible(false);
+        Item.getItem(toolbar, Item.PASTE).setVisible(false);
+        Item.getItem(toolbar, Item.RENAME).setVisible(false);
+        Item.getItem(toolbar, Item.USELOG).setVisible(true);
+        switch (state){
+            case 0:
+                break;
+            case 1:
+                Item.getItem(toolbar, Item.SETTING).setVisible(true);
+                break;
+            case 2:
+                Item.getItem(toolbar, Item.DELETE).setVisible(true);
+                Item.getItem(toolbar, Item.COPY).setVisible(true);
+                Item.getItem(toolbar, Item.CUT).setVisible(true);
+                Item.getItem(toolbar, Item.PASTE).setVisible(true);
+                Item.getItem(toolbar, Item.RENAME).setVisible(true);
+                break;
+
+        }
+    }
+}

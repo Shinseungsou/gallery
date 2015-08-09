@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.adapter.viewholder.UseLogViewHolder;
 import com.siot.sss.hsgallery.app.model.UseLog;
-import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewItemClickListener;
+import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
 
 import java.util.List;
 

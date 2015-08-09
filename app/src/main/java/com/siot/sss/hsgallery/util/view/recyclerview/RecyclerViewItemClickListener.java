@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.util.recyclerview;
+package com.siot.sss.hsgallery.util.view.recyclerview;
 
 import android.view.View;
 

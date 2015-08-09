@@ -14,7 +14,7 @@ import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.LogAdapter;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
-import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewFragment;
+import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

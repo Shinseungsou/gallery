@@ -8,8 +8,7 @@ import android.widget.ImageView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
-import com.siot.sss.hsgallery.app.model.ThumbnailData;
-import com.siot.sss.hsgallery.util.recyclerview.RecyclerViewItemClickListener;
+import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

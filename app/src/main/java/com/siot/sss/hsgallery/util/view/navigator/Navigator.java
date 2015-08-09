@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.util.navigator;
+package com.siot.sss.hsgallery.util.view.navigator;
 
 import android.app.Fragment;
 import android.os.Bundle;

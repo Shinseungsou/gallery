@@ -1,9 +1,7 @@
-package com.siot.sss.hsgallery.util.recyclerview;
+package com.siot.sss.hsgallery.util.view.recyclerview;
 
 import android.app.Fragment;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
