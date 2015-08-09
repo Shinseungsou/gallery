@@ -18,6 +18,7 @@ import com.siot.sss.hsgallery.util.view.viewpager.ViewPagerAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-06.
@@ -51,6 +52,8 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 UseLogManager.getInstance().addLog(getActivity().getBaseContext(), UseLog.Type.READ);
+                ImageShow.getInstance().setPosition(position);
+                Timber.d("title : %s", ImageShow.getInstance().getImages().get(position).data);
             }
         });
     }

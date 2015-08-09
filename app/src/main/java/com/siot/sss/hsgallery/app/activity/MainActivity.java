@@ -14,6 +14,7 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
 import com.siot.sss.hsgallery.app.fragment.LogFragment;
 import com.siot.sss.hsgallery.app.model.unique.DisplayWindow;
+import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
@@ -79,7 +80,8 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CUT).getItemId()){
 
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()){
-
+                    ImageShow.getInstance().deleteImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
+                    this.navigate(GalleryFragment.class, false);
                 }
                 return true;
             }

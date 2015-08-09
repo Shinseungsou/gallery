@@ -3,6 +3,7 @@
     package="com.siot.sss.hsgallery" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.App"
@@ -19,14 +20,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".app.activity.TestActivity"
-            android:label="@string/title_activity_test" >
-        </activity>
-        <activity
-            android:name=".app.activity.ImagePopup"
-            android:label="@string/title_activity_image_popup" >
         </activity>
     </application>
 

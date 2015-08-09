@@ -32,6 +32,8 @@ public class UseLogManager {
             helper.insertColumnUseLog(
                 new UseLog(
                     this.currentTime(),
+//                    ImageShow.getInstance().getImages().get(ImageShow.getInstance().getPosition()).displayName,
+//                    ImageShow.getInstance().getImages().get(ImageShow.getInstance().getPosition()).id,
                     ImageShow.getInstance().getImageData().displayName,
                     ImageShow.getInstance().getImageData().id,
                     UseLog.getType(type)
