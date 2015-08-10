@@ -9,6 +9,8 @@ import android.provider.MediaStore;
 
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.ThumbnailData;
+import com.siot.sss.hsgallery.app.model.UseLog;
+import com.siot.sss.hsgallery.util.database.UseLogManager;
 
 import java.io.File;
 import java.util.List;
@@ -56,26 +58,33 @@ public class ImageShow {
     }
 
     public void renameImagedata(ContentResolver contentResolver, Bitmap bitmap, String name, int position){
-//        removeImagedata(contentResolver, position);
-//        if(bitmap == null){
-//            addImagedata(contentResolver, this.images.get(position).getImageBitmap(), name);
-//        }else{
-//            addImagedata(contentResolver, bitmap, name);
-//        }
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.DISPLAY_NAME, name);
+        renameImagedata(contentResolver, bitmap, name, position, false);
+    }
+    public void renameImagedata(ContentResolver contentResolver, Bitmap bitmap, String name, int position, boolean isPrivate){
+        File from = new File(this.getImages().get(position).data);
+        String[] path = from.getPath().split("\\.");
 
-        contentResolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            values, "_id=" + images.get(position).id, null);
+        File to = new File(from.getParent(), name+ "." + path[path.length-1]);
+        if(!to.exists()) {
+            from.renameTo(to);
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DATA, to.getPath());
+            if(isPrivate)
+                values.put(MediaStore.Images.Media.IS_PRIVATE, true);
 
+
+            contentResolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                values, "_id=" + images.get(position).id, null);
+        }else{
+            Timber.d("file exist!!!!");
+        }
+//        Timber.d("to file %s", to.getPath());
+        UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
+        UseLogManager.getInstance().addLogUpdate(to.getName(),UseLog.Type.UPDATE);
     }
 
     public void deleteImagedata(ContentResolver contentResolver, int position){
-        File from = new File(this.getImages().get(position).data);
-//        Timber.d("from : %s", from.getName());
-        File to = new File(from.getParent(), "."+from.getName());
-        from.renameTo(to);
-//        renameImagedata(contentResolver, null, "." + this.images.get(position).title, position);
+        renameImagedata(contentResolver, null, "."+images.get(position).title, position, true);
     }
 
     public void removeImagedata(ContentResolver contentResolver, int position){
@@ -89,5 +98,24 @@ public class ImageShow {
 
     public void addImagedata(ContentResolver contentResolver, Bitmap bitmap, String name){
         MediaStore.Images.Media.insertImage(contentResolver, bitmap, name, null);
+    }
+
+    public void relocateImagedata(ContentResolver contentResolver, int position) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.ORIENTATION, relocateValue(images.get(position).orientation));
+
+        contentResolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            values, "_id=" + images.get(position).id, null);
+    }
+    public Integer relocateValue(String orientation){
+        if(orientation != null){
+            Integer value = Integer.parseInt(orientation) + 90;
+            if(value > 270){
+                return 0;
+            }else{
+                return value;
+            }
+        }
+        return null;
     }
 }

@@ -21,6 +21,8 @@
     <string name="cut">cut</string>
     <string name="delete">delete</string>
     <string name="rename">rename</string>
+    <string name="relocate">relocate</string>
+    <string name="crop">crop</string>
 
     <!-- log fragment-->
     <string name="date">DATE</string>

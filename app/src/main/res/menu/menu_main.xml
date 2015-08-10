@@ -32,6 +32,16 @@
           android:icon="@drawable/ic_light_edit"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+    <item android:id="@+id/relocate"
+          android:title="@string/relocate"
+          android:icon="@drawable/ic_light_edit"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/crop"
+          android:title="@string/crop"
+          android:icon="@drawable/ic_light_edit"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
     <item
         android:title="@string/menu_see_log"
         android:id="@+id/menu_log"

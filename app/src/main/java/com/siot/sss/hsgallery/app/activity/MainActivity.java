@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
 import com.siot.sss.hsgallery.app.fragment.LogFragment;
+import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.DisplayWindow;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
+import com.siot.sss.hsgallery.util.database.UseLogManager;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
         DisplayWindow.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
         DisplayWindow.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
         DisplayWindow.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
+        UseLogManager.getInstance().setContext(getBaseContext());
+
     }
 
     @Override
@@ -74,14 +78,17 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.COPY).getItemId()){
 
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()){
-
+                    ImageShow.getInstance().renameImagedata(this.getContentResolver(), null, "hello", ImageShow.getInstance().getPosition());
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.PASTE).getItemId()){
 
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CUT).getItemId()){
 
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()){
                     ImageShow.getInstance().deleteImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
+                    UseLogManager.getInstance().addLog(UseLog.Type.DELETE);
                     this.navigate(GalleryFragment.class, false);
+                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()){
+                    ImageShow.getInstance().relocateImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
                 }
                 return true;
             }

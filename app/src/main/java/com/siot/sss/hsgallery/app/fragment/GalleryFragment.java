@@ -67,7 +67,9 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.SIZE};
 //        String[] proj = {MediaStore.Images.Media.BUCKET_ID, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
-        Cursor imageCursor = this.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+        String selection = MediaStore.Images.Media.IS_PRIVATE + " != " + 1;
+        selection = null;
+        Cursor imageCursor = this.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, selection, null, null);
 
         int num = 0;
         Timber.d("size : %s", imageCursor.getCount());
@@ -75,8 +77,9 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         if (imageCursor != null && imageCursor.moveToFirst()){
             do {
                 num++;
-                if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null){
-                    this.items.add(new ImageData(imageCursor));
+                if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null)
+                    if(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)) == null || !imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)).equals("1")){
+                       this.items.add(new ImageData(imageCursor));
                 }
             }while (imageCursor.moveToNext());
             Timber.d("num : %s", num);
@@ -100,7 +103,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         ImageShow.getInstance().setImageData(this.items.get(position));
         ImageShow.getInstance().setImages(this.items);
         ImageShow.getInstance().setPosition(position);
-        UseLogManager.getInstance().addLog(getActivity().getBaseContext(), UseLog.Type.READ);
+        UseLogManager.getInstance().addLog(UseLog.Type.READ);
         this.navigator.navigate(ImageFragment.class, true);
     }
 

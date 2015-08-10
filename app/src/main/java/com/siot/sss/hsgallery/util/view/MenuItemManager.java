@@ -40,6 +40,7 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.CUT).setVisible(true);
                 Item.getItem(toolbar, Item.PASTE).setVisible(true);
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
+                Item.getItem(toolbar, Item.CROP).setVisible(true);
                 break;
 
         }
@@ -53,6 +54,8 @@ public class MenuItemManager {
         public static final int PASTE = R.id.paste;
         public static final int RENAME = R.id.rename;
         public static final int USELOG = R.id.menu_log;
+        public static final int RELOCATE = R.id.relocate;
+        public static final int CROP = R.id.crop;
 
         public static MenuItem getItem(Toolbar toolbar, int menuItem){
             return toolbar.getMenu().findItem(menuItem);

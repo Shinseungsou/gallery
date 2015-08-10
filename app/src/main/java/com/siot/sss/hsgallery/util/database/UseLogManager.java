@@ -2,6 +2,7 @@ package com.siot.sss.hsgallery.util.database;
 
 import android.content.Context;
 
+import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
@@ -15,6 +16,8 @@ import java.util.Date;
 public class UseLogManager {
     private static UseLogManager instance;
 
+    private Context context;
+
     public static synchronized UseLogManager getInstance(){
         if(instance == null) return UseLogManager.instance  = new UseLogManager();
         return UseLogManager.instance;
@@ -26,19 +29,46 @@ public class UseLogManager {
         return android.text.format.DateFormat.format("yyyy/MM/dd hh:mm", date).toString();
     }
 
-    public void addLog(Context context, UseLog.Type type){
+    public void setContext(Context context){
+        this.context = context;
+    }
+
+    public void addLog(UseLog.Type type){
             DBOpenHelper helper = new DBOpenHelper(context);
             helper.open();
             helper.insertColumnUseLog(
                 new UseLog(
                     this.currentTime(),
-//                    ImageShow.getInstance().getImages().get(ImageShow.getInstance().getPosition()).displayName,
-//                    ImageShow.getInstance().getImages().get(ImageShow.getInstance().getPosition()).id,
                     ImageShow.getInstance().getImageData().displayName,
                     ImageShow.getInstance().getImageData().id,
                     UseLog.getType(type)
                 ));
             helper.close();
+    }
+
+    public void addLog(ImageData imageData, UseLog.Type type){
+        DBOpenHelper helper = new DBOpenHelper(context);
+        helper.open();
+        helper.insertColumnUseLog(
+            new UseLog(
+                this.currentTime(),
+                imageData.displayName,
+                imageData.id,
+                UseLog.getType(type)
+            ));
+        helper.close();
+    }
+    public void addLogUpdate(String name, UseLog.Type type){
+        DBOpenHelper helper = new DBOpenHelper(context);
+        helper.open();
+        helper.insertColumnUseLog(
+            new UseLog(
+                this.currentTime(),
+                name,
+                "rename to",
+                UseLog.getType(type)
+            ));
+        helper.close();
     }
 
 }

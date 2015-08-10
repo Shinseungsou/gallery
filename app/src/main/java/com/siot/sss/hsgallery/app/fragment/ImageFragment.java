@@ -51,9 +51,11 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                UseLogManager.getInstance().addLog(getActivity().getBaseContext(), UseLog.Type.READ);
+                UseLogManager.getInstance().addLog(UseLog.Type.READ);
                 ImageShow.getInstance().setPosition(position);
                 Timber.d("title : %s", ImageShow.getInstance().getImages().get(position).data);
+                Timber.d("isprivate : %s", ImageShow.getInstance().getImages().get(position).isPrivate);
+                Timber.d("file path : %s", ImageShow.getInstance().getImages().get(position).data);
             }
         });
     }
