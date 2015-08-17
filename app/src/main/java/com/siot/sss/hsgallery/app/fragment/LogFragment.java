@@ -14,6 +14,7 @@ import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.LogAdapter;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
+import com.siot.sss.hsgallery.util.database.table.Tables;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import butterknife.ButterKnife;
@@ -24,7 +25,7 @@ import rx.subscriptions.CompositeSubscription;
  * Created by SSS on 2015-08-04.
  */
 public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
-    @InjectView(R.id.log_list) protected RecyclerView gallery;
+    @InjectView(R.id.log_recycler) protected RecyclerView gallery;
     private CompositeSubscription subscription;
     private Toolbar toolbar;
 
@@ -35,7 +36,7 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_log, container, false);
+        View view = inflater.inflate(R.layout.fragment_log_detail, container, false);
         ButterKnife.inject(this, view);
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.log);
@@ -62,11 +63,17 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
         do {
             this.items.add(
                 new UseLog(
-                    cursor.getInt(cursor.getColumnIndex("_id")),
-                    cursor.getString(cursor.getColumnIndex("date")),
-                    cursor.getString(cursor.getColumnIndex("name")),
-                    cursor.getString(cursor.getColumnIndex("picture_id")),
-                    cursor.getString(cursor.getColumnIndex("type"))
+                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog._ID)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATE)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.NAME)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.PICTUREID)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.TYPE)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKET)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKETNAME)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATA)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.TITLE)),
+                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog.WIDTH)),
+                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog.HEIGHT))
                 )
             );
         }while (cursor.moveToNext());

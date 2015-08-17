@@ -38,8 +38,8 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
         bo.inSampleSize = 8;
         Bitmap bmp = BitmapFactory.decodeFile(imageData.data, bo);
         if(imageData.width != null && imageData.height != null) {
-            int width = Integer.parseInt(imageData.width);
-            int height = Integer.parseInt(imageData.height);
+            int width = imageData.width;
+            int height =imageData.height;
             this.image.setImageBitmap(Bitmap.createScaledBitmap(bmp, WIDTHSIZE, WIDTHSIZE * height / width, true));
         }else
             this.image.setImageBitmap(bmp);

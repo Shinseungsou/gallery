@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.util.view.viewpager;
+package com.siot.sss.hsgallery.app.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -18,7 +18,7 @@ import timber.log.Timber;
 /**
  * Created by SSS on 2015-08-09.
  */
-public class ViewPagerAdapter extends PagerAdapter {
+public class LogViewPagerAdapter extends PagerAdapter {
 //    @InjectView(R.id.image) protected ImageView image;
 //    @InjectView(R.id.title) protected TextView title;
     @Override
@@ -33,7 +33,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     private View.OnClickListener listener;
 //    ViewPagerManager pagerManager;
 
-    public ViewPagerAdapter(Context context, View.OnClickListener listener, List<ImageData> items) {
+    public LogViewPagerAdapter(Context context, View.OnClickListener listener, List<ImageData> items) {
         super();
         this.context = context;
         this.items = items;
@@ -44,13 +44,22 @@ public class ViewPagerAdapter extends PagerAdapter {
     private View v;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
-        v = inflater.inflate(R.layout.fragment_image_slide, null);
+        v = inflater.inflate(R.layout.fragment_log_detail, null);
+        switch (position){
+            case 0 :
+                break;
+            case 1 :
+                break;
+            case 2 :
+                break;
+            case 3 :
+                break;
+        }
         ImageView image = (ImageView) v.findViewById(R.id.image);
         TextView title = (TextView) v.findViewById(R.id.title);
-//        ButterKnife.inject(v);
+
         image.setImageBitmap(items.get(position).getImageBitmap());
         title.setText(items.get(position).data);
-//        Timber.d("image : %s", items.get(position).title);
         image.setOnClickListener(listener);
 
         pager.addView(v, 0);

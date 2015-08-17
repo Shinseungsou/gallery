@@ -6,35 +6,46 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
+
         <TextView
-            android:text="@string/date"
+            android:id="@+id/log_all"
+            android:layout_weight="0.2"
             android:gravity="center"
-            android:layout_weight="0.4"
+            android:text="@string/log_all"
             android:layout_width="0dp"
-            android:layout_height="40dp"/>
+            android:layout_height="match_parent"/>
         <TextView
-            android:text="@string/name"
+            android:id="@+id/log_create"
+            android:layout_weight="0.2"
             android:gravity="center"
-            android:layout_weight="0.4"
+            android:text="@string/log_create"
             android:layout_width="0dp"
-            android:layout_height="40dp"/>
+            android:layout_height="match_parent"/>
         <TextView
-            android:text="@string/picture_id"
+            android:id="@+id/log_read"
+            android:layout_weight="0.2"
             android:gravity="center"
-            android:layout_weight="0.1"
+            android:text="@string/log_read"
             android:layout_width="0dp"
-            android:layout_height="40dp"/>
+            android:layout_height="match_parent"/>
         <TextView
-            android:text="@string/type"
+            android:id="@+id/log_update"
+            android:layout_weight="0.2"
             android:gravity="center"
-            android:layout_weight="0.1"
+            android:text="@string/log_update"
             android:layout_width="0dp"
-            android:layout_height="40dp"/>
-        </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/log_list"
-        android:scrollbars="vertical"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/log_delete"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/log_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </LinearLayout>

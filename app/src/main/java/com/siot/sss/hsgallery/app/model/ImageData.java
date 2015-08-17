@@ -21,8 +21,8 @@ public class ImageData {
     public String bucketId;
     public String bucketDisplayName;
     public String title;
-    public String width;
-    public String height;
+    public Integer width;
+    public Integer height;
     public String mimeType;
     public String orientation;
     public String description;
@@ -50,8 +50,8 @@ public class ImageData {
         dateModified = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
         dateTaken = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
         title = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.TITLE));
-        width = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
-        height = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
+        width = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
+        height = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
         mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
         orientation = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
         description = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DESCRIPTION));
@@ -72,8 +72,8 @@ public class ImageData {
         dateModified = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
         dateTaken = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_TAKEN));
         title = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.TITLE));
-        width = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
-        height = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
+        width = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
+        height = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
         mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
         orientation = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
         description = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DESCRIPTION));

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.MediaStore;
 
 import com.siot.sss.hsgallery.app.model.DBModel;
 import com.siot.sss.hsgallery.app.model.UseLog;
@@ -17,7 +18,7 @@ import com.siot.sss.hsgallery.util.database.DBHelper;
  */
 public class DBOpenHelper{
     private static final String DATABASE_NAME = "gallery.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     public static SQLiteDatabase sqlite;
     private DBHelper dbHelper;
     private Context context;
@@ -45,6 +46,12 @@ public class DBOpenHelper{
         values.put(Tables.UseLog.DATE, useLog.date);
         values.put(Tables.UseLog.PICTUREID, useLog.pictureId);
         values.put(Tables.UseLog.TYPE, useLog.type);
+        values.put(Tables.UseLog.TITLE, useLog.title);
+        values.put(Tables.UseLog.DATA, useLog.data);
+        values.put(Tables.UseLog.BUCKET, useLog.bucket);
+        values.put(Tables.UseLog.BUCKETNAME, useLog.bucketName);
+        values.put(Tables.UseLog.WIDTH, useLog.width);
+        values.put(Tables.UseLog.HEIGHT, useLog.height);
         return sqlite.insert(Tables.UseLog._TABLENAME, null, values);
     }
 
@@ -68,6 +75,10 @@ public class DBOpenHelper{
         return sqlite.delete(Tables.UseLog._TABLENAME, "contact="+number, null) > 0;
     }
 
+    public Cursor getUseLog(UseLog.Type type){
+        String selection = Tables.UseLog.TYPE + " like " + UseLog.getType(type);
+        return sqlite.query(Tables.UseLog._TABLENAME, null, selection, null, null, null, null);
+    }
     // Select All
     public Cursor getAllColumnsUseLog(){
         return sqlite.query(Tables.UseLog._TABLENAME, null, null, null, null, null, null);

@@ -41,7 +41,13 @@ public class UseLogManager {
                     this.currentTime(),
                     ImageShow.getInstance().getImageData().displayName,
                     ImageShow.getInstance().getImageData().id,
-                    UseLog.getType(type)
+                    UseLog.getType(type),
+                    ImageShow.getInstance().getImageData().title,
+                    ImageShow.getInstance().getImageData().data,
+                    ImageShow.getInstance().getImageData().bucketId,
+                    ImageShow.getInstance().getImageData().bucketDisplayName,
+                    ImageShow.getInstance().getImageData().width,
+                    ImageShow.getInstance().getImageData().height
                 ));
             helper.close();
     }
@@ -54,7 +60,13 @@ public class UseLogManager {
                 this.currentTime(),
                 imageData.displayName,
                 imageData.id,
-                UseLog.getType(type)
+                UseLog.getType(type),
+                ImageShow.getInstance().getImageData().title,
+                ImageShow.getInstance().getImageData().data,
+                ImageShow.getInstance().getImageData().bucketId,
+                ImageShow.getInstance().getImageData().bucketDisplayName,
+                ImageShow.getInstance().getImageData().width,
+                ImageShow.getInstance().getImageData().height
             ));
         helper.close();
     }
@@ -66,9 +78,16 @@ public class UseLogManager {
                 this.currentTime(),
                 name,
                 "rename to",
-                UseLog.getType(type)
+                UseLog.getType(type),
+                ImageShow.getInstance().getImageData().title,
+                ImageShow.getInstance().getImageData().data,
+                ImageShow.getInstance().getImageData().bucketId,
+                ImageShow.getInstance().getImageData().bucketDisplayName,
+                ImageShow.getInstance().getImageData().width,
+                ImageShow.getInstance().getImageData().height
             ));
         helper.close();
     }
+
 
 }

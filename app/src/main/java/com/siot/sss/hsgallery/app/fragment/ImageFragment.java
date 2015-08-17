@@ -14,7 +14,7 @@ import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.UseLogManager;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
-import com.siot.sss.hsgallery.util.view.viewpager.ViewPagerAdapter;
+import com.siot.sss.hsgallery.app.adapter.ImageViewPagerAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -45,8 +45,9 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
         MenuItemManager.getInstance().menuItemVisible(2);
 //        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
-        pager.setAdapter(new ViewPagerAdapter(this.getActivity().getApplicationContext(), this, ImageShow.getInstance().getImages()));
+        pager.setAdapter(new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, ImageShow.getInstance().getImages()));
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
+        pager.setPageMargin(10);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {

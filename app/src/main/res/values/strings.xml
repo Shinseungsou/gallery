@@ -29,5 +29,10 @@
     <string name="name">NAME</string>
     <string name="picture_id">ID</string>
     <string name="type">TYPE</string>
+    <string name="log_create">PICTURE</string>
+    <string name="log_read">READ</string>
+    <string name="log_update">UPDATE</string>
+    <string name="log_delete">DELETE</string>
+    <string name="log_all">ALL</string>
 
 </resources>
