@@ -23,7 +23,7 @@ public class UseLog extends DBModel {
     public enum Type{
         SAVE, READ, UPDATE, DELETE
     }
-    public static String getType(Type type){
+    public static String getTypeString(Type type){
         switch (type) {
             case SAVE:      return "save";
             case UPDATE:    return "update";

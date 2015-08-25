@@ -37,7 +37,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
         BitmapFactory.Options bo = new BitmapFactory.Options();
         bo.inSampleSize = 8;
         Bitmap bmp = BitmapFactory.decodeFile(imageData.data, bo);
-        if(imageData.width != null && imageData.height != null) {
+        if(imageData.width != null && imageData.height != null && imageData.width > 0) {
             int width = imageData.width;
             int height =imageData.height;
             this.image.setImageBitmap(Bitmap.createScaledBitmap(bmp, WIDTHSIZE, WIDTHSIZE * height / width, true));
@@ -47,6 +47,6 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View v) {
-        this.listener.onRecyclerViewOtemClick(v, this.getAdapterPosition());
+        this.listener.onRecyclerViewItemClick(v, this.getAdapterPosition());
     }
 }

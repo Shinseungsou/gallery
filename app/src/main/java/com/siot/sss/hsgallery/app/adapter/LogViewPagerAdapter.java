@@ -41,10 +41,11 @@ public class LogViewPagerAdapter extends PagerAdapter {
         this.listener = listener;
         Timber.d("count : %s", items.size());
     }
+
     private View v;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
-        v = inflater.inflate(R.layout.fragment_log_detail, null);
+        v = inflater.inflate(R.layout.fragment_log, null);
         switch (position){
             case 0 :
                 break;

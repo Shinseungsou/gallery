@@ -99,7 +99,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     }
 
     @Override
-    public void onRecyclerViewOtemClick(View view, int position) {
+    public void onRecyclerViewItemClick(View view, int position) {
         ImageShow.getInstance().setImageData(this.items.get(position));
         ImageShow.getInstance().setImages(this.items);
         ImageShow.getInstance().setPosition(position);
