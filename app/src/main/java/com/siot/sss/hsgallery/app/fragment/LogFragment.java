@@ -28,7 +28,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by SSS on 2015-08-04.
  */
-public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
+public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog> implements View.OnClickListener {
     @InjectView(R.id.log_recycler) protected RecyclerView gallery;
     @InjectView(R.id.log_all) protected TextView btnAll;
     @InjectView(R.id.log_create) protected TextView btnCreate;
@@ -39,6 +39,7 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
     private Toolbar toolbar;
 
     private List<UseLog> useLogs;
+
     private enum State{
         ALL, SAVE, READ, UPDATE, DELETE
     }
@@ -53,6 +54,11 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
         this.setupRecyclerView(this.gallery);
         this.state = State.ALL;
         this.useLogs = new ArrayList<>();
+        btnAll.setOnClickListener(this);
+        btnCreate.setOnClickListener(this);
+        btnRead.setOnClickListener(this);
+        btnUpdate.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
         return view;
     }
 
@@ -93,10 +99,14 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
 
     private List<UseLog> getUseLogByType(UseLog.Type type){
         List<UseLog> useLogList = new ArrayList<>();
-        for(UseLog log : this.useLogs){
-            if(log.type.equals(UseLog.getTypeString(type))){
-                useLogList.add(log);
+        if(type != null) {
+            for (UseLog log : this.useLogs) {
+                if (log.type.equals(UseLog.getTypeString(type))) {
+                    useLogList.add(log);
+                }
             }
+        }else{
+            useLogList.addAll(useLogs);
         }
         return useLogList;
     }
@@ -117,7 +127,6 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
             case UPDATE:
                 break;
         }
-
     }
 
     @Override
@@ -132,5 +141,26 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog>{
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
+    }
+
+    public void notifyDataSetChanged(List<UseLog> useLog){
+        items.clear();
+        items.addAll(useLog);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == btnAll.getId()){
+            notifyDataSetChanged(this.getUseLogByType(null));
+        }else if (v.getId() == btnCreate.getId()){
+            notifyDataSetChanged(this.getUseLogByType(UseLog.Type.SAVE));
+        }else if (v.getId() == btnRead.getId()){
+            notifyDataSetChanged(this.getUseLogByType(UseLog.Type.READ));
+        }else if(v.getId() == btnUpdate.getId()){
+            notifyDataSetChanged(this.getUseLogByType(UseLog.Type.UPDATE));
+        }else if (v.getId() == btnDelete.getId()){
+            notifyDataSetChanged(this.getUseLogByType(UseLog.Type.DELETE));
+        }
     }
 }
