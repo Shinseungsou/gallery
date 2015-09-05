@@ -9,12 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.GalleryAdapter;
+import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.UseLog;
+import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.UseLogManager;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
@@ -35,6 +38,8 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     private Toolbar toolbar;
     private Navigator navigator;
 
+    private Configuration.GalleryMode mode;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
@@ -44,7 +49,6 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
         this.setupRecyclerView(this.gallery);
-        this.getImageCursor();
         return view;
     }
 
@@ -59,6 +63,9 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     public void onResume() {
         super.onResume();
         MenuItemManager.getInstance().menuItemVisible(1);
+        this.getImageCursor();
+        this.mode = Configuration.getInstance().getGalleryMode();
+        this.setMode();
     }
 
     public void getImageCursor(){
@@ -75,17 +82,33 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         Timber.d("size : %s", imageCursor.getCount());
 
         if (imageCursor != null && imageCursor.moveToFirst()){
+            ImageShow.getInstance().clear();
             do {
                 num++;
                 if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null)
                     if(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)) == null || !imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)).equals("1")){
-                       this.items.add(new ImageData(imageCursor));
-                }
+                        this.items.add(new ImageData(imageCursor));
+                        ImageShow.getInstance().getImages().add(new ImageData(imageCursor));
+                        if(!ImageShow.getInstance().containsBucket(imageCursor))
+                            ImageShow.getInstance().getBuckets().add(new ImageBucket(imageCursor));
+                    }
             }while (imageCursor.moveToNext());
             Timber.d("num : %s", num);
             this.adapter.notifyDataSetChanged();
         }
         imageCursor.close();
+    }
+
+    public void setMode(){
+        switch (mode){
+            case DIR:
+                for(ImageBucket ib : ImageShow.getInstance().getBuckets()){
+                    Timber.d("bucket : %s %s", ib.displayName, ib.imageData.displayName);
+                }
+                break;
+            case PIC:
+                break;
+        }
     }
 
     @Override
@@ -106,5 +129,4 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         UseLogManager.getInstance().addLog(UseLog.Type.READ);
         this.navigator.navigate(ImageFragment.class, true);
     }
-
 }
