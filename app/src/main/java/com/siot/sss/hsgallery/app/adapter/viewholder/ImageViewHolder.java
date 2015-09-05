@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
@@ -18,6 +19,7 @@ import butterknife.InjectView;
  */
 public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @InjectView(R.id.image) protected ImageView image;
+    @InjectView(R.id.title) protected TextView title;
 
     private RecyclerViewItemClickListener listener;
     public ImageViewHolder(View itemView) {

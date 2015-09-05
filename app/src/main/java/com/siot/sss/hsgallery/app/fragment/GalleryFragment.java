@@ -64,8 +64,8 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         super.onResume();
         MenuItemManager.getInstance().menuItemVisible(1);
         this.getImageCursor();
-        this.mode = Configuration.getInstance().getGalleryMode();
-        this.setMode();
+
+        this.setMode(this.mode = Configuration.getInstance().getGalleryMode());
     }
 
     public void getImageCursor(){
@@ -99,7 +99,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         imageCursor.close();
     }
 
-    public void setMode(){
+    public void setMode(Configuration.GalleryMode mode){
         switch (mode){
             case DIR:
                 for(ImageBucket ib : ImageShow.getInstance().getBuckets()){
