@@ -45,6 +45,6 @@ public class ThumbnailViewHolder extends RecyclerView.ViewHolder implements View
 
     @Override
     public void onClick(View v) {
-        this.listener.onRecyclerViewOtemClick(v, this.getAdapterPosition());
+        this.listener.onRecyclerViewItemClick(v, this.getAdapterPosition());
     }
 }

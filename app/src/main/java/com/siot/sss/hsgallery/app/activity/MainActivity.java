@@ -14,7 +14,7 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
 import com.siot.sss.hsgallery.app.fragment.LogFragment;
 import com.siot.sss.hsgallery.app.model.UseLog;
-import com.siot.sss.hsgallery.app.model.unique.DisplayWindow;
+import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.UseLogManager;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
     @Override
     protected void onResume() {
         super.onResume();
-        DisplayWindow.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
-        DisplayWindow.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
-        DisplayWindow.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
+        Configuration.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
+        Configuration.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
+        Configuration.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
         UseLogManager.getInstance().setContext(getBaseContext());
 
     }

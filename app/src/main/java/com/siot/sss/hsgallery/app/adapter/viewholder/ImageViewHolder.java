@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
@@ -18,6 +19,7 @@ import butterknife.InjectView;
  */
 public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @InjectView(R.id.image) protected ImageView image;
+    @InjectView(R.id.title) protected TextView title;
 
     private RecyclerViewItemClickListener listener;
     public ImageViewHolder(View itemView) {
@@ -37,7 +39,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
         BitmapFactory.Options bo = new BitmapFactory.Options();
         bo.inSampleSize = 8;
         Bitmap bmp = BitmapFactory.decodeFile(imageData.data, bo);
-        if(imageData.width != null && imageData.height != null) {
+        if(imageData.width != null && imageData.height != null && imageData.width > 0) {
             int width = imageData.width;
             int height =imageData.height;
             this.image.setImageBitmap(Bitmap.createScaledBitmap(bmp, WIDTHSIZE, WIDTHSIZE * height / width, true));
@@ -47,6 +49,6 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     @Override
     public void onClick(View v) {
-        this.listener.onRecyclerViewOtemClick(v, this.getAdapterPosition());
+        this.listener.onRecyclerViewItemClick(v, this.getAdapterPosition());
     }
 }

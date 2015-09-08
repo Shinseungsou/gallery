@@ -7,12 +7,14 @@ import android.graphics.Bitmap;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
+import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.ThumbnailData;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.database.UseLogManager;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -27,6 +29,7 @@ import timber.log.Timber;
 public class ImageShow {
     @Getter @Setter private ImageData imageData;
     @Getter @Setter private List<ImageData> images;
+    @Getter @Setter private List<ImageBucket> buckets;
     @Getter @Setter private int position;
     @Getter @Setter private String buketId;
 
@@ -34,6 +37,10 @@ public class ImageShow {
     public static synchronized ImageShow getInstance(){
         if(ImageShow.instance == null) ImageShow.instance = new ImageShow();
         return ImageShow.instance;
+    }
+    public ImageShow(){
+        this.images = new ArrayList<>();
+        this.buckets = new ArrayList<>();
     }
     public void selectImageData(ThumbnailData thumbnailData, ContentResolver contentResolver){
 
@@ -117,5 +124,17 @@ public class ImageShow {
             }
         }
         return null;
+    }
+
+    public boolean containsBucket(Cursor cursor){
+        for(ImageBucket ib : this.buckets){
+            if(ib.id.equals(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID))))
+                return true;
+        }
+        return false;
+    }
+    public void clear(){
+        this.images.clear();
+        this.buckets.clear();
     }
 }

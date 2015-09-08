@@ -5,11 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.MediaStore;
 
-import com.siot.sss.hsgallery.app.model.DBModel;
 import com.siot.sss.hsgallery.app.model.UseLog;
-import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.database.DBHelper;
 
 
@@ -76,7 +73,7 @@ public class DBOpenHelper{
     }
 
     public Cursor getUseLog(UseLog.Type type){
-        String selection = Tables.UseLog.TYPE + " like " + UseLog.getType(type);
+        String selection = Tables.UseLog.TYPE + " like " + UseLog.getTypeString(type);
         return sqlite.query(Tables.UseLog._TABLENAME, null, selection, null, null, null, null);
     }
     // Select All

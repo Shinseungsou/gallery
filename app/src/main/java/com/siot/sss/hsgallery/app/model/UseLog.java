@@ -21,14 +21,15 @@ public class UseLog extends DBModel {
     public Integer height;
 
     public enum Type{
-        SAVE, READ, UPDATE, DELETE
+        SAVE, READ, UPDATE, DELETE, ALL
     }
-    public static String getType(Type type){
+    public static String getTypeString(Type type){
         switch (type) {
             case SAVE:      return "save";
             case UPDATE:    return "update";
             case READ:      return "read";
             case DELETE:    return "delete";
+            case ALL:       return "all";
             default:        return null;
         }
     }

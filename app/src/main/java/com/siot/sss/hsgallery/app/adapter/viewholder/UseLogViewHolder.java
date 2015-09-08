@@ -54,6 +54,6 @@ public class UseLogViewHolder extends RecyclerView.ViewHolder  implements View.O
 
     @Override
     public void onClick(View v) {
-        this.listener.onRecyclerViewOtemClick(v, this.getAdapterPosition());
+        this.listener.onRecyclerViewItemClick(v, this.getAdapterPosition());
     }
 }
