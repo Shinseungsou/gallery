@@ -24,7 +24,7 @@ public class Configuration {
         return Configuration.instance;
     }
     public Configuration(){
-        this.galleryMode = GalleryMode.DIR;
+        this.galleryMode = GalleryMode.PIC;
     }
 
     public Float getWidthDP(){

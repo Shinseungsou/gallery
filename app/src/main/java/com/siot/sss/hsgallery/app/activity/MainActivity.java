@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
 import com.siot.sss.hsgallery.app.fragment.LogFragment;
+import com.siot.sss.hsgallery.app.fragment.MenuFragment;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
@@ -28,6 +29,7 @@ import butterknife.InjectView;
 public class MainActivity extends AppCompatActivity implements Navigator, View.OnKeyListener {
     @InjectView(R.id.container) protected LinearLayout container;
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
+    @InjectView(R.id.menu_layout) protected LinearLayout menuLayout;
 
     private FragmentNavigator navigator;
 
@@ -59,21 +61,26 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
         Configuration.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
         Configuration.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
         UseLogManager.getInstance().setContext(getBaseContext());
-
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
         navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryFragment.class);
+        this.getFragmentManager()
+            .beginTransaction()
+            .add(this.menuLayout.getId(), navigator.instantiateFragment(MenuFragment.class))
+            .commit();
     }
 
-    private MenuItem seeLog;
+    private MenuItem menuLog;
+    private MenuItem menuMore;
     private void setToolbarItem(Menu menu){
-        this.seeLog = menu.findItem(R.id.menu_log);
+        this.menuLog = menu.findItem(R.id.menu_log);
+        this.menuMore = menu.findItem(R.id.menu_more);
         toolbar.setOnMenuItemClickListener(
             item->{
-                if(item.getItemId() == seeLog.getItemId()){
+                if(item.getItemId() == menuLog.getItemId()){
                     this.navigate(LogFragment.class, true);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.COPY).getItemId()){
 
@@ -89,10 +96,23 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
                     this.navigate(GalleryFragment.class, false);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()){
                     ImageShow.getInstance().relocateImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
+                }else if(item.getItemId() == menuMore.getItemId()){
+                    if(this.menuLayout.getVisibility() == View.VISIBLE)
+                        this.menuLayout.setVisibility(View.GONE);
+                    else
+                        this.menuLayout.setVisibility(View.VISIBLE);
                 }
                 return true;
             }
         );
+    }
+
+    public String getCurrentFragmentName(){
+        return this.getFragmentManager().findFragmentById(container.getId()).getClass().getSimpleName();
+    }
+
+    public Fragment getCurrentFragment(){
+        return this.getFragmentManager().findFragmentById(container.getId());
     }
 
     private boolean terminate = false;

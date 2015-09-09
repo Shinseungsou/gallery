@@ -37,6 +37,7 @@ public class FragmentNavigator implements Navigator {
         FragmentTransaction transaction = this.manager.beginTransaction();
         if(addToBackStack) transaction.addToBackStack(nextFragment.getClass().getSimpleName());
         transaction.replace(this.containerViewId, nextFragment, AppConst.Tag.ACTIVE_FRAGMENT).commit();
+
     }
 
     @Override
@@ -54,7 +55,6 @@ public class FragmentNavigator implements Navigator {
     public void navigate(Class<? extends Fragment> target, Bundle bundle, boolean addToBackStack) {
         this.navigate(target, bundle, addToBackStack, false);
     }
-
 
     @Override
     public boolean back() {

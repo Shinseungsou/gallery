@@ -56,6 +56,7 @@ public class MenuItemManager {
         public static final int USELOG = R.id.menu_log;
         public static final int RELOCATE = R.id.relocate;
         public static final int CROP = R.id.crop;
+        public static final int MORE = R.id.menu_more;
 
         public static MenuItem getItem(Toolbar toolbar, int menuItem){
             return toolbar.getMenu().findItem(menuItem);

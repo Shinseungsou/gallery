@@ -30,4 +30,6 @@
     <string name="log_update">변경</string>
     <string name="log_delete">삭제</string>
     <string name="log_all">전체</string>
+    <string name="view_dir">폴더별</string>
+    <string name="view_img">이미지별</string>
 </resources>

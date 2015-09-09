@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
@@ -65,7 +64,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         MenuItemManager.getInstance().menuItemVisible(1);
         this.getImageCursor();
 
-        this.setMode(this.mode = Configuration.getInstance().getGalleryMode());
+        this.modeNotify();
     }
 
     public void getImageCursor(){
@@ -99,16 +98,23 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         imageCursor.close();
     }
 
-    public void setMode(Configuration.GalleryMode mode){
+    public void modeNotify(){
+        mode = Configuration.getInstance().getGalleryMode();
         switch (mode){
             case DIR:
-                for(ImageBucket ib : ImageShow.getInstance().getBuckets()){
-                    Timber.d("bucket : %s %s", ib.displayName, ib.imageData.displayName);
+                this.items.clear();
+                for(ImageBucket IB : ImageShow.getInstance().getBuckets()){
+                    this.items.add(IB.imageData);
                 }
                 break;
             case PIC:
+                this.items.clear();
+                this.items.addAll(ImageShow.getInstance().getImages());
                 break;
         }
+        this.adapter.setMode(mode);
+        this.adapter.notifyDataSetChanged();
+        (getActivity()).findViewById(R.id.menu_layout).setVisibility(View.INVISIBLE);
     }
 
     @Override
