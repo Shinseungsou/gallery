@@ -25,9 +25,10 @@ import com.siot.sss.hsgallery.util.view.navigator.Navigator;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 
-public class MainActivity extends AppCompatActivity implements Navigator, View.OnKeyListener {
+public class MainActivity extends AppCompatActivity implements Navigator{
     @InjectView(R.id.container) protected LinearLayout container;
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
     @InjectView(R.id.menu_layout) protected LinearLayout menuLayout;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
         toolbar.setOnMenuItemClickListener(super::onOptionsItemSelected);
         this.setToolbarItem(this.toolbar.getMenu());
         ImageController.getInstance().init(this.getContentResolver());
+
     }
     public Toolbar getToolbar(){
         return this.toolbar;
@@ -157,18 +159,18 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
     }
 
     @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        return false;
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_MENU){
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
             this.getToolbar().getMenu().findItem(R.id.action_settings).setVisible(true);
             this.getToolbar();
             return true;
+        }else if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            if(this.menuLayout.getVisibility() == View.VISIBLE){
+                this.menuLayout.setVisibility(View.INVISIBLE);
+                return true;
+            }
+            Timber.d("back!");
         }
-        return super.onKeyDown(keyCode, event);
+        return super.onKeyUp(keyCode, event);
     }
-
 }

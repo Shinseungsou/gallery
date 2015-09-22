@@ -42,7 +42,7 @@ public class ImageController {
             ImageShow.getInstance().clear();
             do {
                 if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null)
-                    if(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)) == null || !imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)).equals("1")){
+                    if(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)) == null || !imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)).equals("1") || imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)).charAt(0) != '.'){
                         list.add(new ImageData(imageCursor));
                     }
             }while (imageCursor.moveToNext());

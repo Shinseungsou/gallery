@@ -25,12 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import timber.log.Timber;
 
-/**
- * Created by SSS on 2015-08-06.
- */
 public class ImageFragment extends Fragment implements View.OnClickListener{
-//    @InjectView(R.id.image) protected ImageView image;
-//    @InjectView(R.id.title) protected TextView title;
     @InjectView(R.id.viewpager) protected ViewPager pager;
 
     private Toolbar toolbar;

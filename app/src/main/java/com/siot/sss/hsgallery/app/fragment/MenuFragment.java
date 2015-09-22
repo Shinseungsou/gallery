@@ -19,13 +19,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import rx.subscriptions.CompositeSubscription;
 
-/**
- * Created by SSS on 2015-08-04.
- */
-public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem>{
-    @InjectView(R.id.simple_recycler) protected RecyclerView gallery;
+public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem> {
+    @InjectView(R.id.simple_recycler) protected RecyclerView recyclerView;
     private CompositeSubscription subscription;
-    private Toolbar toolbar;
 
     private Configuration.GalleryMode mode;
 
@@ -33,9 +29,7 @@ public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
         ButterKnife.inject(this, view);
-        this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
-        this.toolbar.setTitle(R.string.log);
-        this.setupRecyclerView(this.gallery);
+        this.setupRecyclerView(this.recyclerView);
 
         mode = Configuration.getInstance().getGalleryMode();
         this.setMenuList();
@@ -96,4 +90,5 @@ public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem
         this.setMenuList();
         this.adapter.notifyDataSetChanged();
     }
+
 }

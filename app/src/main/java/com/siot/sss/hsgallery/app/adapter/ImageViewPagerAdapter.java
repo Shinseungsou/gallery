@@ -49,7 +49,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         TextView title = (TextView) v.findViewById(R.id.title);
 //        ButterKnife.inject(v);
         image.setImageBitmap(items.get(position).getImageBitmap());
-        title.setText(items.get(position).data);
+        title.setText(items.get(position).displayName);
 //        Timber.d("image : %s", items.get(position).title);
         image.setOnClickListener(listener);
 

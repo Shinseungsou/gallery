@@ -27,12 +27,16 @@ public class MenuItemManager {
         Item.getItem(toolbar, Item.CUT).setVisible(false);
         Item.getItem(toolbar, Item.PASTE).setVisible(false);
         Item.getItem(toolbar, Item.RENAME).setVisible(false);
+        Item.getItem(toolbar, Item.RELOCATE).setVisible(false);
+        Item.getItem(toolbar, Item.CROP).setVisible(false);
         Item.getItem(toolbar, Item.USELOG).setVisible(true);
+        Item.getItem(toolbar, Item.MORE).setVisible(true);
         switch (state){
             case 0:
                 break;
             case 1:
                 Item.getItem(toolbar, Item.SETTING).setVisible(true);
+                Item.getItem(toolbar, Item.MORE).setVisible(true);
                 break;
             case 2:
                 Item.getItem(toolbar, Item.DELETE).setVisible(true);
@@ -41,6 +45,7 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.PASTE).setVisible(true);
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
                 Item.getItem(toolbar, Item.CROP).setVisible(true);
+                Item.getItem(toolbar, Item.MORE).setVisible(false);
                 break;
 
         }
