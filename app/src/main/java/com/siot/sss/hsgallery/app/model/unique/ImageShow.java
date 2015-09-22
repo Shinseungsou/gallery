@@ -28,12 +28,12 @@ import timber.log.Timber;
 @Data
 public class ImageShow {
     @Getter @Setter private ImageData imageData;
-    @Getter @Setter private List<ImageData> images;
-    @Getter @Setter private List<ImageBucket> buckets;
+    @Getter private List<ImageData> images;
+    @Getter private List<ImageBucket> buckets;
     @Getter @Setter private int position;
     @Getter @Setter private String bucketId;
 
-    private static ImageShow instance = null;
+    private static ImageShow instance;
     public static synchronized ImageShow getInstance(){
         if(ImageShow.instance == null) ImageShow.instance = new ImageShow();
         return ImageShow.instance;
@@ -42,6 +42,13 @@ public class ImageShow {
         this.images = new ArrayList<>();
         this.buckets = new ArrayList<>();
     }
+
+    public void setImages(List<ImageData> images){
+        this.images.clear();
+        this.images.addAll(images);
+        Timber.d("&&setImage : %s %s", images.size(), this.images.size());
+    }
+
     public void selectImageData(ThumbnailData thumbnailData, ContentResolver contentResolver){
 
         String[] proj = {MediaStore.Images.Media._ID,
@@ -91,6 +98,7 @@ public class ImageShow {
     }
 
     public void deleteImagedata(ContentResolver contentResolver, int position){
+        Timber.d("&&image position : %s %s", images.size(), position);
         renameImagedata(contentResolver, null, "."+images.get(position).title, position, true);
     }
 

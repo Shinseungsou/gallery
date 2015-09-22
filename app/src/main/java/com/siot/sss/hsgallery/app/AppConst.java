@@ -8,4 +8,5 @@ public class AppConst {
     public static class Tag{
         public static final String ACTIVE_FRAGMENT = "fragment";
     }
+
 }

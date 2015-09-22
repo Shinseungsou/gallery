@@ -8,12 +8,17 @@ import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class ImageController {
     private ContentResolver contentResolver;
+    public ImageInformation information;
     public ImageController(){
+        information = new ImageInformation();
     }
     private static ImageController instance;
 
@@ -42,7 +47,8 @@ public class ImageController {
             ImageShow.getInstance().clear();
             do {
                 if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null)
-                    if(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)) == null || !imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)).equals("1") || imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME)).charAt(0) != '.'){
+                    if(!this.information.isPrivate(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA))) ){
+
                         list.add(new ImageData(imageCursor));
                     }
             }while (imageCursor.moveToNext());
@@ -51,13 +57,41 @@ public class ImageController {
         return list;
     }
 
-    public void setImageShow(List<ImageData> lists){
-        ImageShow.getInstance().getImages().clear();
+    public void setImageShow(){
+        List<ImageData> lists = this.getImageData();
+        Timber.d("&&IC size %s", lists.size());
         ImageShow.getInstance().getBuckets().clear();
-        ImageShow.getInstance().getImages().addAll(lists);
+        ImageShow.getInstance().setImages(lists);
         for(ImageData image : lists){
             if(!ImageShow.getInstance().containsBucket(image.bucketId))
                 ImageShow.getInstance().getBuckets().add(new ImageBucket(image));
         }
+    }
+
+    public class ImageInformation{
+        public boolean isPrivate(ImageData image){
+            return this.isPrivate(image.data);
+        }
+
+        public boolean isPrivate(String data){
+            String name = this.getRealName(data);
+
+            if (name.charAt(0) == '.')
+                return true;
+
+            return false;
+        }
+
+        public String getRealName(ImageData image){
+            return getRealName(image.data);
+        }
+
+        public String getRealName(String data){
+            File from = new File(data);
+            String[] path = from.getPath().split("/");
+
+            return path[path.length -1];
+        }
+
     }
 }

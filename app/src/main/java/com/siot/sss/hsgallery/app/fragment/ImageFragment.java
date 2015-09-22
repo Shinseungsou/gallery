@@ -49,7 +49,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
         if(ImageShow.getInstance().getBucketId() != null)
             list.addAll(ImageController.getInstance().getImageData(ImageShow.getInstance().getBucketId()));
         else
-            list.addAll(ImageController.getInstance().getImageData());
+            list.addAll(ImageShow.getInstance().getImages());
         pager.setAdapter(new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, list));
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
         pager.setPageMargin(10);
@@ -59,6 +59,12 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
                 super.onPageSelected(position);
                 UseLogManager.getInstance().addLog(UseLog.Type.READ);
                 ImageShow.getInstance().setPosition(position);
+                Timber.d("**image data : %s", list.get(position).data);
+                Timber.d("**image displayName : %s", list.get(position).displayName);
+                Timber.d("**image isPrivate : %s", list.get(position).isPrivate);
+                Timber.d("**image title : %s", list.get(position).title);
+                Timber.d("**image realname : %s", ImageController.getInstance().information.getRealName(list.get(position)));
+                Timber.d("**image real private %s", ImageController.getInstance().information.isPrivate(list.get(position)));
             }
         });
     }

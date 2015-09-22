@@ -40,9 +40,7 @@ public class MenuItemManager {
                 break;
             case 2:
                 Item.getItem(toolbar, Item.DELETE).setVisible(true);
-                Item.getItem(toolbar, Item.COPY).setVisible(true);
                 Item.getItem(toolbar, Item.CUT).setVisible(true);
-                Item.getItem(toolbar, Item.PASTE).setVisible(true);
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
                 Item.getItem(toolbar, Item.CROP).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(false);

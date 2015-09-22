@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
+import com.siot.sss.hsgallery.app.AppConfig;
 import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
 import com.siot.sss.hsgallery.app.fragment.LogFragment;
 import com.siot.sss.hsgallery.app.fragment.MenuFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         this.setToolbarItem(this.toolbar.getMenu());
         ImageController.getInstance().init(this.getContentResolver());
 
+        AppConfig.Option.SUPER_USER = false;
     }
     public Toolbar getToolbar(){
         return this.toolbar;

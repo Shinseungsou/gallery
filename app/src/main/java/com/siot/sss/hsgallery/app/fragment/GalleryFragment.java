@@ -70,7 +70,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     public void getImageCursor(){
         this.items.clear();
         this.items.addAll(imageController.getImageData());
-        this.imageController.setImageShow(items);
+        this.imageController.setImageShow();
         this.adapter.notifyDataSetChanged();
     }
 
@@ -106,7 +106,6 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
         ImageShow.getInstance().setImageData(this.items.get(position));
-        ImageShow.getInstance().setImages(this.items);
         ImageShow.getInstance().setPosition(position);
         UseLogManager.getInstance().addLog(UseLog.Type.READ);
         if(mode.equals(Configuration.GalleryMode.DIR))

@@ -43,7 +43,7 @@
           android:orderInCategory="100"
           app:showAsAction="never"/>
     <item
-        android:title="@string/menu_see_log"
+        android:title="@string/menu_more"
         android:id="@+id/menu_more"
         android:icon="@drawable/ic_light_chevron_down"
         android:orderInCategory="1"
