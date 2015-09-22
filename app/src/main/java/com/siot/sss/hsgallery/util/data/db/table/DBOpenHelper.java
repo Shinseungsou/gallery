@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.util.database.table;
+package com.siot.sss.hsgallery.util.data.db.table;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.siot.sss.hsgallery.app.model.UseLog;
-import com.siot.sss.hsgallery.util.database.DBHelper;
+import com.siot.sss.hsgallery.util.data.db.DBHelper;
 
 
 /**

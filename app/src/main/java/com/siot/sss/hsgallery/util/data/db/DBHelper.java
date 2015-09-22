@@ -1,10 +1,10 @@
-package com.siot.sss.hsgallery.util.database;
+package com.siot.sss.hsgallery.util.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.siot.sss.hsgallery.util.database.table.Tables;
+import com.siot.sss.hsgallery.util.data.db.table.Tables;
 
 /**
  * Created by SSS on 2015-08-06.

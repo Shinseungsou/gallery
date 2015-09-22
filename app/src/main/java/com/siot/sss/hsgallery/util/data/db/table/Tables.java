@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.util.database.table;
+package com.siot.sss.hsgallery.util.data.db.table;
 
 import android.provider.BaseColumns;
 

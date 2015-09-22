@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.util.database.store;
+package com.siot.sss.hsgallery.util.data.db.store;
 
 import android.database.Cursor;
 
