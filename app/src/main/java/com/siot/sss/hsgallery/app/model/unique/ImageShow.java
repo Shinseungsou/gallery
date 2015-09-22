@@ -11,7 +11,7 @@ import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.ThumbnailData;
 import com.siot.sss.hsgallery.app.model.UseLog;
-import com.siot.sss.hsgallery.util.database.UseLogManager;
+import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class ImageShow {
     @Getter @Setter private List<ImageData> images;
     @Getter @Setter private List<ImageBucket> buckets;
     @Getter @Setter private int position;
-    @Getter @Setter private String buketId;
+    @Getter @Setter private String bucketId;
 
     private static ImageShow instance = null;
     public static synchronized ImageShow getInstance(){
@@ -133,6 +133,15 @@ public class ImageShow {
         }
         return false;
     }
+
+    public boolean containsBucket(String bucketId){
+        for(ImageBucket ib : this.buckets){
+            if(ib.id.equals(bucketId))
+                return true;
+        }
+        return false;
+    }
+
     public void clear(){
         this.images.clear();
         this.buckets.clear();

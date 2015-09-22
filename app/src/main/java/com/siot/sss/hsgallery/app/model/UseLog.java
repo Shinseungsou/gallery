@@ -2,7 +2,7 @@ package com.siot.sss.hsgallery.app.model;
 
 import android.content.ContentValues;
 
-import com.siot.sss.hsgallery.util.database.table.Tables;
+import com.siot.sss.hsgallery.util.data.db.table.Tables;
 
 /**
  * Created by SSS on 2015-08-06.

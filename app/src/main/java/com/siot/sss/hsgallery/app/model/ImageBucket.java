@@ -20,6 +20,12 @@ public class ImageBucket {
         this.imageData = imageData;
     }
 
+    public ImageBucket(ImageData imageData){
+        this.id = imageData.bucketId;
+        this.displayName = imageData.bucketDisplayName;
+        this.imageData = imageData;
+    }
+
     public ImageBucket(Cursor cursor){
         id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
         displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));

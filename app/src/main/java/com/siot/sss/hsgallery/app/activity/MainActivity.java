@@ -17,7 +17,8 @@ import com.siot.sss.hsgallery.app.fragment.MenuFragment;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
-import com.siot.sss.hsgallery.util.database.UseLogManager;
+import com.siot.sss.hsgallery.util.data.db.UseLogManager;
+import com.siot.sss.hsgallery.util.data.image.ImageController;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Navigator, View.O
         MenuItemManager.getInstance().setManager(this.toolbar);
         toolbar.setOnMenuItemClickListener(super::onOptionsItemSelected);
         this.setToolbarItem(this.toolbar.getMenu());
+        ImageController.getInstance().init(this.getContentResolver());
     }
     public Toolbar getToolbar(){
         return this.toolbar;

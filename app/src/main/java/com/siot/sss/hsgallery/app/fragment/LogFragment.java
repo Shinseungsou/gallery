@@ -14,8 +14,8 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.adapter.LogAdapter;
 import com.siot.sss.hsgallery.app.model.UseLog;
-import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
-import com.siot.sss.hsgallery.util.database.table.Tables;
+import com.siot.sss.hsgallery.util.data.db.table.DBOpenHelper;
+import com.siot.sss.hsgallery.util.data.db.table.Tables;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import java.util.ArrayList;

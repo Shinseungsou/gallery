@@ -1,8 +1,6 @@
 package com.siot.sss.hsgallery.app.fragment;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +16,8 @@ import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
-import com.siot.sss.hsgallery.util.database.UseLogManager;
+import com.siot.sss.hsgallery.util.data.db.UseLogManager;
+import com.siot.sss.hsgallery.util.data.image.ImageController;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
@@ -26,7 +25,6 @@ import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import rx.subscriptions.CompositeSubscription;
-import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-04.
@@ -36,6 +34,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     private CompositeSubscription subscription;
     private Toolbar toolbar;
     private Navigator navigator;
+    private ImageController imageController;
 
     private Configuration.GalleryMode mode;
 
@@ -48,6 +47,7 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
         this.setupRecyclerView(this.gallery);
+        imageController = ImageController.getInstance();
         return view;
     }
 
@@ -68,34 +68,10 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
     }
 
     public void getImageCursor(){
-        String[] proj = {MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.SIZE};
-//        String[] proj = {MediaStore.Images.Media.BUCKET_ID, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
-        String selection = MediaStore.Images.Media.IS_PRIVATE + " != " + 1;
-        selection = null;
-        Cursor imageCursor = this.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, selection, null, null);
-
-        int num = 0;
-        Timber.d("size : %s", imageCursor.getCount());
-
-        if (imageCursor != null && imageCursor.moveToFirst()){
-            ImageShow.getInstance().clear();
-            do {
-                num++;
-                if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null)
-                    if(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)) == null || !imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE)).equals("1")){
-                        this.items.add(new ImageData(imageCursor));
-                        ImageShow.getInstance().getImages().add(new ImageData(imageCursor));
-                        if(!ImageShow.getInstance().containsBucket(imageCursor))
-                            ImageShow.getInstance().getBuckets().add(new ImageBucket(imageCursor));
-                    }
-            }while (imageCursor.moveToNext());
-            Timber.d("num : %s", num);
-            this.adapter.notifyDataSetChanged();
-        }
-        imageCursor.close();
+        this.items.clear();
+        this.items.addAll(imageController.getImageData());
+        this.imageController.setImageShow(items);
+        this.adapter.notifyDataSetChanged();
     }
 
     public void modeNotify(){
@@ -133,6 +109,10 @@ public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageD
         ImageShow.getInstance().setImages(this.items);
         ImageShow.getInstance().setPosition(position);
         UseLogManager.getInstance().addLog(UseLog.Type.READ);
+        if(mode.equals(Configuration.GalleryMode.DIR))
+            ImageShow.getInstance().setBucketId(this.items.get(position).bucketId);
+        else
+            ImageShow.getInstance().setBucketId(null);
         this.navigator.navigate(ImageFragment.class, true);
     }
 }

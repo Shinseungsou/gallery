@@ -1,6 +1,5 @@
 package com.siot.sss.hsgallery.app.fragment;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,21 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
-import com.siot.sss.hsgallery.app.adapter.LogAdapter;
 import com.siot.sss.hsgallery.app.adapter.SimpleAdapter;
 import com.siot.sss.hsgallery.app.model.SimpleItem;
-import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
-import com.siot.sss.hsgallery.util.database.table.DBOpenHelper;
-import com.siot.sss.hsgallery.util.database.table.Tables;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

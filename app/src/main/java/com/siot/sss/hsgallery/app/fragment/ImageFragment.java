@@ -10,11 +10,16 @@ import android.view.ViewGroup;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
+import com.siot.sss.hsgallery.app.adapter.ImageViewPagerAdapter;
+import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;
-import com.siot.sss.hsgallery.util.database.UseLogManager;
+import com.siot.sss.hsgallery.util.data.db.UseLogManager;
+import com.siot.sss.hsgallery.util.data.image.ImageController;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
-import com.siot.sss.hsgallery.app.adapter.ImageViewPagerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -45,7 +50,12 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
         MenuItemManager.getInstance().menuItemVisible(2);
 //        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
-        pager.setAdapter(new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, ImageShow.getInstance().getImages()));
+        List<ImageData> list = new ArrayList<>();
+        if(ImageShow.getInstance().getBucketId() != null)
+            list.addAll(ImageController.getInstance().getImageData(ImageShow.getInstance().getBucketId()));
+        else
+            list.addAll(ImageController.getInstance().getImageData());
+        pager.setAdapter(new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, list));
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
         pager.setPageMargin(10);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
@@ -54,14 +64,9 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
                 super.onPageSelected(position);
                 UseLogManager.getInstance().addLog(UseLog.Type.READ);
                 ImageShow.getInstance().setPosition(position);
-                Timber.d("title : %s", ImageShow.getInstance().getImages().get(position).data);
-                Timber.d("isprivate : %s", ImageShow.getInstance().getImages().get(position).isPrivate);
-                Timber.d("file path : %s", ImageShow.getInstance().getImages().get(position).data);
             }
         });
     }
-
-
 
     @Override
     public void onClick(View v) {
