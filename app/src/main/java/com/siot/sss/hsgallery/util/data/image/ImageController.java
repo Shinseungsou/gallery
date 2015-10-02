@@ -15,10 +15,7 @@ import timber.log.Timber;
 
 public class ImageController {
     private ContentResolver contentResolver;
-    public ImageInformation information;
-    public ImageController(){
-        information = new ImageInformation();
-    }
+    public ImageController(){    }
     private static ImageController instance;
 
     public static synchronized ImageController getInstance(){
@@ -46,7 +43,7 @@ public class ImageController {
             ImageShow.getInstance().clear();
             do {
                 if (imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null)
-                    if(!this.information.isPrivate(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA))) ){
+                    if(!this.isPrivate(imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA))) ){
 
                         list.add(new ImageData(imageCursor));
                     }
@@ -67,30 +64,28 @@ public class ImageController {
         }
     }
 
-    public class ImageInformation{
-        public boolean isPrivate(ImageData image){
-            return this.isPrivate(image.data);
-        }
-
-        public boolean isPrivate(String data){
-            String name = this.getRealName(data);
-
-            if (name.charAt(0) == '.')
-                return true;
-
-            return false;
-        }
-
-        public String getRealName(ImageData image){
-            return getRealName(image.data);
-        }
-
-        public String getRealName(String data){
-            File from = new File(data);
-            String[] path = from.getPath().split("/");
-
-            return path[path.length -1];
-        }
-
+    public boolean isPrivate(ImageData image){
+        return this.isPrivate(image.data);
     }
+
+    public boolean isPrivate(String data){
+        String name = this.getRealName(data);
+
+        if (name.charAt(0) == '.')
+            return true;
+
+        return false;
+    }
+
+    public String getRealName(ImageData image){
+        return getRealName(image.data);
+    }
+
+    public String getRealName(String data){
+        File from = new File(data);
+        String[] path = from.getPath().split("/");
+
+        return path[path.length -1];
+    }
+
 }
