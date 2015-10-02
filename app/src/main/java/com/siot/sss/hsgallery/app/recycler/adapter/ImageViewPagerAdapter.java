@@ -1,6 +1,7 @@
 package com.siot.sss.hsgallery.app.recycler.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,13 @@ import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import timber.log.Timber;
 
 /**
@@ -42,16 +47,20 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         Timber.d("count : %s", items.size());
     }
     private View v;
+
+    @InjectView(R.id.image) protected ImageView imageView;
+    @InjectView(R.id.title) protected TextView titleView;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
         v = inflater.inflate(R.layout.fragment_image_slide, null);
-        ImageView image = (ImageView) v.findViewById(R.id.image);
-        TextView title = (TextView) v.findViewById(R.id.title);
-//        ButterKnife.inject(v);
-        image.setImageBitmap(items.get(position).getImageBitmap());
-        title.setText(items.get(position).displayName);
-//        Timber.d("image : %s", items.get(position).title);
-        image.setOnClickListener(listener);
+        ButterKnife.inject(this, v);
+        titleView.setText(items.get(position).displayName);
+
+        imageView.setImageBitmap(items.get(position).getImageBitmap());
+
+        Uri uri = Uri.fromFile(new File(items.get(position).data));
+        Picasso.with(this.v.getContext()).load(uri).fit().centerInside().into(this.imageView);
+        imageView.setOnClickListener(listener);
 
         pager.addView(v, 0);
         return v;
@@ -60,6 +69,6 @@ public class ImageViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup pager, int position, Object view) {
         pager.removeView((View) view);
-//        ButterKnife.reset(view);
+        ButterKnife.reset(view);
     }
 }
