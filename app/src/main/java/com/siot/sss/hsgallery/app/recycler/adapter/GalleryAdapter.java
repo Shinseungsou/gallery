@@ -1,14 +1,13 @@
-package com.siot.sss.hsgallery.app.adapter;
+package com.siot.sss.hsgallery.app.recycler.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.siot.sss.hsgallery.R;
-import com.siot.sss.hsgallery.app.adapter.viewholder.ImageViewHolder;
+import com.siot.sss.hsgallery.app.recycler.viewholder.ImageViewHolder;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
-import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
 
 import java.util.List;

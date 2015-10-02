@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.app.adapter;
+package com.siot.sss.hsgallery.app.recycler.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

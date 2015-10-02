@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.app.adapter.viewholder;
+package com.siot.sss.hsgallery.app.recycler.viewholder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

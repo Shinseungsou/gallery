@@ -1,18 +1,13 @@
-package com.siot.sss.hsgallery.app.adapter.viewholder;
+package com.siot.sss.hsgallery.app.recycler.viewholder;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
-import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
 import com.squareup.picasso.Picasso;
-
-import java.util.Date;
-import java.util.TimeZone;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

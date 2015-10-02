@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
-import com.siot.sss.hsgallery.app.adapter.ImageViewPagerAdapter;
+import com.siot.sss.hsgallery.app.recycler.adapter.ImageViewPagerAdapter;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.ImageShow;

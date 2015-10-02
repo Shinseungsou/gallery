@@ -3,14 +3,13 @@ package com.siot.sss.hsgallery.app.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
-import com.siot.sss.hsgallery.app.adapter.SimpleAdapter;
+import com.siot.sss.hsgallery.app.recycler.adapter.SimpleAdapter;
 import com.siot.sss.hsgallery.app.model.SimpleItem;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;

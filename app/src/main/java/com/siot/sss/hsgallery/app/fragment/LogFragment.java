@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
-import com.siot.sss.hsgallery.app.adapter.LogAdapter;
+import com.siot.sss.hsgallery.app.recycler.adapter.LogAdapter;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.data.db.table.DBOpenHelper;
 import com.siot.sss.hsgallery.util.data.db.table.Tables;

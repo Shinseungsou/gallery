@@ -8,7 +8,7 @@ import timber.log.Timber;
 /**
  * Created by SSS on 2015-08-05.
  */
-public class App extends Application {
+public class HSGalleryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
