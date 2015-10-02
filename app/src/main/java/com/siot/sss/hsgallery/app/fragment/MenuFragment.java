@@ -45,8 +45,8 @@ public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem
     @Override
     public void onResume() {
         super.onResume();
-
     }
+
     public void setMenuList(){
         this.items.clear();
         switch (mode){
@@ -89,5 +89,4 @@ public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem
         this.setMenuList();
         this.adapter.notifyDataSetChanged();
     }
-
 }
