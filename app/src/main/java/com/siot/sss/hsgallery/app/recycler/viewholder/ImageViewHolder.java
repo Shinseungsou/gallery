@@ -2,6 +2,7 @@ package com.siot.sss.hsgallery.app.recycler.viewholder;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +12,9 @@ import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,24 +33,15 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
         itemView.setOnClickListener(this);
     }
 
-    private final int WIDTHSIZE = 300;
-
     public ImageViewHolder(View itemView, RecyclerViewItemClickListener listener){
         this(itemView);
         this.listener = listener;
     }
 
     public void bind(ImageData imageData) {
-        BitmapFactory.Options bo = new BitmapFactory.Options();
-        bo.inSampleSize = 8;
-        Bitmap bmp = BitmapFactory.decodeFile(imageData.data, bo);
         this.title.setText(imageData.bucketDisplayName);
-        if(imageData.width != null && imageData.height != null && imageData.width > 0) {
-            int width = imageData.width;
-            int height =imageData.height;
-            this.image.setImageBitmap(Bitmap.createScaledBitmap(bmp, WIDTHSIZE, WIDTHSIZE * height / width, true));
-        }else
-            this.image.setImageBitmap(bmp);
+        Uri uri = Uri.fromFile(new File(imageData.data));
+        Picasso.with(this.itemView.getContext()).load(uri).fit().into(this.image);
     }
 
     public void bind(ImageData imageData, Configuration.GalleryMode mode){
