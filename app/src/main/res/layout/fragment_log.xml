@@ -4,46 +4,46 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
     <LinearLayout
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="30dp">
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
 
-    <TextView
-        android:id="@+id/log_all"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:text="@string/log_all"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/log_create"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:text="@string/log_create"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/log_read"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:text="@string/log_read"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/log_update"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:text="@string/log_update"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/log_delete"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:text="@string/log_delete"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/log_all"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/log_all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/log_create"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/log_create"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/log_read"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/log_read"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/log_update"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/log_update"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/log_delete"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:text="@string/log_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
             android:layout_weight="0.1"
             android:layout_width="0dp"
             android:layout_height="40dp"/>
-        </LinearLayout>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/log_recycler"
         android:scrollbars="vertical"
