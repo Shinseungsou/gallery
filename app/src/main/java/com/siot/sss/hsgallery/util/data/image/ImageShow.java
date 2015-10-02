@@ -1,4 +1,4 @@
-package com.siot.sss.hsgallery.app.model.unique;
+package com.siot.sss.hsgallery.util.data.image;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -108,7 +108,6 @@ public class ImageShow {
 
     public void removeImagedata(ContentResolver contentResolver, String id){
         contentResolver.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, BaseColumns._ID + " = " + id, null);
-
     }
 
     public void addImagedata(ContentResolver contentResolver, Bitmap bitmap, String name){
@@ -122,6 +121,7 @@ public class ImageShow {
         contentResolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             values, "_id=" + images.get(position).id, null);
     }
+
     public Integer relocateValue(String orientation){
         if(orientation != null){
             Integer value = Integer.parseInt(orientation) + 90;

@@ -17,7 +17,7 @@ import com.siot.sss.hsgallery.app.fragment.LogFragment;
 import com.siot.sss.hsgallery.app.fragment.MenuFragment;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
-import com.siot.sss.hsgallery.app.model.unique.ImageShow;
+import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 import com.siot.sss.hsgallery.util.data.image.ImageController;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;

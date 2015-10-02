@@ -6,7 +6,6 @@ import android.provider.MediaStore;
 
 import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
-import com.siot.sss.hsgallery.app.model.unique.ImageShow;
 
 import java.io.File;
 import java.util.ArrayList;
