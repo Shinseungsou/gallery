@@ -45,10 +45,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
     }
 
     public void bind(ImageData imageData, Configuration.GalleryMode mode){
-        if(mode.equals(Configuration.GalleryMode.DIR))
-            this.title.setVisibility(View.VISIBLE);
-        else if(mode.equals(Configuration.GalleryMode.PIC))
-            this.title.setVisibility(View.INVISIBLE);
+        this.title.setVisibility(View.INVISIBLE);
         this.bind(imageData);
     }
 

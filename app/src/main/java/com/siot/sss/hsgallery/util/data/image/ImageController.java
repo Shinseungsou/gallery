@@ -31,6 +31,8 @@ public class ImageController {
     }
 
     public List<ImageData> getImageData(String bucketId){
+        if(bucketId != null && bucketId.equals("-1"))
+            return getImageData();
         List<ImageData> list = new ArrayList<>();
 
         String selection = null;
@@ -51,20 +53,6 @@ public class ImageController {
         }
         imageCursor.close();
         return list;
-    }
-
-    public void setImageShow(){
-        List<ImageData> lists = this.getImageData();
-        Timber.d("&&IC size %s", lists.size());
-        ImageShow.getInstance().getBuckets().clear();
-        if(!lists.isEmpty()) {
-            ImageShow.getInstance().setImages(lists);
-            ImageShow.getInstance().getBuckets().add(new ImageBucket(lists.get(0)));
-            for (ImageData image : lists) {
-                if (!ImageShow.getInstance().containsBucket(image.bucketId))
-                    ImageShow.getInstance().getBuckets().add(new ImageBucket(image));
-            }
-        }
     }
 
     public boolean isPrivate(ImageData image){

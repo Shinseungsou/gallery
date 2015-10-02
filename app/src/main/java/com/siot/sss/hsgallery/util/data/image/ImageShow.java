@@ -134,6 +134,19 @@ public class ImageShow {
         return null;
     }
 
+    public void initImageShow(){
+        List<ImageData> lists = ImageController.getInstance().getImageData();
+        Timber.d("&&IC size %s", lists.size());
+        this.buckets.clear();
+        if(!lists.isEmpty()) {
+            this.setImages(lists);
+            this.buckets.add(new ImageBucket("-1", null, lists.get(0)));
+            for (ImageData image : lists) {
+                if (!this.containsBucket(image.bucketId))
+                    this.buckets.add(new ImageBucket(image));
+            }
+        }
+    }
     public boolean containsBucket(Cursor cursor){
         for(ImageBucket ib : this.buckets){
             if(ib.id.equals(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID))))
@@ -143,10 +156,11 @@ public class ImageShow {
     }
 
     public boolean containsBucket(String bucketId){
-        for(ImageBucket ib : this.buckets){
-            if(ib.id.equals(bucketId))
+        for (ImageBucket ib : this.buckets) {
+            if (ib.id.equals(bucketId))
                 return true;
         }
+
         return false;
     }
 

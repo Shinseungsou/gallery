@@ -32,7 +32,7 @@ public class GalleryDIRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        return new ImageViewHolder(inflater.inflate(R.layout.item_image, viewGroup,false), listener);
+        return new BucketViewHolder(inflater.inflate(R.layout.item_image, viewGroup,false), listener);
     }
 
     @Override

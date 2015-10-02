@@ -38,16 +38,13 @@ public class BucketViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     public void bind(ImageBucket imageData) {
-        this.title.setText(imageData.displayName);
+        this.title.setText(imageData.displayName != null ? imageData.displayName : itemView.getContext().getString(R.string.view_all));
         Uri uri = Uri.fromFile(new File(imageData.imageData.data));
         Picasso.with(this.itemView.getContext()).load(uri).fit().into(this.image);
     }
 
     public void bind(ImageBucket imageData, Configuration.GalleryMode mode){
-        if(mode.equals(Configuration.GalleryMode.DIR))
-            this.title.setVisibility(View.VISIBLE);
-        else if(mode.equals(Configuration.GalleryMode.PIC))
-            this.title.setVisibility(View.INVISIBLE);
+        this.title.setVisibility(View.VISIBLE);
         this.bind(imageData);
     }
 

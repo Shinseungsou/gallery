@@ -82,9 +82,9 @@ public class MenuFragment extends RecyclerViewFragment<SimpleAdapter, SimpleItem
                     this.mode = Configuration.GalleryMode.DIR;
                     break;
             }
-            if(((MainActivity)this.getActivity()).getCurrentFragmentName().equals(GalleryFragment.class.getSimpleName())){
-                ((GalleryFragment)((MainActivity)this.getActivity()).getCurrentFragment()).modeNotify();
-            }
+//            if(((MainActivity)this.getActivity()).getCurrentFragmentName().equals(GalleryPICFragment.class.getSimpleName())){
+//                ((GalleryPICFragment)((MainActivity)this.getActivity()).getCurrentFragment()).modeNotify();
+//            }
         }
         this.setMenuList();
         this.adapter.notifyDataSetChanged();

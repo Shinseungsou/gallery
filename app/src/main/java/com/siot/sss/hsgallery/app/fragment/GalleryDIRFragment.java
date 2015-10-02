@@ -7,14 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.model.ImageBucket;
-import com.siot.sss.hsgallery.app.model.unique.Configuration;
+import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.recycler.adapter.GalleryDIRAdapter;
+import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 import com.siot.sss.hsgallery.util.data.image.ImageController;
+import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
@@ -28,14 +29,12 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, ImageBucket>{
     @InjectView(R.id.gallery) protected RecyclerView gallery;
-    @InjectView(R.id.sidebar) protected LinearLayout sidebar;
 
     private CompositeSubscription subscription;
     private Toolbar toolbar;
     private Navigator navigator;
     private ImageController imageController;
 
-    private Configuration.GalleryMode mode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,32 +60,11 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
     public void onResume() {
         super.onResume();
         MenuItemManager.getInstance().menuItemVisible(1);
-//        this.getImageCursor();
-//
-//        this.modeNotify();
+        this.items.clear();
+        ImageShow.getInstance().initImageShow();
+        this.items.addAll(ImageShow.getInstance().getBuckets());
+        this.adapter.notifyDataSetChanged();
     }
-//
-//    public void getImageCursor(){
-////        this.items.clear();
-////        this.items.addAll(imageController.get());
-////        this.imageController.setImageShow();
-////        this.adapter.notifyDataSetChanged();
-//    }
-//
-//    public void modeNotify(){
-//        mode = Configuration.getInstance().getGalleryMode();
-//        switch (mode){
-//            case DIR:
-//                this.items.clear();
-//                for(ImageBucket IB : ImageShow.getInstance().getBuckets()){
-//                    this.items.add(IB);
-//                }
-//                break;
-//        }
-//        this.adapter.setMode(mode);
-//        this.adapter.notifyDataSetChanged();
-//        (getActivity()).findViewById(R.id.menu_layout).setVisibility(View.INVISIBLE);
-//    }
 
     @Override
     protected GalleryDIRAdapter getAdapter() {
@@ -100,13 +78,7 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
-//        ImageShow.getInstance().setImageData(this.items.get(position));
-//        ImageShow.getInstance().setPosition(position);
-//        UseLogManager.getInstance().addLog(UseLog.Type.READ);
-//        if(mode.equals(Configuration.GalleryMode.DIR))
-//            ImageShow.getInstance().setBucketId(this.items.get(position).bucketId);
-//        else
-//            ImageShow.getInstance().setBucketId(null);
-//        this.navigator.navigate(ImageFragment.class, true);
+        ImageShow.getInstance().setBucketId(this.items.get(position).id);
+        this.navigator.navigate(GalleryPICFragment.class, true);
     }
 }

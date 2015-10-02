@@ -12,14 +12,15 @@ import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.AppConfig;
-import com.siot.sss.hsgallery.app.fragment.GalleryFragment;
+import com.siot.sss.hsgallery.app.fragment.GalleryDIRFragment;
+import com.siot.sss.hsgallery.app.fragment.GalleryPICFragment;
 import com.siot.sss.hsgallery.app.fragment.LogFragment;
 import com.siot.sss.hsgallery.app.fragment.MenuFragment;
 import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
-import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 import com.siot.sss.hsgallery.util.data.image.ImageController;
+import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryFragment.class);
+        navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryDIRFragment.class);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.menuLayout.getId(), navigator.instantiateFragment(MenuFragment.class))
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()){
                     ImageShow.getInstance().deleteImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
                     UseLogManager.getInstance().addLog(UseLog.Type.DELETE);
-                    this.navigate(GalleryFragment.class, false);
+                    this.navigate(GalleryPICFragment.class, false);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()){
                     ImageShow.getInstance().relocateImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
                 }else if(item.getItemId() == menuMore.getItemId()){

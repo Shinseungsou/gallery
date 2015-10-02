@@ -24,6 +24,8 @@
     <string name="rename">rename</string>
     <string name="relocate">relocate</string>
     <string name="crop">crop</string>
+
+    <string name="view_all">View All Images</string>
     <string name="view_dir">View Directorys</string>
     <string name="view_img">View Images</string>
 
