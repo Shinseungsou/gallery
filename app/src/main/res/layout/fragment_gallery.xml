@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/sidebar"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="4dp"
+        android:visibility="gone"
+        android:background="@color/switch_thumb_disabled_material_light"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gallery"
         android:scrollbars="vertical"

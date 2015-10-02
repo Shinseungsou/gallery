@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
@@ -31,6 +32,8 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class GalleryFragment extends RecyclerViewFragment<GalleryAdapter, ImageData>{
     @InjectView(R.id.gallery) protected RecyclerView gallery;
+    @InjectView(R.id.sidebar) protected LinearLayout sidebar;
+
     private CompositeSubscription subscription;
     private Toolbar toolbar;
     private Navigator navigator;
