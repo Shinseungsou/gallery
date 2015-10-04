@@ -17,6 +17,7 @@ import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-04.

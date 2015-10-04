@@ -122,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         return this.getFragmentManager().findFragmentById(container.getId());
     }
 
+    public FragmentNavigator getFragmentNavigator(){
+        return this.navigator;
+    }
+
     private boolean terminate = false;
     @Override
     public void onBackPressed() {
