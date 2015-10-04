@@ -126,6 +126,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
     @Override
     public void onMenuChange(String id) {
+        ImageShow.getInstance().setBucketId(id);
         this.notifyDataChange(id);
     }
 }
