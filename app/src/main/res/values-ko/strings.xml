@@ -25,7 +25,7 @@
     <string name="delete">지우기</string>
     <string name="rename">이름 바꾸기</string>
     <string name="relocate">회전</string>
-    <string name="crop">잘라내기</string>
+    <string name="crop">자르기</string>
     <string name="log_create">사진</string>
     <string name="log_read">읽기</string>
     <string name="log_update">변경</string>

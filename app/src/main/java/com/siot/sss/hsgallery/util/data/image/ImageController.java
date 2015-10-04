@@ -1,20 +1,18 @@
 package com.siot.sss.hsgallery.util.data.image;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
-import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 public class ImageController {
-    private ContentResolver contentResolver;
+    private Context context;
     public ImageController(){    }
     private static ImageController instance;
 
@@ -22,8 +20,8 @@ public class ImageController {
         if(ImageController.instance == null) ImageController.instance = new ImageController();
         return ImageController.instance;
     }
-    public void init(ContentResolver contentResolver){
-        this.contentResolver = contentResolver;
+    public void init(Context context){
+        this.context = context;
     }
 
     public List<ImageData> getImageData(){
@@ -39,7 +37,7 @@ public class ImageController {
         if(bucketId != null)
             selection= MediaStore.Images.Media.BUCKET_ID + " == " + bucketId;
 
-        Cursor imageCursor = this.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, selection, null, null);
+        Cursor imageCursor = this.context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, selection, null, null);
 
         if (imageCursor != null && imageCursor.moveToFirst()){
             ImageShow.getInstance().clear();
@@ -78,5 +76,4 @@ public class ImageController {
 
         return path[path.length -1];
     }
-
 }

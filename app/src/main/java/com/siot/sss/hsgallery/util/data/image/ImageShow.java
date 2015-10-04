@@ -2,8 +2,12 @@ package com.siot.sss.hsgallery.util.data.image;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
@@ -14,6 +18,7 @@ import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,11 +76,11 @@ public class ImageShow {
         imageCursor.close();
     }
 
-    public void renameImagedata(ContentResolver contentResolver, Bitmap bitmap, String name, int position){
-        renameImagedata(contentResolver, bitmap, name, position, false);
+    public void renameImagedata(Context context, Bitmap bitmap, String name, int position){
+        renameImagedata(context, bitmap, name, position, false);
     }
-    public void renameImagedata(ContentResolver contentResolver, Bitmap bitmap, String name, int position, boolean isPrivate){
-        File from = new File(this.getImages().get(position).data);
+    public void renameImagedata(Context context, Bitmap bitmap, String name, int position, boolean isPrivate){
+            File from = new File(this.getImages().get(position).data);
         String[] path = from.getPath().split("\\.");
 
         File to = new File(from.getParent(), name+ "." + path[path.length-1]);
@@ -86,8 +91,7 @@ public class ImageShow {
             if(isPrivate)
                 values.put(MediaStore.Images.Media.IS_PRIVATE, true);
 
-
-            contentResolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 values, "_id=" + images.get(position).id, null);
         }else{
             Timber.d("file exist!!!!");
@@ -97,28 +101,66 @@ public class ImageShow {
         UseLogManager.getInstance().addLogUpdate(to.getName(),UseLog.Type.UPDATE);
     }
 
-    public void deleteImagedata(ContentResolver contentResolver, int position){
+    public void moveImagedata(Context context, String toPath){
+        File from = new File(this.getImageData().data);
+        Timber.d("path : %s %s", from.getName(), from.getParent());
+
+        Timber.d("path2 : %s", "/storage/emulated/0/DCIM/Camera"+from.getName());
+        String toFile = "/storage/emulated/0/DCIM/Camera/"+from.getName();
+        if(from.renameTo(new File(toFile))){
+            moveImagedata(context, getImageData().id, toFile);
+        }
+    }
+
+    public void moveImagedata(Context context, String id, String toPath){
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATA, toPath);
+
+        context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
+        context.getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
+    }
+
+    public void copyImagedata(Context context, String id, String toPath){
+        File from = new File(this.getImageData().data);
+        Timber.d("path : %s %s", from.getName(), from.getParent());
+
+        Timber.d("path2 : %s", "/storage/emulated/0/DCIM/Camera"+from.getName());
+        String toFile = "/storage/emulated/0/DCIM/Camera/"+from.getName();
+        (new FileController()).copyFile(from.getPath(), toFile);
+        Timber.d("copy %s %s", from.getPath(), toFile);
+        try {
+            MediaStore.Images.Media.insertImage(
+                context.getContentResolver(),
+                (new File(toFile)).getPath(),
+                from.getName(),
+                this.getImageData().description
+            );
+        } catch (FileNotFoundException e) { e.printStackTrace(); }
+        context.getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
+    }
+
+    public void deleteImagedata(Context context, int position){
         Timber.d("&&image position : %s %s", images.size(), position);
-        renameImagedata(contentResolver, null, "."+images.get(position).title, position, true);
+        renameImagedata(context, null, "."+this.getImageData().title, position, true);
     }
 
-    public void removeImagedata(ContentResolver contentResolver, int position){
-        this.removeImagedata(contentResolver, this.images.get(position).id);
+    public void removeImagedata(Context context, int position){
+        this.removeImagedata(context, this.getImageData().id);
     }
 
-    public void removeImagedata(ContentResolver contentResolver, String id){
-        contentResolver.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, BaseColumns._ID + " = " + id, null);
+    public void removeImagedata(Context context, String id){
+        context.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, BaseColumns._ID + " = " + id, null);
     }
 
-    public void addImagedata(ContentResolver contentResolver, Bitmap bitmap, String name){
-        MediaStore.Images.Media.insertImage(contentResolver, bitmap, name, null);
+    public void addImagedata(Context context, Bitmap bitmap, String name){
+        MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, name, null);
     }
 
-    public void relocateImagedata(ContentResolver contentResolver, int position) {
+    public void relocateImagedata(Context context, int position) {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.ORIENTATION, relocateValue(images.get(position).orientation));
 
-        contentResolver.update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             values, "_id=" + images.get(position).id, null);
     }
 

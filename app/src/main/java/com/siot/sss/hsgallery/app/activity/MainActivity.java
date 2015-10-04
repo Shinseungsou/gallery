@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         MenuItemManager.getInstance().setManager(this.toolbar);
         toolbar.setOnMenuItemClickListener(super::onOptionsItemSelected);
         this.setToolbarItem(this.toolbar.getMenu());
-        ImageController.getInstance().init(this.getContentResolver());
+        ImageController.getInstance().init(this.getBaseContext());
 
         AppConfig.Option.SUPER_USER = false;
     }
@@ -90,19 +90,19 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                 if(item.getItemId() == menuLog.getItemId()){
                     this.navigate(LogFragment.class, true);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.COPY).getItemId()){
-
+                    ImageShow.getInstance().copyImagedata(getBaseContext(), null, null);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()){
-                    ImageShow.getInstance().renameImagedata(this.getContentResolver(), null, "hello", ImageShow.getInstance().getPosition());
+                    ImageShow.getInstance().renameImagedata(this.getBaseContext(), null, "hello", ImageShow.getInstance().getPosition());
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.PASTE).getItemId()){
 
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CUT).getItemId()){
-
+                    ImageShow.getInstance().moveImagedata(getBaseContext(), null);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()){
-                    ImageShow.getInstance().deleteImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
+                    ImageShow.getInstance().deleteImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
                     UseLogManager.getInstance().addLog(UseLog.Type.DELETE);
                     this.navigate(GalleryPICFragment.class, false);
                 }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()){
-                    ImageShow.getInstance().relocateImagedata(this.getContentResolver(), ImageShow.getInstance().getPosition());
+                    ImageShow.getInstance().relocateImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
                 }else if(item.getItemId() == menuMore.getItemId()){
                     if(this.menuLayout.getVisibility() == View.VISIBLE)
                         this.menuLayout.setVisibility(View.GONE);

@@ -43,8 +43,6 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
         this.items.clear();
         this.items.addAll(ImageShow.getInstance().getBuckets());
         this.adapter.notifyDataSetChanged();
-        Timber.d("size : %s", this.items.size());
-        Timber.d("get0 : %s", this.items.get(1).displayName);
     }
 
     @Override
