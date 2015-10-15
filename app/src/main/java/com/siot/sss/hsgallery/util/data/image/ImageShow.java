@@ -80,9 +80,15 @@ public class ImageShow {
     }
     public void renameImagedata(Context context, Bitmap bitmap, String name, int position, boolean isPrivate){
         File from = new File(this.getImages().get(position).data);
+        renameImagedata(context, this.getImages().get(position).id, name, isPrivate);
+    }
+    public void renameImagedata(Context context, String imageId, String toName, boolean isPrivate){
+        ImageData fromImage = ImageController.getInstance().getImageData(context, imageId);
+        File from = new File(fromImage.data);
+
         String[] path = from.getPath().split("\\.");
 
-        File to = new File(from.getParent(), name+ "." + path[path.length-1]);
+        File to = new File(from.getParent(), toName+ "." + path[path.length-1]);
         if(!to.exists()) {
             from.renameTo(to);
             ContentValues values = new ContentValues();
@@ -98,11 +104,6 @@ public class ImageShow {
 //        Timber.d("to file %s", to.getPath());
         UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
         UseLogManager.getInstance().addLogUpdate(to.getName(),UseLog.Type.UPDATE);
-    }
-    public void renameImagedata(Context context, String imageId, String toName){
-        ImageData fromImage = ImageController.getInstance().getImageData(context, imageId);
-        File from = new File(fromImage.data);
-
     }
 
     public void moveImagedata(Context context, String toPath){

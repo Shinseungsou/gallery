@@ -130,13 +130,13 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                             @Override
                             public void onNegative(MaterialDialog dialog) {
                                 super.onNegative(dialog);
+                                dialog.getInputEditText().setText("");
                             }
 
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 super.onPositive(dialog);
-                                Timber.d("rename : %s", dialog.getInputEditText().getText());
-                                ImageShow.getInstance().renameImagedata(getBaseContext(), null, "hello", ImageShow.getInstance().getPosition());
+                                ImageShow.getInstance().renameImagedata(getBaseContext(), ImageShow.getInstance().getImageData().id, dialog.getInputEditText().getText().toString(), false);
                             }
                         })
                         .show();
