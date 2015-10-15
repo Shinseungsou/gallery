@@ -3,14 +3,13 @@ package com.siot.sss.hsgallery.util.data.image;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.widget.Toast;
 
+import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.ThumbnailData;
@@ -80,7 +79,7 @@ public class ImageShow {
         renameImagedata(context, bitmap, name, position, false);
     }
     public void renameImagedata(Context context, Bitmap bitmap, String name, int position, boolean isPrivate){
-            File from = new File(this.getImages().get(position).data);
+        File from = new File(this.getImages().get(position).data);
         String[] path = from.getPath().split("\\.");
 
         File to = new File(from.getParent(), name+ "." + path[path.length-1]);
@@ -99,6 +98,11 @@ public class ImageShow {
 //        Timber.d("to file %s", to.getPath());
         UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
         UseLogManager.getInstance().addLogUpdate(to.getName(),UseLog.Type.UPDATE);
+    }
+    public void renameImagedata(Context context, String imageId, String toName){
+        ImageData fromImage = ImageController.getInstance().getImageData(context, imageId);
+        File from = new File(fromImage.data);
+
     }
 
     public void moveImagedata(Context context, String toPath){
@@ -125,17 +129,25 @@ public class ImageShow {
         Timber.d("path : %s %s", from.getName(), from.getParent());
 
         Timber.d("path2 : %s", "/storage/emulated/0/DCIM/Camera"+from.getName());
-        String toFile = "/storage/emulated/0/DCIM/Camera/"+from.getName();
-        (new FileController()).copyFile(from.getPath(), toFile);
-        Timber.d("copy %s %s", from.getPath(), toFile);
+        File toFile = new File("/storage/emulated/0/DCIM/Camera/"+from.getName());
+
+        (new FileController()).copyFile(from.getPath(), toFile.getPath());
+        Timber.d("copy %s %s %s %s", from.getPath(), toFile.getPath(), from.getName(), toFile.getName());
         try {
             MediaStore.Images.Media.insertImage(
                 context.getContentResolver(),
-                (new File(toFile)).getPath(),
-                from.getName(),
+                toFile.getPath(),
+                toFile.getName(),
                 this.getImageData().description
             );
-        } catch (FileNotFoundException e) { e.printStackTrace(); }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.error_copy), Toast.LENGTH_LONG).show();
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.error_copy), Toast.LENGTH_LONG).show();
+        }
+
         context.getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
     }
 
@@ -177,7 +189,7 @@ public class ImageShow {
     }
 
     public void initImageShow(){
-        List<ImageData> lists = ImageController.getInstance().getImageData();
+        List<ImageData> lists = ImageController.getInstance().getImageDataList();
         Timber.d("&&IC size %s", lists.size());
         this.buckets.clear();
         if(!lists.isEmpty()) {

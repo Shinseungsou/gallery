@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.siot.sss.hsgallery.R;
+import com.siot.sss.hsgallery.app.AppConfig;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.UseLog;
@@ -22,8 +23,12 @@ import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
 import com.siot.sss.hsgallery.util.view.navigator.OnBack;
+import com.siot.sss.hsgallery.util.view.navigator.ToolbarCallback;
 import com.siot.sss.hsgallery.util.view.recyclerview.OnMenuChange;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,7 +38,7 @@ import timber.log.Timber;
 /**
  * Created by SSS on 2015-08-04.
  */
-public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, ImageData> implements OnBack, OnMenuChange {
+public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, ImageData> implements OnBack, OnMenuChange, ToolbarCallback.ToolbarSimpleCallback {
     @InjectView(R.id.gallery) protected RecyclerView gallery;
     @InjectView(R.id.sidebar) protected LinearLayout sidebar;
 
@@ -41,6 +46,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     private Toolbar toolbar;
     private Navigator navigator;
     private ImageController imageController;
+    private boolean isMultiSelect;
+
+    private List<ImageData> selectList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         this.toolbar.setTitle(R.string.gallery);
         this.setupRecyclerView(this.gallery);
         imageController = ImageController.getInstance();
+        this.isMultiSelect = false;
         return view;
     }
 
@@ -62,6 +71,20 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ButterKnife.reset(this);
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
+        this.selectList = new ArrayList<>();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroyView();
+
+        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(null);
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -85,7 +108,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
     public void notifyDataChange(String id){
         this.items.clear();
-        this.items.addAll(imageController.getImageData(id));
+        this.items.addAll(imageController.getImageDataList(id));
         this.adapter.notifyDataSetChanged();
         ImageShow.getInstance().initImageShow();
     }
@@ -102,14 +125,29 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
-        ImageShow.getInstance().setImageData(this.items.get(position));
-        ImageShow.getInstance().setPosition(position);
-        UseLogManager.getInstance().addLog(UseLog.Type.READ);
-//        if(mode.equals(Configuration.GalleryMode.DIR))
-//            ImageShow.getInstance().setBucketId(this.items.get(position).bucketId);
-//        else
-//            ImageShow.getInstance().setBucketId(null);
-        this.navigator.navigate(ImageFragment.class, true);
+
+        if(!AppConfig.Option.MULTISELECT) {
+            ImageShow.getInstance().setImageData(this.items.get(position));
+            ImageShow.getInstance().setPosition(position);
+            UseLogManager.getInstance().addLog(UseLog.Type.READ);
+            this.navigator.navigate(ImageFragment.class, true);
+        }else{
+            int i;
+            if((i = contains(this.items.get(position).id)) >= 0)
+                this.selectList.remove(i);
+            else {
+                this.selectList.add(this.items.get(position));
+            }
+            Timber.d("list : %s", this.selectList.toString());
+        }
+    }
+
+    private Integer contains(String id){
+        for(int i = 0; i < selectList.size(); i++){
+            if(selectList.get(i).id.equals(id))
+                return i;
+        }
+        return -1;
     }
 
     @Override
@@ -129,4 +167,16 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ImageShow.getInstance().setBucketId(id);
         this.notifyDataChange(id);
     }
+
+    @Override
+    public void getCurrentAction(boolean isRun, int item) {
+        if(item == MenuItemManager.Item.MULTISELECT){
+            this.adapter.notifyDataSetChanged();
+            if(isRun)
+                MenuItemManager.getInstance().menuItemVisible(1);
+            else
+                MenuItemManager.getInstance().menuItemVisible(1);
+        }
+    }
+
 }

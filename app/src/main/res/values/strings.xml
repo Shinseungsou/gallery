@@ -24,6 +24,7 @@
     <string name="rename">rename</string>
     <string name="relocate">relocate</string>
     <string name="crop">crop</string>
+    <string name="multi_select">Multi Select</string>
 
     <string name="view_all">View All Images</string>
     <string name="view_dir">View Directorys</string>
@@ -39,5 +40,8 @@
     <string name="log_update">UPDATE</string>
     <string name="log_delete">DELETE</string>
     <string name="log_all">ALL</string>
+
+    <!-- error msg -->
+    <string name="error_copy">Copy error occurred!</string>
 
 </resources>

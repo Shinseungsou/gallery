@@ -20,6 +20,7 @@ import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import rx.subscriptions.CompositeSubscription;
+import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-04.
@@ -73,6 +74,7 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
+        Timber.d("current is DIR");
         ImageShow.getInstance().setBucketId(this.items.get(position).id);
         this.navigator.navigate(GalleryPICFragment.class, true);
     }

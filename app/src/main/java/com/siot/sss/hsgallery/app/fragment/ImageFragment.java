@@ -17,6 +17,7 @@ import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 import com.siot.sss.hsgallery.util.data.image.ImageController;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
+import com.siot.sss.hsgallery.util.view.navigator.ToolbarCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
         List<ImageData> list = new ArrayList<>();
         if(ImageShow.getInstance().getBucketId() != null)
-            list.addAll(ImageController.getInstance().getImageData(ImageShow.getInstance().getBucketId()));
+            list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
         else
             list.addAll(ImageShow.getInstance().getImages());
         pager.setAdapter(new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, list));
@@ -67,10 +68,12 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
                 Timber.d("**image real private %s", ImageController.getInstance().isPrivate(list.get(position)));
             }
         });
+        Timber.d("image data %s", ImageShow.getInstance().getImageData().toString());
     }
 
     @Override
     public void onClick(View v) {
 
     }
+
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.squareup.picasso.Picasso;

@@ -75,23 +75,24 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog> implem
         this.items.clear();
         helper.open();
         Cursor cursor = helper.getAllColumnsUseLog();
-        cursor.moveToFirst();
-        do {
-            UseLog useLog = new UseLog(
-                cursor.getInt(cursor.getColumnIndex(Tables.UseLog._ID)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATE)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.NAME)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.PICTUREID)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.TYPE)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKET)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKETNAME)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATA)),
-                cursor.getString(cursor.getColumnIndex(Tables.UseLog.TITLE)),
-                cursor.getInt(cursor.getColumnIndex(Tables.UseLog.WIDTH)),
-                cursor.getInt(cursor.getColumnIndex(Tables.UseLog.HEIGHT))
-            );
-            this.useLogs.add(useLog);
-        }while (cursor.moveToNext());
+        if(cursor.moveToFirst()) {
+            do {
+                UseLog useLog = new UseLog(
+                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog._ID)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATE)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.NAME)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.PICTUREID)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.TYPE)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKET)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKETNAME)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATA)),
+                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.TITLE)),
+                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog.WIDTH)),
+                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog.HEIGHT))
+                );
+                this.useLogs.add(useLog);
+            } while (cursor.moveToNext());
+        }
         this.items.addAll(useLogs);
 
         helper.close();

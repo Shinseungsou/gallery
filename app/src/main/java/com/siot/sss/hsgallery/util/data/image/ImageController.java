@@ -1,6 +1,5 @@
 package com.siot.sss.hsgallery.util.data.image;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
@@ -24,13 +23,13 @@ public class ImageController {
         this.context = context;
     }
 
-    public List<ImageData> getImageData(){
-        return this.getImageData(null);
+    public List<ImageData> getImageDataList(){
+        return this.getImageDataList(null);
     }
 
-    public List<ImageData> getImageData(String bucketId){
+    public List<ImageData> getImageDataList(String bucketId){
         if(bucketId != null && bucketId.equals("-1"))
-            return getImageData();
+            return getImageDataList();
         List<ImageData> list = new ArrayList<>();
 
         String selection = null;
@@ -51,6 +50,19 @@ public class ImageController {
         }
         imageCursor.close();
         return list;
+    }
+
+    public ImageData getImageData(Context context, String imageId){
+        String selection = null;
+        if(imageId != null)
+            selection = String.format("%s == %s", MediaStore.Images.Media._ID, imageId);
+
+        Cursor imageCursor = this.context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, selection, null, null);
+
+        if(imageCursor != null && imageCursor.moveToFirst() && imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA)) != null){
+            return new ImageData(imageCursor);
+        }
+        return null;
     }
 
     public boolean isPrivate(ImageData image){

@@ -31,12 +31,14 @@ public class MenuItemManager {
         Item.getItem(toolbar, Item.CROP).setVisible(false);
         Item.getItem(toolbar, Item.USELOG).setVisible(true);
         Item.getItem(toolbar, Item.MORE).setVisible(true);
+        Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
         switch (state){
             case 0:
                 break;
             case 1:
                 Item.getItem(toolbar, Item.SETTING).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(true);
+                Item.getItem(toolbar, Item.MULTISELECT).setVisible(true);
                 break;
             case 2:
                 Item.getItem(toolbar, Item.COPY).setVisible(true);
@@ -46,8 +48,14 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.CROP).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(false);
                 break;
-
         }
+    }
+
+    public enum MenuType{
+        NORMAL, IMAGE, MOVE
+    }
+    public int getMenuType(MenuType type){
+        return type.ordinal();
     }
 
     public static class Item{
@@ -60,6 +68,7 @@ public class MenuItemManager {
         public static final int USELOG = R.id.menu_log;
         public static final int RELOCATE = R.id.relocate;
         public static final int CROP = R.id.crop;
+        public static final int MULTISELECT = R.id.multi_select;
         public static final int MORE = R.id.menu_more;
 
         public static MenuItem getItem(Toolbar toolbar, int menuItem){

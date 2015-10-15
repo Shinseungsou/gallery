@@ -6,5 +6,6 @@ package com.siot.sss.hsgallery.app;
 public class AppConfig {
     public static class Option{
         public static boolean SUPER_USER;
+        public static boolean MULTISELECT;
     }
 }

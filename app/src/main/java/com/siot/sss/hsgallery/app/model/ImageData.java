@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
 
+import lombok.ToString;
+
 /**
  * Created by SSS on 2015-08-04.
  */
 
+@ToString
 public class ImageData {
     public String id;
     public String displayName;

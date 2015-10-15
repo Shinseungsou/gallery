@@ -1,14 +1,14 @@
 package com.siot.sss.hsgallery.app.recycler.viewholder;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.siot.sss.hsgallery.R;
+import com.siot.sss.hsgallery.app.AppConfig;
 import com.siot.sss.hsgallery.app.model.ImageData;
 import com.siot.sss.hsgallery.app.model.unique.Configuration;
 import com.siot.sss.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
@@ -25,6 +25,7 @@ import butterknife.InjectView;
 public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     @InjectView(R.id.image) protected ImageView image;
     @InjectView(R.id.title) protected TextView title;
+    @InjectView(R.id.multi_select) protected CheckBox multiSelect;
 
     private RecyclerViewItemClickListener listener;
     public ImageViewHolder(View itemView) {
@@ -47,10 +48,21 @@ public class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnC
     public void bind(ImageData imageData, Configuration.GalleryMode mode){
         this.title.setVisibility(View.INVISIBLE);
         this.bind(imageData);
+        if(AppConfig.Option.MULTISELECT) {
+            this.multiSelect.setVisibility(View.VISIBLE);
+            this.multiSelect.setOnClickListener(this);
+        }else {
+            this.multiSelect.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
+        if(this.multiSelect.isChecked())
+            this.multiSelect.setChecked(false);
+        else
+            this.multiSelect.setChecked(true);
         this.listener.onRecyclerViewItemClick(v, this.getAdapterPosition());
     }
 }

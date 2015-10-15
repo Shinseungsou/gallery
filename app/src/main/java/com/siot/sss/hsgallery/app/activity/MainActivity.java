@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.AppConfig;
 import com.siot.sss.hsgallery.app.fragment.GalleryDIRFragment;
@@ -24,6 +25,10 @@ import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
+import com.siot.sss.hsgallery.util.view.navigator.ToolbarCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements Navigator{
     @InjectView(R.id.container) protected LinearLayout container;
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
     @InjectView(R.id.menu_layout) protected LinearLayout menuLayout;
+
+    private ToolbarCallback.ToolbarSimpleCallback toolbarSimpleCallback;
 
     private FragmentNavigator navigator;
 
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         ImageController.getInstance().init(this.getBaseContext());
 
         AppConfig.Option.SUPER_USER = false;
+        AppConfig.Option.MULTISELECT = false;
     }
     public Toolbar getToolbar(){
         return this.toolbar;
@@ -86,25 +94,78 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         this.menuLog = menu.findItem(R.id.menu_log);
         this.menuMore = menu.findItem(R.id.menu_more);
         toolbar.setOnMenuItemClickListener(
-            item->{
-                if(item.getItemId() == menuLog.getItemId()){
+            item -> {
+                if (item.getItemId() == menuLog.getItemId()) {
                     this.navigate(LogFragment.class, true);
-                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.COPY).getItemId()){
-                    ImageShow.getInstance().copyImagedata(getBaseContext(), null, null);
-                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()){
-                    ImageShow.getInstance().renameImagedata(this.getBaseContext(), null, "hello", ImageShow.getInstance().getPosition());
-                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.PASTE).getItemId()){
 
-                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CUT).getItemId()){
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.COPY).getItemId()) {
+//                    ImageShow.getInstance().copyImagedata(getBaseContext(), null, null);
+                    List<CharSequence> names = new ArrayList<>();
+                    CharSequence[] names2 = new CharSequence[ImageShow.getInstance().getBuckets().size() - 1];
+                    for (int i = 1; i < names2.length; i++) {
+                        if (!ImageShow.getInstance().getBuckets().get(i).id.equals("-1"))
+                            names2[i] = ImageShow.getInstance().getBuckets().get(i).displayName;
+                    }
+//                    MaterialDialog renameDialog = new MaterialDialog.Builder(this)
+//                        .items(names2)
+//                        .itemsCallback(new MaterialDialog.ListCallback() {
+//                            @Override
+//                            public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+//
+//                            }
+//                        })
+//                        .positiveText("move")
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()) {
+                    MaterialDialog renameDialog = new MaterialDialog.Builder(this)
+                        .title("rename")
+                        .content(ImageShow.getInstance().getImageData().displayName)
+                        .input("rename to", "", false, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+
+                            }
+                        })
+                        .positiveText("rename")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                super.onNegative(dialog);
+                            }
+
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                Timber.d("rename : %s", dialog.getInputEditText().getText());
+                                ImageShow.getInstance().renameImagedata(getBaseContext(), null, "hello", ImageShow.getInstance().getPosition());
+                            }
+                        })
+                        .show();
+
+
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.PASTE).getItemId()) {
+
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CUT).getItemId()) {
                     ImageShow.getInstance().moveImagedata(getBaseContext(), null);
-                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()){
+
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()) {
                     ImageShow.getInstance().deleteImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
                     UseLogManager.getInstance().addLog(UseLog.Type.DELETE);
                     this.navigate(GalleryPICFragment.class, false);
-                }else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()){
+
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.MULTISELECT).getItemId()) {
+                    if(toolbarSimpleCallback != null)
+                        if(!AppConfig.Option.MULTISELECT) {
+                            this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.MULTISELECT);
+                            AppConfig.Option.MULTISELECT = true;
+                        }else{
+                            this.toolbarSimpleCallback.getCurrentAction(false, MenuItemManager.Item.MULTISELECT);
+                            AppConfig.Option.MULTISELECT = false;
+                        }
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()) {
                     ImageShow.getInstance().relocateImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
-                }else if(item.getItemId() == menuMore.getItemId()){
-                    if(this.menuLayout.getVisibility() == View.VISIBLE)
+
+                } else if (item.getItemId() == menuMore.getItemId()) {
+                    if (this.menuLayout.getVisibility() == View.VISIBLE)
                         this.menuLayout.setVisibility(View.GONE);
                     else
                         this.menuLayout.setVisibility(View.VISIBLE);
@@ -179,5 +240,12 @@ public class MainActivity extends AppCompatActivity implements Navigator{
             Timber.d("back!");
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    public void setToolbarSimpleCallback(ToolbarCallback.ToolbarSimpleCallback callback){
+        this.toolbarSimpleCallback = callback;
+        if(callback == null){
+            AppConfig.Option.MULTISELECT = false;
+        }
     }
 }
