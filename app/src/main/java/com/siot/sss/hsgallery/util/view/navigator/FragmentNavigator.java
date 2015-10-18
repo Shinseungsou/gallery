@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import com.siot.sss.hsgallery.app.AppConst;
 
+import timber.log.Timber;
+
 /**
  * Created by SSS on 2015-08-05.
  */

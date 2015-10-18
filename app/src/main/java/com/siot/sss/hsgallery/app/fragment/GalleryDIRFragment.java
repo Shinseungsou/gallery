@@ -41,7 +41,11 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
 
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
+        MenuItemManager.getInstance().menuItemVisible(1);
+        ImageShow.getInstance().initImageShow();
         this.setupRecyclerView(this.gallery);
+        this.items.clear();
+        this.items.addAll(ImageShow.getInstance().getBuckets());
         return view;
     }
 
@@ -55,10 +59,6 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
     @Override
     public void onResume() {
         super.onResume();
-        MenuItemManager.getInstance().menuItemVisible(1);
-        this.items.clear();
-        ImageShow.getInstance().initImageShow();
-        this.items.addAll(ImageShow.getInstance().getBuckets());
         this.adapter.notifyDataSetChanged();
     }
 
@@ -74,7 +74,6 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
-        Timber.d("current is DIR");
         ImageShow.getInstance().setBucketId(this.items.get(position).id);
         this.navigator.navigate(GalleryPICFragment.class, true);
     }

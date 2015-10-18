@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.widget.Toast;
@@ -93,17 +94,31 @@ public class ImageShow {
             from.renameTo(to);
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.DATA, to.getPath());
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, replace(fromImage.data, toName));
+            values.put(MediaStore.Images.Media.TITLE, toName+"."+path[path.length-1]);
             if(isPrivate)
                 values.put(MediaStore.Images.Media.IS_PRIVATE, true);
 
             context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values, "_id=" + images.get(position).id, null);
+                values, "_id=" + imageId, null);
         }else{
             Timber.d("file exist!!!!");
         }
 //        Timber.d("to file %s", to.getPath());
         UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
         UseLogManager.getInstance().addLogUpdate(to.getName(),UseLog.Type.UPDATE);
+    }
+    public String replace(String before, String toName){
+        String[] splits = before.split("/");
+        String[] suffix = before.split("\\.");
+
+        splits[splits.length-1] = "";
+        String parent = "";
+        for(int i = 0; i < splits.length-1; i++){
+            parent += splits[i] + "/";
+        }
+
+        return parent +toName+"."+suffix[suffix.length - 1];
     }
 
     public void moveImagedata(Context context, String toPath){
@@ -175,6 +190,21 @@ public class ImageShow {
 
         context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             values, "_id=" + images.get(position).id, null);
+    }
+
+    public void insertBucket(Context context, String name, String imageId){
+        File mImageDir = new File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES), name);
+//Retrieve the path with the folder/filename concatenated
+        String mImageFilePath = new File(mImageDir, "NameOfImage").getAbsolutePath();
+
+        this.moveImagedata(context, imageId, mImageFilePath);
+//Create new content values
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.ImageColumns.DATA, mImageFilePath);
+//Add whatever other content values you need
+
+        context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     public Integer relocateValue(String orientation){

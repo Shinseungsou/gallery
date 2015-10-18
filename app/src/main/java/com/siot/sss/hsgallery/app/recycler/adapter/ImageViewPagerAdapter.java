@@ -3,6 +3,7 @@ package com.siot.sss.hsgallery.app.recycler.adapter;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,17 +46,19 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         this.items = items;
         inflater = LayoutInflater.from(context);
         this.listener = listener;
+        views = new SparseArray<>();
         Timber.d("count : %s", items.size());
     }
     private View v;
 
     @InjectView(R.id.image) protected ImageView imageView;
     @InjectView(R.id.title) protected TextView titleView;
+    private SparseArray<View> views;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
         v = inflater.inflate(R.layout.fragment_image_slide, null);
         ButterKnife.inject(this, v);
-        titleView.setText(items.get(position).displayName);
+        titleView.setText(items.get(position).title);
 
         imageView.setImageBitmap(items.get(position).getImageBitmap());
 
@@ -64,7 +67,41 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         imageView.setOnClickListener(listener);
 
         pager.addView(v, 0);
+        views.put(position, v);
         return v;
+    }
+
+    @Override
+    public void destroyItem(View container, int position, Object object) {
+        super.destroyItem(container, position, object);
+        views.remove(position);
+
+    }
+
+    private boolean isChange;
+    public void update(){
+        isChange = true;
+        this.notifyDataSetChanged();
+        isChange = false;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        Timber.d("call!! position !! %s", isChange);
+//        if(isChange) {
+//            return POSITION_NONE;
+//        }
+        return super.getItemPosition(object);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        for(int i = 0; i < views.size(); i++){
+            int key = views.keyAt(i);
+            View view = views.get(key);
+            ((TextView)view.findViewById(titleView.getId())).setText(items.get(i).title);
+        }
     }
 
     @Override
@@ -72,4 +109,5 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         pager.removeView((View) view);
         ButterKnife.reset(view);
     }
+
 }

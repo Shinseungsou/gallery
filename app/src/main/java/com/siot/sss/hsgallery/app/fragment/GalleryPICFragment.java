@@ -58,8 +58,22 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
+
         this.setupRecyclerView(this.gallery);
+
         imageController = ImageController.getInstance();
+        this.notifyDataChange(ImageShow.getInstance().getBucketId());
+
+        this.sidebar.setVisibility(View.VISIBLE);
+
+        Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_show);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override public void onAnimationStart(Animation animation) { }
+            @Override
+            public void onAnimationEnd(Animation animation) { Timber.d("end!");setOnMenuListener(); }
+            @Override public void onAnimationRepeat(Animation animation) { }
+        });
+        this.sidebar.setAnimation(anim);
         this.isMultiSelect = false;
         return view;
     }
@@ -76,29 +90,22 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
+        ((MainActivity) this.getActivity()).setOnBack(this);
         this.selectList = new ArrayList<>();
+
+        MenuItemManager.getInstance().menuItemVisible(1);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroyView();
 
+        ((MainActivity) this.getActivity()).setOnBack(null);
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(null);
     }
     @Override
     public void onResume() {
         super.onResume();
-        MenuItemManager.getInstance().menuItemVisible(1);
-        this.notifyDataChange(ImageShow.getInstance().getBucketId());
-        this.sidebar.setVisibility(View.VISIBLE);
-        Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_show);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override public void onAnimationStart(Animation animation) { }
-            @Override
-            public void onAnimationEnd(Animation animation) { Timber.d("end!");setOnMenuListener(); }
-            @Override public void onAnimationRepeat(Animation animation) { }
-        });
-        this.sidebar.setAnimation(anim);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.sidebar.getId(), ((MainActivity)getActivity()).getFragmentNavigator().instantiateFragment(SideBarFragment.class))
@@ -138,6 +145,11 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
             else {
                 this.selectList.add(this.items.get(position));
             }
+            if(!this.selectList.isEmpty()){
+                MenuItemManager.getInstance().menuItemVisible(2);
+            }else{
+                MenuItemManager.getInstance().menuItemVisible(1);
+            }
             Timber.d("list : %s", this.selectList.toString());
         }
     }
@@ -152,10 +164,17 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
     @Override
     public boolean onBack() {
-        Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_hide);
-        this.sidebar.startAnimation(anim);
+        Timber.d("fragment back!");
+        if(AppConfig.Option.MULTISELECT) {
+            this.getCurrentAction(false, MenuItemManager.Item.MULTISELECT);
+            AppConfig.Option.MULTISELECT = false;
+            return true;
+        }else {
+            Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_hide);
+            this.sidebar.startAnimation(anim);
 
-        return false;
+            return false;
+        }
     }
 
     public void setOnMenuListener(){
@@ -172,10 +191,6 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public void getCurrentAction(boolean isRun, int item) {
         if(item == MenuItemManager.Item.MULTISELECT){
             this.adapter.notifyDataSetChanged();
-            if(isRun)
-                MenuItemManager.getInstance().menuItemVisible(1);
-            else
-                MenuItemManager.getInstance().menuItemVisible(1);
         }
     }
 

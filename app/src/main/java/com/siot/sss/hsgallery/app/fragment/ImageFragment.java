@@ -26,10 +26,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import timber.log.Timber;
 
-public class ImageFragment extends Fragment implements View.OnClickListener{
+public class ImageFragment extends Fragment implements View.OnClickListener, ToolbarCallback.ToolbarSimpleCallback{
     @InjectView(R.id.viewpager) protected ViewPager pager;
 
     private Toolbar toolbar;
+    private ImageViewPagerAdapter adapter;
+
+    private List<ImageData> list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,21 +40,35 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
         ButterKnife.inject(this, view);
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.image);
+        this.adapter = new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, list);
+        pager.setAdapter(adapter);
         return view;
     }
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
+        list = new ArrayList<>();
+        if(ImageShow.getInstance().getBucketId() != null)
+            list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
+        else
+            list.addAll(ImageShow.getInstance().getImages());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroyView();
+
+        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(null);
+    }
     @Override
     public void onResume() {
         super.onResume();
         MenuItemManager.getInstance().menuItemVisible(2);
 //        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
-        List<ImageData> list = new ArrayList<>();
-        if(ImageShow.getInstance().getBucketId() != null)
-            list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
-        else
-            list.addAll(ImageShow.getInstance().getImages());
-        pager.setAdapter(new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, list));
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
         pager.setPageMargin(10);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
@@ -74,6 +91,18 @@ public class ImageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
+    }
+    @Override
+    public void getCurrentAction(boolean isRun, int item) {
+        if (isRun) {
+            if (item == MenuItemManager.Item.RENAME) {
+                if(ImageShow.getInstance().getBucketId() != null)
+                    list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
+                else
+                    list.addAll(ImageShow.getInstance().getImages());
+                this.adapter.update();
+            }
+        }
     }
 
 }

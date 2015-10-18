@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.AppConfig;
@@ -25,6 +26,7 @@ import com.siot.sss.hsgallery.util.data.image.ImageShow;
 import com.siot.sss.hsgallery.util.view.MenuItemManager;
 import com.siot.sss.hsgallery.util.view.navigator.FragmentNavigator;
 import com.siot.sss.hsgallery.util.view.navigator.Navigator;
+import com.siot.sss.hsgallery.util.view.navigator.OnBack;
 import com.siot.sss.hsgallery.util.view.navigator.ToolbarCallback;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
     private ToolbarCallback.ToolbarSimpleCallback toolbarSimpleCallback;
 
     private FragmentNavigator navigator;
+    private OnBack onBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements Navigator{
 
         AppConfig.Option.SUPER_USER = false;
         AppConfig.Option.MULTISELECT = false;
+
+        UseLogManager.getInstance().setContext(getBaseContext());
+
+        navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryDIRFragment.class);
     }
     public Toolbar getToolbar(){
         return this.toolbar;
@@ -75,13 +82,11 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         Configuration.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
         Configuration.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
         Configuration.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
-        UseLogManager.getInstance().setContext(getBaseContext());
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryDIRFragment.class);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.menuLayout.getId(), navigator.instantiateFragment(MenuFragment.class))
@@ -102,19 +107,48 @@ public class MainActivity extends AppCompatActivity implements Navigator{
 //                    ImageShow.getInstance().copyImagedata(getBaseContext(), null, null);
                     List<CharSequence> names = new ArrayList<>();
                     CharSequence[] names2 = new CharSequence[ImageShow.getInstance().getBuckets().size() - 1];
-                    for (int i = 1; i < names2.length; i++) {
-                        if (!ImageShow.getInstance().getBuckets().get(i).id.equals("-1"))
-                            names2[i] = ImageShow.getInstance().getBuckets().get(i).displayName;
+                    for (int i = 1; i <= names2.length; i++) {
+                        if (!ImageShow.getInstance().getBuckets().get(i).id.equals("-1")) {
+                            if(ImageShow.getInstance().getBuckets().get(i).displayName != null)
+                                names2[i-1] = ImageShow.getInstance().getBuckets().get(i).displayName;
+                            else
+                                names2[i-1] = "Unknown Directory";
+                        }
+//                        names2[i] = "hello";
                     }
-//                    MaterialDialog renameDialog = new MaterialDialog.Builder(this)
-//                        .items(names2)
-//                        .itemsCallback(new MaterialDialog.ListCallback() {
-//                            @Override
-//                            public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-//
-//                            }
-//                        })
-//                        .positiveText("move")
+                    MaterialDialog.Builder moveDialog = new MaterialDialog.Builder(this)
+                        .items(names2)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+
+                            }
+                        });
+                    new MaterialDialog.Builder(this)
+                        .content("Select Action")
+                        .buttonsGravity(GravityEnum.CENTER)
+                        .positiveText("MOVE")
+                        .neutralText("COPY")
+                        .negativeText("CANCEL")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                super.onPositive(dialog);
+                                moveDialog.show();
+                            }
+
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                super.onNegative(dialog);
+
+                            }
+
+                            @Override
+                            public void onNeutral(MaterialDialog dialog) {
+                                super.onNeutral(dialog);
+                                moveDialog.show();
+                            }
+                        }).show();
                 } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()) {
                     MaterialDialog renameDialog = new MaterialDialog.Builder(this)
                         .title("rename")
@@ -137,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                             public void onPositive(MaterialDialog dialog) {
                                 super.onPositive(dialog);
                                 ImageShow.getInstance().renameImagedata(getBaseContext(), ImageShow.getInstance().getImageData().id, dialog.getInputEditText().getText().toString(), false);
+                                if(toolbarSimpleCallback != null)
+                                    toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.RENAME);
                             }
                         })
                         .show();
@@ -218,6 +254,9 @@ public class MainActivity extends AppCompatActivity implements Navigator{
 
     @Override
     public boolean back() {
+        Timber.d("activity back!");
+        if(this.onBack != null)
+            return onBack.onBack();
         return this.navigator.back();
     }
 
@@ -247,5 +286,8 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         if(callback == null){
             AppConfig.Option.MULTISELECT = false;
         }
+    }
+    public void setOnBack(OnBack onBack){
+        this.onBack = onBack;
     }
 }
