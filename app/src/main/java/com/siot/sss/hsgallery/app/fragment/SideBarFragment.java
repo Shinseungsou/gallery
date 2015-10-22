@@ -40,6 +40,10 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     @Override
     public void onResume() {
         super.onResume();
+        this.notifyDataChange();
+    }
+
+    public void notifyDataChange(){
         this.items.clear();
         this.items.addAll(ImageShow.getInstance().getBuckets());
         this.adapter.notifyDataSetChanged();

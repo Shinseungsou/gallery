@@ -34,22 +34,22 @@ public class UseLogManager {
     }
 
     public void addLog(UseLog.Type type){
-            DBOpenHelper helper = new DBOpenHelper(context);
-            helper.open();
-            helper.insertColumnUseLog(
-                new UseLog(
-                    this.currentTime(),
-                    ImageShow.getInstance().getImageData().displayName,
-                    ImageShow.getInstance().getImageData().id,
-                    UseLog.getTypeString(type),
-                    ImageShow.getInstance().getImageData().title,
-                    ImageShow.getInstance().getImageData().data,
-                    ImageShow.getInstance().getImageData().bucketId,
-                    ImageShow.getInstance().getImageData().bucketDisplayName,
-                    ImageShow.getInstance().getImageData().width,
-                    ImageShow.getInstance().getImageData().height
-                ));
-            helper.close();
+//            DBOpenHelper helper = new DBOpenHelper(context);
+//            helper.open();
+//            helper.insertColumnUseLog(
+//                new UseLog(
+//                    this.currentTime(),
+//                    ImageShow.getInstance().getImageData().displayName,
+//                    ImageShow.getInstance().getImageData().id,
+//                    UseLog.getTypeString(type),
+//                    ImageShow.getInstance().getImageData().title,
+//                    ImageShow.getInstance().getImageData().data,
+//                    ImageShow.getInstance().getImageData().bucketId,
+//                    ImageShow.getInstance().getImageData().bucketDisplayName,
+//                    ImageShow.getInstance().getImageData().width,
+//                    ImageShow.getInstance().getImageData().height
+//                ));
+//            helper.close();
     }
 
     public void addLog(ImageData imageData, UseLog.Type type){

@@ -12,6 +12,24 @@
     <string name="title_activity_image_popup">Image</string>
     <string name="image">Image</string>
 
+    <!-- simple word -->
+
+    <string name="create_upper">CREATE</string>
+    <string name="create_lower">create</string>
+    <string name="create_normal">Create</string>
+    <string name="wait_upper">WAIT</string>
+    <string name="wait_lower">wait</string>
+    <string name="wait_normal">Wait</string>
+    <string name="delete_upper">DELETE</string>
+    <string name="delete_lower">delete</string>
+    <string name="delete_normal">Delete</string>
+    <string name="confirm_upper">CONFIRM</string>
+    <string name="confirm_lower">confirm</string>
+    <string name="confirm_normal">Confirm</string>
+    <string name="cancel_upper">CANCEL</string>
+    <string name="cancel_lower">cancel</string>
+    <string name="cancel_normal">Cancel</string>
+
     <!-- menu item -->
     <string name="menu_option">Menu Option</string>
     <string name="menu_search">Menu Search</string>
@@ -19,12 +37,13 @@
     <string name="menu_more">Menu more</string>
     <string name="copy">copy</string>
     <string name="paste">paste</string>
-    <string name="cut">cut</string>
+    <string name="move">move</string>
     <string name="delete">delete</string>
     <string name="rename">rename</string>
     <string name="relocate">relocate</string>
     <string name="crop">crop</string>
     <string name="multi_select">Multi Select</string>
+    <string name="new_directory">New Directory</string>
 
     <string name="view_all">View All Images</string>
     <string name="view_dir">View Directorys</string>
@@ -43,5 +62,22 @@
 
     <!-- error msg -->
     <string name="error_copy">Copy error occurred!</string>
+    <string name="error_exist">Already exist</string>
 
+    <!-- success msg-->
+    <plurals name="success_copy">
+        <item quantity="one">One file copy</item>
+        <item quantity="other">%d files copy</item>
+    </plurals>
+
+    <!-- dialog msg-->
+    <plurals name="dialog_move">
+        <item quantity="one">One file selected.\nChoose action.</item>
+        <item quantity="other">%d files selected.\nChoose action.</item>
+    </plurals>
+    <plurals name="dialog_select">
+        <item quantity="one">One file selected</item>
+        <item quantity="other">%d files selected</item>
+    </plurals>
+    <string name="dialog_new_dir">New directory name</string>
 </resources>

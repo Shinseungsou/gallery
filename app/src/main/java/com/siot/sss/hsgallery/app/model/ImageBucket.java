@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.MediaStore;
 
+import java.io.File;
+
 import lombok.ToString;
 
 /**
@@ -34,9 +36,14 @@ public class ImageBucket {
         displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
         imageData = new ImageData(cursor);
     }
+
     public void setImageData(Cursor cursor){
         id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID));
         displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
         imageData = new ImageData(cursor);
+    }
+    public String getPath(){
+        File file = new File(imageData.data);
+        return file.getParent();
     }
 }

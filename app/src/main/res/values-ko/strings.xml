@@ -14,6 +14,23 @@
     <string name="picture_id">ID</string>
     <string name="type">구분</string>
 
+    <!-- simple word -->
+
+    <string name="create_upper">@string/create_normal</string>
+    <string name="create_lower">@string/create_normal</string>
+    <string name="create_normal">생성</string>
+    <string name="wait_upper">@string/wait_normal</string>
+    <string name="wait_lower">@string/wait_normal</string>
+    <string name="wait_normal">대기</string>
+    <string name="delete_upper">@string/delete_normal</string>
+    <string name="delete_lower">@string/delete_normal</string>
+    <string name="delete_normal">삭제</string>
+    <string name="confirm_upper">@string/confirm_normal</string>
+    <string name="confirm_lower">@string/confirm_normal</string>
+    <string name="confirm_normal">확인</string>
+    <string name="cancel_upper">@string/cancel_normal</string>
+    <string name="cancel_lower">@string/cancel_normal</string>
+    <string name="cancel_normal">취소</string>
 
     <!-- menu item -->
     <string name="menu_option">설정</string>
@@ -21,7 +38,7 @@
     <string name="menu_more">더 보기</string>
     <string name="copy">복사</string>
     <string name="paste">붙여넣기</string>
-    <string name="cut">잘라내기</string>
+    <string name="move">이동</string>
     <string name="delete">지우기</string>
     <string name="rename">이름 바꾸기</string>
     <string name="relocate">회전</string>
@@ -32,6 +49,7 @@
     <string name="log_delete">삭제</string>
     <string name="log_all">전체</string>
     <string name="multi_select">선택</string>
+    <string name="new_directory">새 폴더</string>
 
     <string name="view_all">전체보기</string>
     <string name="view_dir">폴더별</string>
@@ -39,4 +57,23 @@
 
     <!-- error msg -->
     <string name="error_copy">복사 중에 에러가 발생했습니다. 다시 시도해주세요.</string>
+    <string name="error_exist">해당 경로에 같은 이름이 존재합니다.</string>
+
+    <!-- success msg-->
+    <plurals name="success_copy">
+        <item quantity="one">1 개의 파일 복사됨</item>
+        <item quantity="other">%d 개의 파일 복사됨</item>
+    </plurals>
+
+    <!-- dialog msg-->
+    <plurals name="dialog_move">
+        <item quantity="one">파일 1개 선택됨\n동작을 선택해주세요</item>
+        <item quantity="other">파일 %d개 선택됨\n동작을 선택해주세요</item>
+    </plurals>
+    <plurals name="dialog_select">
+        <item quantity="one">파일 1개 선택됨</item>
+        <item quantity="other">파일 %d개 선택됨</item>
+    </plurals>
+
+    <string name="dialog_new_dir">새 디렉토리 이름</string>
 </resources>

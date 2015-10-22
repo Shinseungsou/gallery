@@ -5,11 +5,16 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.model.ImageBucket;
 import com.siot.sss.hsgallery.app.model.ImageData;
@@ -18,7 +23,9 @@ import com.siot.sss.hsgallery.app.model.UseLog;
 import com.siot.sss.hsgallery.util.data.db.UseLogManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +34,6 @@ import lombok.Getter;
 import lombok.Setter;
 import timber.log.Timber;
 
-/**
- * Created by SSS on 2015-08-06.
- */
 @Data
 public class ImageShow {
     @Getter @Setter private ImageData imageData;
@@ -76,13 +80,6 @@ public class ImageShow {
         imageCursor.close();
     }
 
-    public void renameImagedata(Context context, Bitmap bitmap, String name, int position){
-        renameImagedata(context, bitmap, name, position, false);
-    }
-    public void renameImagedata(Context context, Bitmap bitmap, String name, int position, boolean isPrivate){
-        File from = new File(this.getImages().get(position).data);
-        renameImagedata(context, this.getImages().get(position).id, name, isPrivate);
-    }
     public void renameImagedata(Context context, String imageId, String toName, boolean isPrivate){
         ImageData fromImage = ImageController.getInstance().getImageData(context, imageId);
         File from = new File(fromImage.data);
@@ -90,25 +87,37 @@ public class ImageShow {
         String[] path = from.getPath().split("\\.");
 
         File to = new File(from.getParent(), toName+ "." + path[path.length-1]);
-        if(!to.exists()) {
-            from.renameTo(to);
+        renameImagedata(context, from, to, isPrivate);
+//        Timber.d("to file %s", to.getPath());
+    }
+
+    public void renameImagedata(Context context, File sourse, String targetName, boolean isPrivate){
+
+        String[] path = sourse.getPath().split("\\.");
+        File target = new File(sourse.getParent(), targetName+ "." + path[path.length-1]);
+        renameImagedata(context, sourse, target, isPrivate);
+    }
+    public void renameImagedata(Context context, File sourse, File target, boolean isPrivate){
+
+        if(!target.exists()) {
+            sourse.renameTo(target);
             ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.DATA, to.getPath());
-            values.put(MediaStore.Images.Media.DISPLAY_NAME, replace(fromImage.data, toName));
-            values.put(MediaStore.Images.Media.TITLE, toName+"."+path[path.length-1]);
+            values.put(MediaStore.Images.Media.DATA, target.getPath());
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, target.getPath());
+            values.put(MediaStore.Images.Media.TITLE, target.getName());
             if(isPrivate)
                 values.put(MediaStore.Images.Media.IS_PRIVATE, true);
 
             context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values, "_id=" + imageId, null);
+                values, MediaStore.Images.ImageColumns.DATA + "=" + "\""+sourse.getPath()+"\"", null);
+            UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
+            UseLogManager.getInstance().addLogUpdate(target.getName(), UseLog.Type.UPDATE);
         }else{
             Timber.d("file exist!!!!");
         }
-//        Timber.d("to file %s", to.getPath());
-        UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
-        UseLogManager.getInstance().addLogUpdate(to.getName(),UseLog.Type.UPDATE);
     }
-    public String replace(String before, String toName){
+
+    public String replaceName(String before, String toName){
         String[] splits = before.split("/");
         String[] suffix = before.split("\\.");
 
@@ -121,55 +130,75 @@ public class ImageShow {
         return parent +toName+"."+suffix[suffix.length - 1];
     }
 
-    public void moveImagedata(Context context, String toPath){
-        File from = new File(this.getImageData().data);
-        Timber.d("path : %s %s", from.getName(), from.getParent());
-
-        Timber.d("path2 : %s", "/storage/emulated/0/DCIM/Camera"+from.getName());
-        String toFile = "/storage/emulated/0/DCIM/Camera/"+from.getName();
-        if(from.renameTo(new File(toFile))){
-            moveImagedata(context, getImageData().id, toFile);
+    public void moveImagedata(Context context, String id, String toPath){
+        ImageData image = ImageController.getInstance().getImageData(context, id);
+        File file = new File(image.data);
+        if(file.renameTo(new File(toPath))) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DATA, toPath);
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, toPath);
+            values.put(MediaStore.Images.Media.TITLE, image.title);
+            context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
         }
     }
 
-    public void moveImagedata(Context context, String id, String toPath){
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.DATA, toPath);
+    public void moveImagedata(Context context, List<ImageData> images, String toPath){
+        for(ImageData image : images){
+            moveImagedata(context, image.id, toPath+"/"+image.title);
+        }
+        refreshMediaStore(context, new String[]{toPath}, images.size());
+    }
 
-        context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
-        context.getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
+    public void copyImagedata(Context context, List<ImageData> images, String toDirectory){
+        for(ImageData image : images){
+            File fromFile = new File(image.data);
+            File toFile = new File(toDirectory, image.title);
+            (new FileController()).copyFile(fromFile.getPath(), toFile.getPath());
+        }
+        refreshMediaStore(context, new String[]{toDirectory}, images.size());
     }
 
     public void copyImagedata(Context context, String id, String toPath){
-        File from = new File(this.getImageData().data);
-        Timber.d("path : %s %s", from.getName(), from.getParent());
+        ImageData image = ImageController.getInstance().getImageData(context, id);
+        File fromFile = new File(image.data);
+        File toFile = new File(toPath);
 
-        Timber.d("path2 : %s", "/storage/emulated/0/DCIM/Camera"+from.getName());
-        File toFile = new File("/storage/emulated/0/DCIM/Camera/"+from.getName());
+        (new FileController()).copyFile(fromFile.getPath(), toFile.getPath());
+        refreshMediaStore(context, new String[]{toFile.getPath()}, 1);
 
-        (new FileController()).copyFile(from.getPath(), toFile.getPath());
-        Timber.d("copy %s %s %s %s", from.getPath(), toFile.getPath(), from.getName(), toFile.getName());
-        try {
-            MediaStore.Images.Media.insertImage(
-                context.getContentResolver(),
-                toFile.getPath(),
-                toFile.getName(),
-                this.getImageData().description
-            );
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Toast.makeText(context, context.getString(R.string.error_copy), Toast.LENGTH_LONG).show();
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            Toast.makeText(context, context.getString(R.string.error_copy), Toast.LENGTH_LONG).show();
-        }
+    }
 
+    public void refreshMediaStore(Context context, File oneOfFile, int number){
+        refreshMediaStore(context, oneOfFile.getParent(), number);
+    }
+
+    public void refreshMediaStore(Context context, String directory, int number){
+        refreshMediaStore(context, new String[]{directory}, number);
+    }
+
+    public void refreshMediaStore(Context context, String[] directoty, int number){
+        MediaScannerConnection.scanFile(context, directoty, new String[]{"image/*"}, (path, uri)->{
+            Timber.d("scan complete : %s %s", path, uri);
+            Toast.makeText(context, context.getResources().getQuantityString(R.plurals.success_copy, number, number), Toast.LENGTH_LONG).show();
+        });
         context.getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
     }
 
-    public void deleteImagedata(Context context, int position){
-        Timber.d("&&image position : %s %s", images.size(), position);
-        renameImagedata(context, null, "."+this.getImageData().title, position, true);
+
+    public void deleteImagedata(Context context, File target){
+        renameImagedata(context, target, "."+target.getName(), true);
+        UseLogManager.getInstance().addLog(UseLog.Type.DELETE);
+    }
+
+    public void deleteImagedata(Context context, String imagePath){
+        File file = new File(imagePath);
+        this.deleteImagedata(context, file);
+    }
+    public void deleteImagedata(Context context, List<ImageData> images){
+        for(ImageData image : images) {
+            this.deleteImagedata(context, image.data);
+        }
+        refreshMediaStore(context, images.get(0).data, images.size());
     }
 
     public void removeImagedata(Context context, int position){
@@ -192,19 +221,44 @@ public class ImageShow {
             values, "_id=" + images.get(position).id, null);
     }
 
-    public void insertBucket(Context context, String name, String imageId){
-        File mImageDir = new File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), name);
-//Retrieve the path with the folder/filename concatenated
-        String mImageFilePath = new File(mImageDir, "NameOfImage").getAbsolutePath();
+    public void insertBucket(Context context, String name){
+        File newDir = (new FileController()).makeDir("/storage/emulated/0/DCIM/"+name);
+        if(newDir != null) {
+            File fakeImage = newFakeImage(newDir.getPath());
 
-        this.moveImagedata(context, imageId, mImageFilePath);
-//Create new content values
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.ImageColumns.DATA, mImageFilePath);
-//Add whatever other content values you need
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.ImageColumns.DATA, fakeImage.getPath());
+            values.put(MediaStore.Images.ImageColumns.TITLE, fakeImage.getName());
+            values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, fakeImage.getPath());
 
-        context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        }else{
+            Toast.makeText(context, R.string.error_exist, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public File newFakeImage(String path){
+        File newImage = new File(path, "fakefile.png");
+        OutputStream out = null;
+        Bitmap fakeImage = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Canvas white = new Canvas(fakeImage);
+        white.drawColor(Color.argb(0, 255,255,255));
+
+        try {
+            newImage.createNewFile();
+            out = new FileOutputStream(newImage);
+            fakeImage.compress(Bitmap.CompressFormat.PNG, 100, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                out.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return newImage;
     }
 
     public Integer relocateValue(String orientation){
@@ -232,6 +286,7 @@ public class ImageShow {
             }
         }
     }
+
     public boolean containsBucket(Cursor cursor){
         for(ImageBucket ib : this.buckets){
             if(ib.id.equals(cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_ID))))
@@ -252,5 +307,58 @@ public class ImageShow {
     public void clear(){
         this.images.clear();
         this.buckets.clear();
+    }
+
+    public CharSequence[] getDirectoryList(){
+
+        CharSequence[] names = new CharSequence[ImageShow.getInstance().getBuckets().size() - 1];
+        for (int i = 1; i <= names.length; i++) {
+            if (!ImageShow.getInstance().getBuckets().get(i).id.equals("-1")) {
+                if(ImageShow.getInstance().getBuckets().get(i).displayName != null)
+                    names[i-1] = ImageShow.getInstance().getBuckets().get(i).displayName;
+                else
+                    names[i-1] = "Unknown Directory";
+            }
+        }
+        return names;
+    }
+
+    public void move(Context context, List<ImageData> images){
+        MaterialDialog.Builder moveDialog = new MaterialDialog.Builder(context)
+            .items(getDirectoryList());
+
+        new MaterialDialog.Builder(context)
+            .content(context.getResources().getQuantityString(R.plurals.dialog_move, images.size(), images.size()))
+            .buttonsGravity(GravityEnum.CENTER)
+            .positiveText("MOVE")
+            .neutralText("COPY")
+            .negativeText("CANCEL")
+            .callback(new MaterialDialog.ButtonCallback() {
+                @Override
+                public void onPositive(MaterialDialog dialog) {
+                    super.onPositive(dialog);
+                    moveDialog
+                        .itemsCallback((materialDialog, view, index, charsequence) -> {
+                            moveImagedata(context, images, getBuckets().get(index + 1).getPath());
+                        })
+                        .show();
+                }
+
+                @Override
+                public void onNeutral(MaterialDialog dialog) {
+                    super.onNeutral(dialog);
+                    moveDialog
+                        .itemsCallback((materialDialog, view, index, charsequence) -> {
+                            copyImagedata(context, images.get(0).id, getBuckets().get(index + 1).getPath()+"/"+images.get(0).title);
+                        })
+                        .show();
+                }
+
+                @Override
+                public void onNegative(MaterialDialog dialog) {
+                    super.onNegative(dialog);
+                }
+            })
+            .show();
     }
 }

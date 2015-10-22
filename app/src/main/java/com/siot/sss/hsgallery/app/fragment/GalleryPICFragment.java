@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.siot.sss.hsgallery.R;
 import com.siot.sss.hsgallery.app.AppConfig;
 import com.siot.sss.hsgallery.app.activity.MainActivity;
@@ -49,6 +50,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     private boolean isMultiSelect;
 
     private List<ImageData> selectList;
+    private int menuitemstate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,8 +94,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         ((MainActivity) this.getActivity()).setOnBack(this);
         this.selectList = new ArrayList<>();
-
-        MenuItemManager.getInstance().menuItemVisible(1);
+        this.menuitemstate = 1;
     }
 
     @Override
@@ -106,6 +107,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     @Override
     public void onResume() {
         super.onResume();
+        MenuItemManager.getInstance().menuItemVisible(menuitemstate);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.sidebar.getId(), ((MainActivity)getActivity()).getFragmentNavigator().instantiateFragment(SideBarFragment.class))
@@ -146,10 +148,12 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                 this.selectList.add(this.items.get(position));
             }
             if(!this.selectList.isEmpty()){
-                MenuItemManager.getInstance().menuItemVisible(2);
+                this.menuitemstate = 2;
             }else{
-                MenuItemManager.getInstance().menuItemVisible(1);
+                this.menuitemstate = 1;
             }
+            MenuItemManager.getInstance().menuItemVisible(this.menuitemstate);
+
             Timber.d("list : %s", this.selectList.toString());
         }
     }
@@ -191,6 +195,29 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public void getCurrentAction(boolean isRun, int item) {
         if(item == MenuItemManager.Item.MULTISELECT){
             this.adapter.notifyDataSetChanged();
+        }else if (item == MenuItemManager.Item.MOVE){
+            ImageShow.getInstance().move(this.getActivity(), selectList);
+            this.notifyDataChange(ImageShow.getInstance().getBucketId());
+        }else if(item == MenuItemManager.Item.DELETE){
+            MaterialDialog renameDialog = new MaterialDialog.Builder(getActivity())
+            .title(R.string.delete_upper)
+                .content(getResources().getQuantityString(R.plurals.dialog_select, selectList.size(), selectList.size()))
+                .positiveText(R.string.confirm_upper)
+                .negativeText(R.string.cancel_upper)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        super.onNegative(dialog);
+                        dialog.getInputEditText().setText("");
+                    }
+
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        ImageShow.getInstance().deleteImagedata(getActivity(), selectList);
+                    }
+                })
+                .show();
         }
     }
 
