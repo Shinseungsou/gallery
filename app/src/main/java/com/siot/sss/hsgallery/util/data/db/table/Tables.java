@@ -18,8 +18,9 @@ public class Tables {
         public static final String BUCKETNAME = "bucketname";
         public static final String WIDTH = "width";
         public static final String HEIGHT = "height";
-
-
+        public static final String TO_DATA = "to_data";
+        public static final String NOTE = "note";
+        public static final String SHARE = "share";
 
         public static final String _TABLENAME = "uselog";
         public static final String _CREATE =
@@ -35,6 +36,9 @@ public class Tables {
                 BUCKETNAME + " text not null, " +
                 WIDTH + " integer, " +
                 HEIGHT + " integer" +
+                TO_DATA + " text, " +
+                NOTE + " text, " +
+                SHARE + " text, " +
                 ");";
     }
 }

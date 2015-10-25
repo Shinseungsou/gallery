@@ -1,63 +1,59 @@
 package com.siot.sss.hsgallery.app.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
+import com.siot.sss.hsgallery.app.AppConfig;
 import com.siot.sss.hsgallery.util.data.db.table.Tables;
 
-/**
- * Created by SSS on 2015-08-06.
- */
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+
+@AllArgsConstructor
+@RequiredArgsConstructor
+@NoArgsConstructor
+@ToString
+@Accessors(chain = true)
 public class UseLog extends DBModel {
-    public Integer id;
-    public String date;
-    public String name;
-    public String pictureId;
-    public String type;
-    public String title;
-    public String data;
-    public String bucket;
-    public String bucketName;
-    public Integer width;
-    public Integer height;
+    @Getter @Setter public Integer id;
+    @Getter @Setter @NonNull public String date;
+    @Getter @Setter @NonNull public String name;
+    @Getter @Setter @NonNull public String pictureId;
+    @Getter @Setter @NonNull public String type;
+    @Getter @Setter @NonNull public String title;
+    @Getter @Setter @NonNull public String data;
+    @Getter @Setter @NonNull public String bucket;
+    @Getter @Setter @NonNull public String bucketName;
+    @Getter @Setter public Integer width;
+    @Getter @Setter public Integer height;
+    @Getter @Setter public String to_data;
+    @Getter @Setter public String share;
+    @Getter @Setter public String note;
+
 
     public enum Type{
-        SAVE, READ, UPDATE, DELETE, ALL
+        SAVE, READ, UPDATE, DELETE, ALL, DISKDEL, RENAME, COPY, MOVE, SHARE
     }
     public static String getTypeString(Type type){
         switch (type) {
-            case SAVE:      return "save";
-            case UPDATE:    return "update";
-            case READ:      return "read";
-            case DELETE:    return "delete";
-            case ALL:       return "all";
-            default:        return null;
+            case SAVE   :   return "save";
+            case UPDATE :   return "update";
+            case READ   :   return "read";
+            case DELETE :   return "delete";
+            case ALL    :   return "all";
+            case DISKDEL:   return "delete in disk";
+            case COPY   :   return "copy";
+            case MOVE   :   return "move";
+            case RENAME :   return "rename";
+            case SHARE  :   return "share";
+            default     :   return null;
         }
-    }
-
-    public UseLog(Integer id, String date, String name, String pictureId, String type, String title, String data, String bucket, String bucketName, Integer width, Integer height){
-        this.id = id;
-        this.date = date;
-        this.name= name;
-        this.pictureId = pictureId;
-        this.type = type;
-        this.title = title;
-        this.data = data;
-        this.bucket = bucket;
-        this.bucketName = bucketName;
-        this.width = width;
-        this.height = height;
-    }
-    public UseLog(String date, String name, String pictureId, String type, String title, String data, String bucket, String bucketName, Integer width, Integer height){
-        this.date = date;
-        this.name= name;
-        this.pictureId = pictureId;
-        this.type = type;
-        this.title = title;
-        this.data = data;
-        this.bucket = bucket;
-        this.bucketName = bucketName;
-        this.width = width;
-        this.height = height;
     }
 
     @Override
@@ -73,11 +69,58 @@ public class UseLog extends DBModel {
         values.put(Tables.UseLog.BUCKETNAME, this.bucketName);
         values.put(Tables.UseLog.WIDTH, this.width);
         values.put(Tables.UseLog.HEIGHT, this.height);
+        values.put(Tables.UseLog.TO_DATA, this.to_data);
+        values.put(Tables.UseLog.SHARE, this.to_data);
+        values.put(Tables.UseLog.NOTE, this.note);
         return values;
     }
 
     @Override
     public String getTableName() {
         return Tables.UseLog._TABLENAME;
+    }
+
+    /**
+     *
+     * Need to add TYPE, TO_DATE, NOTE, SHARE
+     *
+     */
+    public static UseLog makeUseLog(ImageData imageData){
+        UseLog uselog = new UseLog();
+        uselog.setDate(AppConfig.currentTime());
+        uselog.setPictureId(imageData.id);
+        uselog.setData(imageData.data);
+        uselog.setName(imageData.displayName);
+        uselog.setTitle(imageData.title);
+        uselog.setBucket(imageData.bucketId);
+        uselog.setBucketName(imageData.bucketDisplayName);
+        uselog.setHeight(imageData.height);
+        uselog.setWidth(imageData.width);
+
+        return uselog;
+    }
+    public static UseLog makeUseLog(Cursor cursor){
+        UseLog uselog = new UseLog();
+
+        uselog.setId(cursor.getInt(cursor.getColumnIndex(Tables.UseLog._ID)));
+        uselog.setDate(cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATE)));
+        uselog.setPictureId(cursor.getString(cursor.getColumnIndex(Tables.UseLog.PICTUREID)));
+        uselog.setData(cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATA)));
+        uselog.setName(cursor.getString(cursor.getColumnIndex(Tables.UseLog.NAME)));
+        uselog.setType(cursor.getString(cursor.getColumnIndex(Tables.UseLog.TYPE)));
+        uselog.setTitle(cursor.getString(cursor.getColumnIndex(Tables.UseLog.TITLE)));
+        uselog.setBucket(cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKET)));
+        uselog.setBucketName(cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKETNAME)));
+        uselog.setHeight(cursor.getInt(cursor.getColumnIndex(Tables.UseLog.HEIGHT)));
+        uselog.setWidth(cursor.getInt(cursor.getColumnIndex(Tables.UseLog.WIDTH)));
+        uselog.setTo_data(cursor.getString(cursor.getColumnIndex(Tables.UseLog.TO_DATA)));
+        uselog.setShare(cursor.getString(cursor.getColumnIndex(Tables.UseLog.SHARE)));
+        uselog.setNote(cursor.getString(cursor.getColumnIndex(Tables.UseLog.NOTE)));
+
+        return uselog;
+    }
+    public UseLog setTypeByType(Type type){
+        this.type = getTypeString(type);
+        return this;
     }
 }

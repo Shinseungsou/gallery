@@ -53,40 +53,40 @@ public class UseLogManager {
     }
 
     public void addLog(ImageData imageData, UseLog.Type type){
+        addLog(imageData, type, null);
+    }
+    public void addLog(ImageData imageData, UseLog.Type type, String note){
+        addLog(imageData, type, null, note);
+    }
+    public void addLog(ImageData imageData, UseLog.Type type, String targetPath, String note){
+        this.addLog(
+            UseLog.makeUseLog(imageData).setTypeByType(type).setTo_data(targetPath).setNote(note)
+        );
+    }
+    public void addLog(ImageData imageData, String note, String share){
+        this.addLog(imageData, UseLog.Type.SHARE, null, note, share);
+    }
+
+    public void addLog(ImageData imageData, UseLog.Type type, String targetPath, String note, String share){
+        this.addLog(
+            UseLog.makeUseLog(imageData).setTypeByType(type).setTo_data(targetPath).setNote(note).setShare(share)
+        );
+    }
+
+    public void addLog(UseLog log){
+
         DBOpenHelper helper = new DBOpenHelper(context);
         helper.open();
         helper.insertColumnUseLog(
-            new UseLog(
-                this.currentTime(),
-                imageData.displayName,
-                imageData.id,
-                UseLog.getTypeString(type),
-                ImageShow.getInstance().getImageData().title,
-                ImageShow.getInstance().getImageData().data,
-                ImageShow.getInstance().getImageData().bucketId,
-                ImageShow.getInstance().getImageData().bucketDisplayName,
-                ImageShow.getInstance().getImageData().width,
-                ImageShow.getInstance().getImageData().height
-            ));
+            log);
         helper.close();
     }
-    public void addLogUpdate(String name, UseLog.Type type){
-        DBOpenHelper helper = new DBOpenHelper(context);
-        helper.open();
-        helper.insertColumnUseLog(
-            new UseLog(
-                this.currentTime(),
-                name,
-                "rename to",
-                UseLog.getTypeString(type),
-                ImageShow.getInstance().getImageData().title,
-                ImageShow.getInstance().getImageData().data,
-                ImageShow.getInstance().getImageData().bucketId,
-                ImageShow.getInstance().getImageData().bucketDisplayName,
-                ImageShow.getInstance().getImageData().width,
-                ImageShow.getInstance().getImageData().height
-            ));
-        helper.close();
+
+    public void addLogUpdate(ImageData imageData, UseLog.Type type, String targetPath){
+        addLogUpdate(imageData, type, targetPath, null);
+    }
+    public void addLogUpdate(ImageData imageData, UseLog.Type type, String targetPath, String note){
+        addLog(imageData, type, targetPath, note);
     }
 
 

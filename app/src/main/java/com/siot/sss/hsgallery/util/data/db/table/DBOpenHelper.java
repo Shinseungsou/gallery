@@ -15,7 +15,7 @@ import com.siot.sss.hsgallery.util.data.db.DBHelper;
  */
 public class DBOpenHelper{
     private static final String DATABASE_NAME = "gallery.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     public static SQLiteDatabase sqlite;
     private DBHelper dbHelper;
     private Context context;

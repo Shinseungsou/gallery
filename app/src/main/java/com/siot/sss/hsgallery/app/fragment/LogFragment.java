@@ -77,19 +77,7 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog> implem
         Cursor cursor = helper.getAllColumnsUseLog();
         if(cursor.moveToFirst()) {
             do {
-                UseLog useLog = new UseLog(
-                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog._ID)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATE)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.NAME)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.PICTUREID)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.TYPE)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKET)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.BUCKETNAME)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.DATA)),
-                    cursor.getString(cursor.getColumnIndex(Tables.UseLog.TITLE)),
-                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog.WIDTH)),
-                    cursor.getInt(cursor.getColumnIndex(Tables.UseLog.HEIGHT))
-                );
+                UseLog useLog = UseLog.makeUseLog(cursor);
                 this.useLogs.add(useLog);
             } while (cursor.moveToNext());
         }

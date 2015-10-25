@@ -87,20 +87,22 @@ public class ImageShow {
         String[] path = from.getPath().split("\\.");
 
         File to = new File(from.getParent(), toName+ "." + path[path.length-1]);
-        renameImagedata(context, from, to, isPrivate);
+        renameImagedata(context, fromImage, to, isPrivate);
 //        Timber.d("to file %s", to.getPath());
     }
+    public void renameImagedata(Context context, ImageData source, String targetName, boolean isPrivate){
+        File sourceFile = new File(source.data);
+        String[] path = sourceFile.getPath().split("\\.");
+        File target = new File(sourceFile.getParent(), targetName+ "." + path[path.length-1]);
 
-    public void renameImagedata(Context context, File sourse, String targetName, boolean isPrivate){
-
-        String[] path = sourse.getPath().split("\\.");
-        File target = new File(sourse.getParent(), targetName+ "." + path[path.length-1]);
-        renameImagedata(context, sourse, target, isPrivate);
+        renameImagedata(context, source, target, isPrivate);
     }
-    public void renameImagedata(Context context, File sourse, File target, boolean isPrivate){
+
+    public void renameImagedata(Context context, ImageData source, File target, boolean isPrivate){
+        File sourceFile = new File(source.data);
 
         if(!target.exists()) {
-            sourse.renameTo(target);
+            sourceFile.renameTo(target);
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.DATA, target.getPath());
             values.put(MediaStore.Images.Media.DISPLAY_NAME, target.getPath());
@@ -109,9 +111,9 @@ public class ImageShow {
                 values.put(MediaStore.Images.Media.IS_PRIVATE, true);
 
             context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values, MediaStore.Images.ImageColumns.DATA + "=" + "\""+sourse.getPath()+"\"", null);
+                values, MediaStore.Images.ImageColumns.DATA + "=" + "\""+sourceFile.getPath()+"\"", null);
             UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
-            UseLogManager.getInstance().addLogUpdate(target.getName(), UseLog.Type.UPDATE);
+            UseLogManager.getInstance().addLogUpdate(source, UseLog.Type.UPDATE, target.getPath());
         }else{
             Timber.d("file exist!!!!");
         }
@@ -185,18 +187,13 @@ public class ImageShow {
     }
 
 
-    public void deleteImagedata(Context context, File target){
-        renameImagedata(context, target, "."+target.getName(), true);
-        UseLogManager.getInstance().addLog(UseLog.Type.DELETE);
-    }
-
-    public void deleteImagedata(Context context, String imagePath){
-        File file = new File(imagePath);
-        this.deleteImagedata(context, file);
+    public void deleteImagedata(Context context, ImageData image){
+        File file = new File(image.data);
+        renameImagedata(context, image, "."+file.getName(), true);
     }
     public void deleteImagedata(Context context, List<ImageData> images){
         for(ImageData image : images) {
-            this.deleteImagedata(context, image.data);
+            this.deleteImagedata(context, image);
         }
         refreshMediaStore(context, images.get(0).data, images.size());
     }
