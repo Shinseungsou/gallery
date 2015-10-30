@@ -3,11 +3,13 @@ package com.jfsiot.hsgallery.util.data.image;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.widget.Toast;
@@ -117,7 +119,17 @@ public class ImageShow {
         }
     }
 
-    public String replaceName(String before, String toName){
+    public String addNewNameAndSuffix(String before, String toName){
+
+        String[] suffixCandidates = before.split("\\.");
+        String suffix = suffixCandidates[suffixCandidates.length - 1];
+        String[] cSuffixCandidates = toName.split("\\.");
+        String currentSuffix = cSuffixCandidates[cSuffixCandidates.length - 1];
+        if(currentSuffix.equals(suffix))
+            return toName;
+        return toName+"."+suffix;
+    }
+    public String addNewNameAndSuffix2(String before, String toName){
         String[] splits = before.split("/");
         String[] suffix = before.split("\\.");
 
@@ -127,7 +139,7 @@ public class ImageShow {
             parent += splits[i] + "/";
         }
 
-        return parent +toName+"."+suffix[suffix.length - 1];
+        return parent + toName+"."+suffix[suffix.length - 1];
     }
 
     public void moveImagedata(Context context, String id, String toPath){
@@ -154,12 +166,13 @@ public class ImageShow {
         for(ImageData image : images){
             Timber.d("copy start : %s", image.toString());
             File fromFile = new File(image.data);
-            File toFile = new File(toDirectory, image.title);
-            boolean iscopy = (new FileController()).copyFile(fromFile.getPath(), toFile.getPath());
-            Timber.d("copy result : %s", iscopy);
-            UseLogManager.getInstance().addLog(image, toFile.getPath(), UseLog.Type.COPY);
+            String newPath = addNewNameAndSuffix(fromFile.getPath(), image.title);
+            boolean iscopy = (new FileController()).copyFile(fromFile.getPath(), toDirectory + "/" + newPath);
+            Timber.d("copy result : %s %s", iscopy, newPath);
+            UseLogManager.getInstance().addLog(image, newPath, UseLog.Type.COPY);
         }
         refreshMediaStore(context, new String[]{toDirectory}, images.size());
+        Toast.makeText(context, context.getResources().getQuantityString(R.plurals.success_copy, images.size(), images.size()), Toast.LENGTH_LONG).show();
     }
 
     public void copyImagedata(Context context, String id, String toPath){
@@ -181,10 +194,10 @@ public class ImageShow {
     }
 
     public void refreshMediaStore(Context context, String[] directoty, int number){
-        MediaScannerConnection.scanFile(context, directoty, new String[]{"image/*"}, (path, uri)->{
+        MediaScannerConnection.scanFile(context, directoty, new String[]{"image/*"}, (path, uri) -> {
             Timber.d("scan complete : %s %s", path, uri);
-            Toast.makeText(context, context.getResources().getQuantityString(R.plurals.success_copy, number, number), Toast.LENGTH_LONG).show();
         });
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(directoty[0]))));
         context.getContentResolver().notifyChange(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null);
     }
 
