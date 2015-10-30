@@ -64,6 +64,13 @@
     <string name="error_copy">Copy error occurred!</string>
     <string name="error_exist">Already exist</string>
 
+    <!-- option -->
+    <string name="password">Password</string>
+    <string name="delete_log">log delete</string>
+    <string name="export_log">log export</string>
+    <string name="exit">exit</string>
+    <string name="question_delete">Really do you want to REMOVE all LOG?</string>
+
     <!-- success msg-->
     <plurals name="success_copy">
         <item quantity="one">One file copy</item>
