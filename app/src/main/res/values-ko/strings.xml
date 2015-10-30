@@ -15,7 +15,11 @@
     <string name="type">구분</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_image_popup">Image</string>
-
+    <string name="title">제목</string>
+    <string name="to_path">변경점</string>
+    <string name="bucket_name">디렉토리</string>
+    <string name="share">공유</string>
+    <string name="note">노트</string>
     <!-- simple word -->
 
     <string name="create_upper">@string/create_normal</string>

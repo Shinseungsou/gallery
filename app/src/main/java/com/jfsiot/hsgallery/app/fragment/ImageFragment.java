@@ -75,7 +75,6 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                UseLogManager.getInstance().addLog(UseLog.Type.READ);
                 ImageShow.getInstance().setPosition(position);
                 Timber.d("**image data : %s", list.get(position).data);
                 Timber.d("**image displayName : %s", list.get(position).displayName);

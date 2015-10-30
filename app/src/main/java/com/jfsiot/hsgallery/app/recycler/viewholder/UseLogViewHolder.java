@@ -21,8 +21,13 @@ import butterknife.InjectView;
 public class UseLogViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
     @InjectView(R.id.date) protected TextView date;
     @InjectView(R.id.name) protected TextView name;
+    @InjectView(R.id.title) protected TextView title;
     @InjectView(R.id.picture_id) protected TextView pictureId;
+    @InjectView(R.id.directory) protected TextView bucket;
     @InjectView(R.id.type) protected TextView type;
+    @InjectView(R.id.to_path) protected TextView toPath;
+    @InjectView(R.id.share) protected TextView share;
+    @InjectView(R.id.note) protected TextView note;
 
     private RecyclerViewItemClickListener listener;
     public UseLogViewHolder(View itemView) {
@@ -48,8 +53,13 @@ public class UseLogViewHolder extends RecyclerView.ViewHolder  implements View.O
         TimeZone timeZone = TimeZone.getTimeZone(useLog.date);
         this.date.setText(useLog.date);
         this.name.setText(useLog.name);
+        this.title.setText(useLog.title);
         this.pictureId.setText(useLog.pictureId);
+        this.bucket.setText(useLog.bucketName);
         this.type.setText(useLog.type);
+        this.toPath.setText(useLog.to_data);
+        this.share.setText(useLog.share);
+        this.note.setText(useLog.note);
     }
 
     @Override

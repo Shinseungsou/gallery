@@ -34,27 +34,11 @@ public class UseLogManager {
         this.context = context;
     }
 
-    public void addLog(UseLog.Type type){
-//            DBOpenHelper helper = new DBOpenHelper(context);
-//            helper.open();
-//            helper.insertColumnUseLog(
-//                new UseLog(
-//                    this.currentTime(),
-//                    ImageShow.getInstance().getImageData().displayName,
-//                    ImageShow.getInstance().getImageData().id,
-//                    UseLog.getTypeString(type),
-//                    ImageShow.getInstance().getImageData().title,
-//                    ImageShow.getInstance().getImageData().data,
-//                    ImageShow.getInstance().getImageData().bucketId,
-//                    ImageShow.getInstance().getImageData().bucketDisplayName,
-//                    ImageShow.getInstance().getImageData().width,
-//                    ImageShow.getInstance().getImageData().height
-//                ));
-//            helper.close();
-    }
-
     public void addLog(ImageData imageData, UseLog.Type type){
         addLog(imageData, type, null);
+    }
+    public void addLog(ImageData imageData, String targetPath, UseLog.Type type){
+        addLog(imageData, type, targetPath, null);
     }
     public void addLog(ImageData imageData, UseLog.Type type, String note){
         addLog(imageData, type, null, note);

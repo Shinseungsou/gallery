@@ -54,6 +54,13 @@
     <string name="name">NAME</string>
     <string name="picture_id">ID</string>
     <string name="type">TYPE</string>
+    <string name="title">TITLE</string>
+
+    <string name="to_path">TO PATH</string>
+    <string name="bucket_name">DIRECTORY</string>
+    <string name="share">SHARE</string>
+    <string name="note">NOTE</string>
+
     <string name="log_create">PICTURE</string>
     <string name="log_read">READ</string>
     <string name="log_update">UPDATE</string>

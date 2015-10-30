@@ -110,9 +110,8 @@ public class ImageShow {
                 values.put(MediaStore.Images.Media.IS_PRIVATE, true);
 
             context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                values, MediaStore.Images.ImageColumns.DATA + "=" + "\""+sourceFile.getPath()+"\"", null);
-            UseLogManager.getInstance().addLog(UseLog.Type.UPDATE);
-            UseLogManager.getInstance().addLogUpdate(source, UseLog.Type.UPDATE, target.getPath());
+                values, MediaStore.Images.ImageColumns.DATA + "=" + "\"" + sourceFile.getPath() + "\"", null);
+            UseLogManager.getInstance().addLog(source, target.getPath(), UseLog.Type.RENAME);
         }else{
             Timber.d("file exist!!!!");
         }
@@ -140,6 +139,7 @@ public class ImageShow {
             values.put(MediaStore.Images.Media.DISPLAY_NAME, toPath);
             values.put(MediaStore.Images.Media.TITLE, image.title);
             context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values, "_id=" + id, null);
+            UseLogManager.getInstance().addLog(image, toPath, UseLog.Type.MOVE);
         }
     }
 
@@ -152,9 +152,12 @@ public class ImageShow {
 
     public void copyImagedata(Context context, List<ImageData> images, String toDirectory){
         for(ImageData image : images){
+            Timber.d("copy start : %s", image.toString());
             File fromFile = new File(image.data);
             File toFile = new File(toDirectory, image.title);
-            (new FileController()).copyFile(fromFile.getPath(), toFile.getPath());
+            boolean iscopy = (new FileController()).copyFile(fromFile.getPath(), toFile.getPath());
+            Timber.d("copy result : %s", iscopy);
+            UseLogManager.getInstance().addLog(image, toFile.getPath(), UseLog.Type.COPY);
         }
         refreshMediaStore(context, new String[]{toDirectory}, images.size());
     }
@@ -189,6 +192,7 @@ public class ImageShow {
     public void deleteImagedata(Context context, ImageData image){
         File file = new File(image.data);
         renameImagedata(context, image, "."+file.getName(), true);
+        UseLogManager.getInstance().addLog(image, UseLog.Type.DELETE);
     }
     public void deleteImagedata(Context context, List<ImageData> images){
         for(ImageData image : images) {
@@ -228,6 +232,7 @@ public class ImageShow {
             values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, fakeImage.getPath());
 
             context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            UseLogManager.getInstance().addLog(null, newDir.getPath(), UseLog.Type.NEWDIR);
         }else{
             Toast.makeText(context, R.string.error_exist, Toast.LENGTH_LONG).show();
         }
@@ -345,7 +350,7 @@ public class ImageShow {
                     super.onNeutral(dialog);
                     moveDialog
                         .itemsCallback((materialDialog, view, index, charsequence) -> {
-                            copyImagedata(context, images.get(0).id, getBuckets().get(index + 1).getPath()+"/"+images.get(0).title);
+                            copyImagedata(context, images, getBuckets().get(index + 1).getPath());
                         })
                         .show();
                 }

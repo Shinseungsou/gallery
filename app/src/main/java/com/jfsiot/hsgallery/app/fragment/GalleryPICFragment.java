@@ -138,7 +138,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         if(!AppConfig.Option.MULTISELECT) {
             ImageShow.getInstance().setImageData(this.items.get(position));
             ImageShow.getInstance().setPosition(position);
-            UseLogManager.getInstance().addLog(UseLog.Type.READ);
+            UseLogManager.getInstance().addLog(this.items.get(position), UseLog.Type.READ);
             this.navigator.navigate(ImageFragment.class, true);
         }else{
             int i;

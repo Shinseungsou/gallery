@@ -38,7 +38,7 @@ public class UseLog extends DBModel {
 
 
     public enum Type{
-        SAVE, READ, UPDATE, DELETE, ALL, DISKDEL, RENAME, COPY, MOVE, SHARE
+        SAVE, READ, UPDATE, DELETE, ALL, DISKDEL, RENAME, COPY, MOVE, SHARE, NEWDIR
     }
     public static String getTypeString(Type type){
         switch (type) {
@@ -52,6 +52,7 @@ public class UseLog extends DBModel {
             case MOVE   :   return "move";
             case RENAME :   return "rename";
             case SHARE  :   return "share";
+            case NEWDIR  :   return "new directory";
             default     :   return null;
         }
     }
