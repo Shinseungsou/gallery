@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/auth"
+        android:padding="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/password_text"
+            android:text="@string/password"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_height="40dp"/>
+        <EditText
+            android:id="@+id/password_edit"
+            android:inputType="textVisiblePassword|numberPassword"
+            android:hint="@string/password"
+            android:layout_toRightOf="@id/password_text"
+            android:layout_toEndOf="@id/password_text"
+            android:layout_toLeftOf="@+id/pass_conrifm"
+            android:layout_toStartOf="@+id/pass_conrifm"
+            android:layout_alignBaseline="@+id/password_text"
+            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <Button
+            android:id="@+id/pass_conrifm"
+            android:layout_alignBaseline="@+id/password_text"
+            android:text="@string/confirm_normal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/user_controller"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/delete_log"
+            android:text="@string/delete_log"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+        <Button
+            android:id="@+id/export_log"
+            android:text="@string/export_log"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+        <Button
+            android:id="@+id/exit"
+            android:text="@string/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
