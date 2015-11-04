@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
     defaultConfig {
         applicationId "com.jfsiot.hsgallery"
         minSdkVersion 16
@@ -13,8 +13,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
         }
         debug {
             debuggable true
@@ -31,11 +32,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:support-v4:23.0.1'
+    compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.jakewharton.timber:timber:3.0.2'
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'com.afollestad:material-dialogs:0.7.5.1'

@@ -7,7 +7,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jfsiot.hsgallery.R;
@@ -20,13 +19,12 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import timber.log.Timber;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by SSS on 2015-08-09.
  */
 public class ImageViewPagerAdapter extends PagerAdapter {
-//    @InjectView(R.id.image) protected ImageView image;
-//    @InjectView(R.id.title) protected TextView title;
     @Override
     public int getCount() { return items == null ? 0: items.size(); }
 
@@ -50,21 +48,21 @@ public class ImageViewPagerAdapter extends PagerAdapter {
     }
     private View v;
 
-    @InjectView(R.id.image) protected ImageView imageView;
+    @InjectView(R.id.image) protected PhotoView imageView;
     @InjectView(R.id.title) protected TextView titleView;
     private SparseArray<View> views;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
         v = inflater.inflate(R.layout.fragment_image_slide, null);
         ButterKnife.inject(this, v);
-        titleView.setText(items.get(position).title);
-
-        imageView.setImageBitmap(items.get(position).getImageBitmap());
 
         Uri uri = Uri.fromFile(new File(items.get(position).data));
-        Picasso.with(this.v.getContext()).load(uri).fit().centerInside().into(this.imageView);
-        imageView.setOnClickListener(listener);
+        imageView.setImageBitmap(items.get(position).getImageBitmap());
 
+        Picasso.with(this.v.getContext()).load(uri).fit().centerInside().into(this.imageView);
+        titleView.setText(items.get(position).title);
+
+        imageView.setOnClickListener(listener);
         pager.addView(v, 0);
         views.put(position, v);
         return v;

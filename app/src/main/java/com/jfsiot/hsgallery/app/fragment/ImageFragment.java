@@ -70,7 +70,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
 //        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
 //        this.title.setText(ImageShow.getInstance().getImageData().title);
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
-        pager.setPageMargin(10);
+//        pager.setPageMargin(10);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
