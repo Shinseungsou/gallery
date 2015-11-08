@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jfsiot.hsgallery.R;
+import com.jfsiot.hsgallery.app.AppConfig;
 import com.jfsiot.hsgallery.app.model.ImageBucket;
 import com.jfsiot.hsgallery.app.recycler.adapter.GalleryDIRAdapter;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
+import com.jfsiot.hsgallery.util.view.MenuItemManager;
 import com.jfsiot.hsgallery.util.view.recyclerview.OnMenuChange;
 import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
@@ -60,6 +62,8 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
+        AppConfig.Option.MULTISELECT = false;
+        MenuItemManager.getInstance().menuItemVisible(1);
         if(onMenuChange != null)
             this.onMenuChange.onMenuChange(this.items.get(position).id);
         else

@@ -50,7 +50,6 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         list = new ArrayList<>();
         if(ImageShow.getInstance().getBucketId() != null)
             list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
@@ -68,6 +67,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     public void onResume() {
         super.onResume();
         MenuItemManager.getInstance().menuItemVisible(2);
+        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override

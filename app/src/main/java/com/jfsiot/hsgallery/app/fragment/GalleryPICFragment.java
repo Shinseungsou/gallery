@@ -92,10 +92,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
-        ((MainActivity) this.getActivity()).setOnBack(this);
         this.selectList = new ArrayList<>();
-        this.menuitemstate = 1;
     }
 
     @Override
@@ -108,6 +105,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     @Override
     public void onResume() {
         super.onResume();
+        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
+        ((MainActivity) this.getActivity()).setOnBack(this);
+        this.menuitemstate = 1;
         MenuItemManager.getInstance().menuItemVisible(menuitemstate);
         this.getFragmentManager()
             .beginTransaction()
@@ -173,6 +173,8 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         if(AppConfig.Option.MULTISELECT) {
             this.getCurrentAction(false, MenuItemManager.Item.MULTISELECT);
             AppConfig.Option.MULTISELECT = false;
+            MenuItemManager.getInstance().menuItemVisible(1);
+            this.selectList.clear();
             return true;
         }else {
             Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_hide);
@@ -190,6 +192,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public void onMenuChange(String id) {
         ImageShow.getInstance().setBucketId(id);
         this.notifyDataChange(id);
+        this.selectList.clear();
     }
 
     @Override

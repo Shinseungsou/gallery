@@ -54,8 +54,6 @@ public class LogImageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onDestroy() {
         super.onDestroyView();
-
-        ((MainActivity) this.getActivity()).setToolbarSimpleCallback(null);
     }
     @Override
     public void onResume() {
