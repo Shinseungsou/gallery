@@ -32,13 +32,13 @@ android {
         exclude 'META-INF/LICENSE.txt'
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'javax.activation:activation:1.1.1'
     compile 'com.sun.mail:javax.mail:1.5.3'
+    compile 'com.google.code.gson:gson:2.4'
 //    compile 'javax.mail:javax.mail-api:1.5.3'
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.jakewharton.timber:timber:3.0.2'

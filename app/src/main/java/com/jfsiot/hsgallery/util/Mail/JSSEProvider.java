@@ -1,4 +1,4 @@
-package com.jfsiot.hsgallery.util.Mail;
+package com.jfsiot.hsgallery.util.mail;
 
 /**
  * Created by SSS on 2015-11-08.

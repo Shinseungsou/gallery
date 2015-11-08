@@ -30,6 +30,9 @@ public class MenuItemManager {
         Item.getItem(toolbar, Item.MORE).setVisible(false);
         Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
         Item.getItem(toolbar, Item.NEW_DIR).setVisible(true);
+        Item.getItem(toolbar, Item.KAKAO).setVisible(false);
+        Item.getItem(toolbar, Item.FACEBOOK).setVisible(false);
+        Item.getItem(toolbar, Item.INSTAGRAM).setVisible(false);
         switch (state){
             case 0:
                 break;
@@ -44,6 +47,9 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
                 Item.getItem(toolbar, Item.CROP).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(false);
+                Item.getItem(toolbar, Item.KAKAO).setVisible(true);
+                Item.getItem(toolbar, Item.FACEBOOK).setVisible(true);
+                Item.getItem(toolbar, Item.INSTAGRAM).setVisible(true);
                 Item.getItem(toolbar, Item.NEW_DIR).setVisible(false);
                 break;
         }
@@ -72,6 +78,11 @@ public class MenuItemManager {
         /* image option */
         public static final int RELOCATE = R.id.relocate;
         public static final int CROP = R.id.crop;
+
+        /* share */
+        public static final int KAKAO = R.id.menu_share_kakao;
+        public static final int FACEBOOK = R.id.menu_share_facebook;
+        public static final int INSTAGRAM = R.id.menu_share_instagram;
 
         public static MenuItem getItem(Toolbar toolbar, int menuItem){
             return toolbar.getMenu().findItem(menuItem);

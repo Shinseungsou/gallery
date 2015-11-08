@@ -13,10 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
+import com.jfsiot.hsgallery.app.AppConst;
+import com.jfsiot.hsgallery.app.AppManager;
 import com.jfsiot.hsgallery.app.fragment.GalleryDIRFragment;
 import com.jfsiot.hsgallery.app.fragment.LogFragment;
 import com.jfsiot.hsgallery.app.fragment.MenuFragment;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements Navigator{
 
     private FragmentNavigator navigator;
     private OnBack onBack;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,24 +86,9 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         Configuration.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
         Configuration.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
         Configuration.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
-        new MaterialDialog.Builder(this)
-            .content(R.string.input_name)
-            .input(R.string.hint_input_name, R.string.hint_nospace, (dialog, charsequence)->{
-                if(charsequence.length() > 0){
-                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-                }else{
-                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
-                }
-            })
-            .positiveText(R.string.confirm_normal)
-            .callback(new MaterialDialog.ButtonCallback() {
-                @Override
-                public void onPositive(MaterialDialog dialog) {
-                    super.onPositive(dialog);
-                    dialog.getInputEditText().getText();
-                }
-            })
-            .show();
+        AppManager.getInstance().setContext(this);
+        if(AppManager.getInstance().getString(AppConst.Preference.USER_NAME, null) == null)
+            AppManager.getInstance().setUserName();
     }
 
     @Override
@@ -212,6 +197,18 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                             }
                         })
                         .show();
+                } else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.KAKAO).getItemId()){
+                    if(toolbarSimpleCallback != null) {
+                        this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.KAKAO);
+                    }
+                } else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.FACEBOOK).getItemId()){
+                    if(toolbarSimpleCallback != null) {
+                        this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.FACEBOOK);
+                    }
+                } else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.INSTAGRAM).getItemId()){
+                    if(toolbarSimpleCallback != null) {
+                        this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.INSTAGRAM);
+                    }
                 }
                 return true;
             }

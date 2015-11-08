@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
+import com.jfsiot.hsgallery.app.AppManager;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.ImageData;
 import com.jfsiot.hsgallery.app.model.UseLog;
@@ -218,6 +219,12 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                     }
                 })
                 .show();
+        }else if(item == MenuItemManager.Item.FACEBOOK){
+            ImageShow.getInstance().sendFacebook(this.getActivity(), selectList);
+        }else if(item == MenuItemManager.Item.KAKAO){
+            ImageShow.getInstance().sendKaKao(this.getActivity(), selectList);
+        }else if(item == MenuItemManager.Item.INSTAGRAM){
+            ImageShow.getInstance().sendInstagram(this.getActivity(), selectList.get(0));
         }
     }
 

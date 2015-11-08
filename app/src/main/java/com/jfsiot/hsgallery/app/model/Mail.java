@@ -1,6 +1,6 @@
 package com.jfsiot.hsgallery.app.model;
 
-import com.jfsiot.hsgallery.util.Mail.JSSEProvider;
+import com.jfsiot.hsgallery.util.mail.JSSEProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

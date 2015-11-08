@@ -43,6 +43,18 @@
         android:icon="@drawable/ic_light_comment_16dp"
         app:showAsAction="never"/>
     <item
+        android:title="@string/share_kakao"
+        android:id="@+id/menu_share_kakao"
+        app:showAsAction="never"/>
+    <item
+        android:title="@string/share_facebook"
+        android:id="@+id/menu_share_facebook"
+        app:showAsAction="never"/>
+    <item
+        android:title="@string/share_instagram"
+        android:id="@+id/menu_share_instagram"
+        app:showAsAction="never"/>
+    <item
         android:title="@string/menu_more"
         android:id="@+id/menu_more"
         android:icon="@drawable/ic_light_chevron_down"

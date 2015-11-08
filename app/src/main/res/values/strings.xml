@@ -44,6 +44,9 @@
     <string name="crop">crop</string>
     <string name="multi_select">Multi Select</string>
     <string name="new_directory">New Directory</string>
+    <string name="share_kakao">Kakao Talk</string>
+    <string name="share_facebook">Facebook</string>
+    <string name="share_instagram">Instagram</string>
 
     <string name="view_all">View All Images</string>
     <string name="view_dir">View Directorys</string>
@@ -101,4 +104,5 @@
     <string name="input_name">Your name is used for log export</string>
     <string name="hint_input_name">Your name</string>
     <string name="hint_nospace"></string>
+
 </resources>

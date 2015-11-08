@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -374,5 +375,84 @@ public class ImageShow {
                 }
             })
             .show();
+    }
+
+    public void sendInstagram(Context context, ImageData imageDatas){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.ACTION_SEND_MULTIPLE, true);
+// intent.putExtra(Intent.EXTRA_SUBJECT, "Foo bar"); // NB: has no effect!
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(imageDatas.data)));
+        intent.setType("image/jpeg");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        List<ResolveInfo> matches = context.getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo info : matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.instagram.android")) {
+                intent.setPackage(info.activityInfo.packageName);
+                break;
+            }
+        }
+
+        context.startActivity(intent);
+    }
+
+    public void sendKaKao(Context context, List<ImageData> imageDatas){
+        Intent intent = getIntentAddImages(imageDatas);
+
+        List<ResolveInfo> matches = context.getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo info : matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.kakao.talk")) {
+                intent.setPackage(info.activityInfo.packageName);
+                break;
+            }
+        }
+
+        context.startActivity(intent);
+    }
+
+    public Intent getIntentAddImages(List<ImageData> imageDatas){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.ACTION_SEND_MULTIPLE, true);
+// intent.putExtra(Intent.EXTRA_SUBJECT, "Foo bar"); // NB: has no effect!
+        ArrayList<Uri> uriList = new ArrayList<>();
+
+        for(ImageData image : imageDatas){
+            uriList.add(Uri.fromFile(new File(image.data)));
+        }
+        intent.putExtra(Intent.EXTRA_STREAM, uriList);
+        intent.setType("image/jpeg");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        return intent;
+    }
+
+    public Intent getIntentAddImagesParcelable(List<ImageData> imageDatas){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.ACTION_SEND_MULTIPLE, true);
+// intent.putExtra(Intent.EXTRA_SUBJECT, "Foo bar"); // NB: has no effect!
+        ArrayList<Uri> uriList = new ArrayList<>();
+
+        for(ImageData image : imageDatas){
+            uriList.add(Uri.fromFile(new File(image.data)));
+        }
+        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
+        intent.setType("image/jpeg");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        return intent;
+    }
+
+    public void sendFacebook(Context context, List<ImageData> imageDatas){
+        Intent intent = getIntentAddImages(imageDatas);
+
+        List<ResolveInfo> matches = context.getPackageManager().queryIntentActivities(intent, 0);
+        for (ResolveInfo info : matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
+                intent.setPackage(info.activityInfo.packageName);
+                break;
+            }
+        }
+
+        context.startActivity(intent);
     }
 }

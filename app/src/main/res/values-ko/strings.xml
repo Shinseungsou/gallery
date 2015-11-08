@@ -57,6 +57,9 @@
     <string name="log_all">전체</string>
     <string name="multi_select">선택</string>
     <string name="new_directory">새 폴더</string>
+    <string name="share_kakao">카카오톡</string>
+    <string name="share_facebook">페이스북</string>
+    <string name="share_instagram">인스타그램</string>
 
     <string name="view_all">전체보기</string>
     <string name="view_dir">폴더별</string>

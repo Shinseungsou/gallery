@@ -18,4 +18,9 @@ public class AppConst {
         public static final String UTF = "UTF-8";
     }
 
+    public static class Preference{
+        public static final String STORAGE_NAME = "hsgallery_prefences";
+        public static final String USER_NAME = "username";
+    }
+
 }

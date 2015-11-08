@@ -98,6 +98,16 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
                 else
                     list.addAll(ImageShow.getInstance().getImages());
                 this.adapter.update();
+            }else if (item == MenuItemManager.Item.INSTAGRAM) {
+                ImageShow.getInstance().sendInstagram(getActivity(), list.get(pager.getCurrentItem()));
+            }else if (item == MenuItemManager.Item.KAKAO) {
+                List<ImageData> images = new ArrayList<>();
+                images.add(list.get(pager.getCurrentItem()));
+                ImageShow.getInstance().sendKaKao(getActivity(), images);
+            }else if (item == MenuItemManager.Item.FACEBOOK) {
+                List<ImageData> images = new ArrayList<>();
+                images.add(list.get(pager.getCurrentItem()));
+                ImageShow.getInstance().sendFacebook(getActivity(), images);
             }
         }
     }
