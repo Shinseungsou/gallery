@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
+import com.jfsiot.hsgallery.app.AppConst;
+import com.jfsiot.hsgallery.app.AppManager;
 import com.jfsiot.hsgallery.app.model.Mail;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 
@@ -75,7 +77,7 @@ public class OptionFragment extends Fragment implements View.OnClickListener{
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     event -> {
-                        this.sendEmail();
+                        this.sendEmail(AppConst.BACKUP_DIR_PATH+File.separator+UseLogManager.getInstance().exportLog());
                     }, error ->
                         error.printStackTrace()
                 )
@@ -130,17 +132,16 @@ public class OptionFragment extends Fragment implements View.OnClickListener{
 //            Log.e("PartyPlannerActivity", "Could not send email.", e);
 //        }
     }
-    public void sendEmail(){
+    public void sendEmail(String path){
         Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
         emailIntent.setType("text/plain");
 
         emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"wwww43211@gmail.com"});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "subject");
-        emailIntent.putExtra(Intent.EXTRA_TEXT   , "Message Body");
-//        String targetFilePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "tmp" + File.separator + "test.txt";
-//        Uri attachmentUri = Uri.parse(targetFilePath);
-//        emailIntent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, AppManager.getInstance().getString(AppConst.Preference.USER_NAME, "User")+"subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT   , path+" is log");
+        Uri attachmentUri = Uri.parse(path);
+        emailIntent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
         startActivity(emailIntent);
     }
 
