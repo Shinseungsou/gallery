@@ -245,7 +245,7 @@ public class ImageShow {
             values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, fakeImage.getPath());
 
             context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            UseLogManager.getInstance().addLog(null, newDir.getPath(), UseLog.Type.NEWDIR);
+            UseLogManager.getInstance().addLog(new ImageData(), newDir.getPath(), UseLog.Type.NEWDIR);
         }else{
             Toast.makeText(context, R.string.error_exist, Toast.LENGTH_LONG).show();
         }

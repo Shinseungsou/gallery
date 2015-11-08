@@ -8,11 +8,34 @@ import android.provider.BaseColumns;
 public class Tables {
 
     public static final class UseLog implements BaseColumns{
+        public static enum COLUMN {
+            ID, DATE , NAME, TITLE, TYPE, PICTUREID, DATA, BUCKET, BUCKETNAME, WIDTH, HEIGHT, TO_DATA, NOTE, SHARE;
+        }
+        public static String getString(COLUMN column){
+            switch (column){
+                case ID : return "id";
+                case DATE : return "date";
+                case NAME : return "name";
+                case TITLE : return "title";
+                case TYPE : return "type";
+                case PICTUREID : return "picture_id";
+                case DATA : return "data";
+                case BUCKET : return "bucket";
+                case BUCKETNAME : return "bucketname";
+                case WIDTH : return "width";
+                case HEIGHT : return "height";
+                case TO_DATA : return "to_data";
+                case NOTE : return "note";
+                case SHARE : return "share";
+            }
+            return null;
+        }
+
         public static final String DATE = "date";
         public static final String NAME = "name";
         public static final String TITLE = "title";
-        public static final String PICTUREID = "picture_id";
         public static final String TYPE = "type";
+        public static final String PICTUREID = "picture_id";
         public static final String DATA = "data";
         public static final String BUCKET = "bucket";
         public static final String BUCKETNAME = "bucketname";

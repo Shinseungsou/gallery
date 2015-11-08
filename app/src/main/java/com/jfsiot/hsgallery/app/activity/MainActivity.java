@@ -1,7 +1,10 @@
 package com.jfsiot.hsgallery.app.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -194,6 +197,19 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                 return true;
             }
         );
+    }
+
+    private void initShareIntent(String type, String title, String filePath) {
+        String fileName = "image-3116.jpg";//Name of an image
+        String externalStorageDirectory = Environment.getExternalStorageDirectory().toString();
+        String myDir = externalStorageDirectory + "/saved_images/"; // the file will be in saved_images
+        Uri uri = Uri.parse("file:///" + myDir + fileName);
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("text/html");
+        shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test Mail");
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Launcher");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(shareIntent, "Share Deal"));
     }
 
     public String getCurrentFragmentName(){

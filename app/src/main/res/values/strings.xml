@@ -71,6 +71,10 @@
     <string name="error_copy">Copy error occurred!</string>
     <string name="error_exist">Already exist</string>
 
+    <!-- success msg -->
+    <string name="success_copy">Copy success</string>
+    <string name="success_export">Export success</string>
+
     <!-- option -->
     <string name="password">Password</string>
     <string name="delete_log">log delete</string>

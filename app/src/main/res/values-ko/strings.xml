@@ -73,6 +73,10 @@
     <string name="error_copy">복사 중에 에러가 발생했습니다. 다시 시도해주세요.</string>
     <string name="error_exist">해당 경로에 같은 이름이 존재합니다.</string>
 
+    <!-- success msg -->
+    <string name="success_copy">복사 성공</string>
+    <string name="success_export">파일 출력 성공</string>
+
     <!-- success msg-->
     <plurals name="success_copy">
         <item quantity="one">1 개의 파일 복사됨</item>

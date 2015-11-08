@@ -34,6 +34,8 @@ public class ImageData {
     public String longitude;
     public String miniThumbMagic;
 
+    public ImageData(){}
+
     public ImageData(String id, String data, String displayName, String size){
         this.id = id;
         this.data = data;

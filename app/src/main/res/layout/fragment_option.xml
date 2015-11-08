@@ -8,7 +8,7 @@
         android:id="@+id/auth"
         android:padding="18dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="300dp">
         <TextView
             android:id="@+id/password_text"
             android:text="@string/password"
@@ -27,6 +27,7 @@
             android:layout_alignBaseline="@+id/password_text"
             android:layout_marginLeft="18dp"
             android:layout_marginStart="18dp"
+            android:imeOptions="actionDone"
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
         <Button
@@ -61,5 +62,10 @@
             android:layout_height="40dp"/>
 
     </LinearLayout>
+    <Button
+        android:id="@+id/send_email"
+        android:text="@string/export_log"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"/>
 
 </LinearLayout>

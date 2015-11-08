@@ -1,15 +1,31 @@
 package com.jfsiot.hsgallery.util.data.db;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.text.format.DateUtils;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
+import com.jfsiot.hsgallery.app.AppConst;
 import com.jfsiot.hsgallery.app.model.ImageData;
 import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.util.data.db.table.DBOpenHelper;
+import com.jfsiot.hsgallery.util.data.db.table.Tables;
+import com.jfsiot.hsgallery.util.data.image.FileController;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+
+import timber.log.Timber;
 
 /**
  * Created by SSS on 2015-08-09.
@@ -75,10 +91,16 @@ public class UseLogManager {
     }
 
 
-    public void exportLog() {
+    public String exportLog() {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat(AppConst.Format.DATE_LINEAR, Locale.KOREAN);
+        Timber.d("format : %s", format.format(date));
+        String filePath = String.format("siot_backup_%s.csv", format.format(date));
+        this.backupDatabaseCSV(filePath);
+        return filePath;
     }
 
-    public void deleteLog() {
+    public void deleteLog(Context context) {
         new MaterialDialog.Builder(context)
             .content(R.string.question_delete)
             .negativeText(R.string.cancel_normal)
@@ -92,11 +114,58 @@ public class UseLogManager {
                     helper.refreshUseLog();
                     helper.close();
                 }
-
                 @Override
                 public void onNegative(MaterialDialog dialog) {
                     super.onNegative(dialog);
                 }
             }).show();
+    }
+
+    private Boolean backupDatabaseCSV(String outFileName) {
+        Timber.d("backupDatabaseCSV");
+        Boolean returnCode = false;
+        String csvHeader = "";
+        String csvValues = "";
+        for (int i = 0; i < Tables.UseLog.COLUMN.values().length; i++) {
+            if (csvHeader.length() > 0) {
+                csvHeader += ",";
+            }
+            csvHeader += "\"" + Tables.UseLog.COLUMN.values()[i] + "\"";
+        }
+
+        csvHeader += "\n";
+        Timber.d("header=" + csvHeader);
+        DBOpenHelper dbAdapter = new DBOpenHelper(context);
+        new FileController().makeDir(AppConst.BACKUP_DIR_PATH);
+
+        dbAdapter.open();
+        try {
+            File outFile = new File(AppConst.BACKUP_DIR_PATH, outFileName);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outFile), AppConst.Format.UTF);
+            FileWriter fileWriter = new FileWriter(outFile, false);
+            BufferedWriter out = new BufferedWriter(fileWriter);
+            Cursor cursor = dbAdapter.getAllColumnsUseLog();
+            if (cursor != null) {
+                out.write(csvHeader);
+                while (cursor.moveToNext()) {
+                    csvValues = "";
+                    for(int j = 0; j < Tables.UseLog.COLUMN.values().length; j++){
+                        csvValues += cursor.getString(j) + ",";
+                    }
+                    csvValues += "\n";
+                    Timber.d("output : %s", new String(csvValues.getBytes(), "UTF-8"));
+                    out.write(csvValues);
+                }
+                cursor.close();
+            }
+            out.close();
+            returnCode = true;
+            Toast.makeText(context, R.string.success_export, Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            returnCode = false;
+            Timber.d("IOException: " + e.getMessage());
+        }
+        dbAdapter.close();
+        return returnCode;
     }
 }
