@@ -98,4 +98,7 @@
         <item quantity="other">%d files selected</item>
     </plurals>
     <string name="dialog_new_dir">New directory name</string>
+    <string name="input_name">Your name is used for log export</string>
+    <string name="hint_input_name">Your name</string>
+    <string name="hint_nospace"></string>
 </resources>

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
@@ -85,6 +86,24 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         Configuration.getInstance().setWidth(this.getResources().getDisplayMetrics().widthPixels);
         Configuration.getInstance().setHeight(this.getResources().getDisplayMetrics().heightPixels);
         Configuration.getInstance().setDensity(this.getResources().getDisplayMetrics().density);
+        new MaterialDialog.Builder(this)
+            .content(R.string.input_name)
+            .input(R.string.hint_input_name, R.string.hint_nospace, (dialog, charsequence)->{
+                if(charsequence.length() > 0){
+                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
+                }else{
+                    dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
+                }
+            })
+            .positiveText(R.string.confirm_normal)
+            .callback(new MaterialDialog.ButtonCallback() {
+                @Override
+                public void onPositive(MaterialDialog dialog) {
+                    super.onPositive(dialog);
+                    dialog.getInputEditText().getText();
+                }
+            })
+            .show();
     }
 
     @Override

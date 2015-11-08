@@ -53,18 +53,22 @@ public class ImageViewPagerAdapter extends PagerAdapter {
     private SparseArray<View> views;
     @Override
     public Object instantiateItem(ViewGroup pager, int position) {
-        v = inflater.inflate(R.layout.fragment_image_slide, null);
-        ButterKnife.inject(this, v);
+        try {
+            v = inflater.inflate(R.layout.fragment_image_slide, null);
+            ButterKnife.inject(this, v);
 
-        Uri uri = Uri.fromFile(new File(items.get(position).data));
-        imageView.setImageBitmap(items.get(position).getImageBitmap());
+            Uri uri = Uri.fromFile(new File(items.get(position).data));
+//        imageView.setImageBitmap(items.get(position).getImageBitmap());
 
-        Picasso.with(this.v.getContext()).load(uri).fit().centerInside().into(this.imageView);
-        titleView.setText(items.get(position).title);
+            Picasso.with(this.v.getContext()).load(uri).fit().centerInside().into(this.imageView);
+            titleView.setText(items.get(position).title);
 
-        imageView.setOnClickListener(listener);
-        pager.addView(v, 0);
-        views.put(position, v);
+            imageView.setOnClickListener(listener);
+            pager.addView(v, 0);
+            views.put(position, v);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return v;
     }
 

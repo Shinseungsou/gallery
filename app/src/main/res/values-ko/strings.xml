@@ -94,4 +94,7 @@
     </plurals>
 
     <string name="dialog_new_dir">새 디렉토리 이름</string>
+    <string name="input_name">이름은 로그 출력에 사용됩니다.</string>
+    <string name="hint_input_name">이름</string>
+    <string name="hint_nospace"></string>
 </resources>

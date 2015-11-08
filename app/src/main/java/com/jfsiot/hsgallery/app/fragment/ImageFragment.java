@@ -18,6 +18,7 @@ import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
 import com.jfsiot.hsgallery.util.view.MenuItemManager;
 import com.jfsiot.hsgallery.util.view.navigator.ToolbarCallback;
+import com.jfsiot.hsgallery.util.view.viewpager.FixedViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import butterknife.InjectView;
 import timber.log.Timber;
 
 public class ImageFragment extends Fragment implements View.OnClickListener, ToolbarCallback.ToolbarSimpleCallback{
-    @InjectView(R.id.viewpager) protected ViewPager pager;
+    @InjectView(R.id.viewpager) protected FixedViewPager pager;
 
     private Toolbar toolbar;
     private ImageViewPagerAdapter adapter;
@@ -67,10 +68,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     public void onResume() {
         super.onResume();
         MenuItemManager.getInstance().menuItemVisible(2);
-//        this.image.setImageBitmap(ImageShow.getInstance().getImageData().getImageBitmap());
-//        this.title.setText(ImageShow.getInstance().getImageData().title);
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
-//        pager.setPageMargin(10);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position) {
