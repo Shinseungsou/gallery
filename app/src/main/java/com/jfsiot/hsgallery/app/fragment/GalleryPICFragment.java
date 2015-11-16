@@ -224,10 +224,13 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                 .show();
         }else if(item == MenuItemManager.Item.FACEBOOK){
             ImageShow.getInstance().sendFacebook(this.getActivity(), selectList);
+            UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
         }else if(item == MenuItemManager.Item.KAKAO){
             ImageShow.getInstance().sendKaKao(this.getActivity(), selectList);
+            UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
         }else if(item == MenuItemManager.Item.INSTAGRAM){
             ImageShow.getInstance().sendInstagram(this.getActivity(), selectList.get(0));
+            UseLogManager.getInstance().addLog(selectList.get(0), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
         }
     }
 

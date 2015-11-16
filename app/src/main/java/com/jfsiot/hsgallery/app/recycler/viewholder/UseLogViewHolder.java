@@ -4,8 +4,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.model.UseLog;
+import com.jfsiot.hsgallery.app.model.unique.CurrentUseLog;
 import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
 
 
@@ -60,6 +62,14 @@ public class UseLogViewHolder extends RecyclerView.ViewHolder  implements View.O
         this.toPath.setText(useLog.to_data);
         this.share.setText(useLog.share);
         this.note.setText(useLog.note);
+        this.itemView.setOnLongClickListener(
+            v -> {
+                new MaterialDialog.Builder(this.itemView.getContext())
+                    .content(useLog.getUseLogDetail())
+                    .positiveText(R.string.confirm_normal)
+                    .show();
+                return true;
+            });
     }
 
     @Override

@@ -23,6 +23,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -75,12 +76,36 @@ public class UseLogManager {
     }
 
     public void addLog(UseLog log){
+        try {
+            DBOpenHelper helper = new DBOpenHelper(context);
+            helper.open();
+            helper.insertColumnUseLog(
+                log);
+            helper.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-        DBOpenHelper helper = new DBOpenHelper(context);
-        helper.open();
-        helper.insertColumnUseLog(
-            log);
-        helper.close();
+    public void addLogList(List<ImageData> imageDatas, UseLog.Type type, String targetPath, String note, String share){
+        try {
+            for (ImageData image : imageDatas) {
+                this.addLog(image, type, targetPath, note, share);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addLogList(List<ImageData> imageDatas, UseLog.Type type){
+        addLogList(imageDatas, type, null, null);
+    }
+
+    public void addLogList(List<ImageData> imageDatas, String note, String share){
+        addLogList(imageDatas, UseLog.Type.SHARE, null, note, share);
+    }
+
+    public void addLogList(List<ImageData> imageDatas, UseLog.Type type, String targetPath, String note){
+        addLogList(imageDatas, type, targetPath, note, null);
     }
 
     public void addLogUpdate(ImageData imageData, UseLog.Type type, String targetPath){

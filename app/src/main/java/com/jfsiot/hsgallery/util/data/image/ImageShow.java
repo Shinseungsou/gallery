@@ -57,7 +57,6 @@ public class ImageShow {
     public void setImages(List<ImageData> images){
         this.images.clear();
         this.images.addAll(images);
-        Timber.d("&&setImage : %s %s", images.size(), this.images.size());
     }
 
     public void selectImageData(ThumbnailData thumbnailData, ContentResolver contentResolver){
@@ -114,7 +113,8 @@ public class ImageShow {
 
             context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 values, MediaStore.Images.ImageColumns.DATA + "=" + "\"" + sourceFile.getPath() + "\"", null);
-            UseLogManager.getInstance().addLog(source, target.getPath(), UseLog.Type.RENAME);
+            if(!isPrivate)
+                UseLogManager.getInstance().addLog(source, target.getPath(), UseLog.Type.RENAME);
         }else{
             Timber.d("file exist!!!!");
         }
@@ -176,6 +176,7 @@ public class ImageShow {
         Toast.makeText(context, context.getResources().getQuantityString(R.plurals.success_copy, images.size(), images.size()), Toast.LENGTH_LONG).show();
     }
 
+    @Deprecated
     public void copyImagedata(Context context, String id, String toPath){
         ImageData image = ImageController.getInstance().getImageData(context, id);
         File fromFile = new File(image.data);
@@ -205,7 +206,7 @@ public class ImageShow {
 
     public void deleteImagedata(Context context, ImageData image){
         File file = new File(image.data);
-        renameImagedata(context, image, "."+file.getName(), true);
+        renameImagedata(context, image, ".del_siot_"+file.getName(), true);
         UseLogManager.getInstance().addLog(image, UseLog.Type.DELETE);
     }
     public void deleteImagedata(Context context, List<ImageData> images){
@@ -290,7 +291,6 @@ public class ImageShow {
 
     public void initImageShow(){
         List<ImageData> lists = ImageController.getInstance().getImageDataList();
-        Timber.d("&&IC size %s", lists.size());
         this.buckets.clear();
         if(!lists.isEmpty()) {
             this.setImages(lists);

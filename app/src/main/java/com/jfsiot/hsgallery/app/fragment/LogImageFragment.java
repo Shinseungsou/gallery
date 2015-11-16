@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.UseLog;
@@ -61,6 +62,7 @@ public class LogImageFragment extends Fragment implements View.OnClickListener{
         useLog = CurrentUseLog.getInstance().getUseLog();
         Uri uri = Uri.fromFile(new File(useLog.data));
         Picasso.with(getActivity()).load(uri).into(this.imageView);
+        Timber.d("imageData : %s", CurrentUseLog.getInstance().getUseLog());
         this.titleView.setText(useLog.title);
     }
 

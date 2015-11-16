@@ -40,6 +40,9 @@ public class UseLog extends DBModel {
     public enum Type{
         SAVE, READ, UPDATE, DELETE, ALL, DISKDEL, RENAME, COPY, MOVE, SHARE, NEWDIR
     }
+    public enum Share{
+        KAKAO, INSTAGRAM, FACEBOOK
+    }
     public static String getTypeString(Type type){
         switch (type) {
             case SAVE   :   return "save";
@@ -54,6 +57,18 @@ public class UseLog extends DBModel {
             case SHARE  :   return "share";
             case NEWDIR  :   return "new directory";
             default     :   return null;
+        }
+    }
+    public static String getShareString(Share shareType){
+        switch (shareType){
+            case KAKAO:
+                return "kakao";
+            case FACEBOOK:
+                return "facebook";
+            case INSTAGRAM:
+                return "instagram";
+            default:
+                return null;
         }
     }
 
@@ -123,5 +138,10 @@ public class UseLog extends DBModel {
     public UseLog setTypeByType(Type type){
         this.type = getTypeString(type);
         return this;
+    }
+
+    public String getUseLogDetail(){
+        return String.format("ID : %s \nDATE : %s\nPATH : %s\nNAME : %s\nTITLE : %s\nDIRECTORY : %s\nCHANGED PATH : %s\nSHARE : %s\nNOTE : %s\n",
+            id, date,data, name, title, bucketName, to_data, share, note);
     }
 }
