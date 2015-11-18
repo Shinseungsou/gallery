@@ -43,6 +43,18 @@ public class ImageData {
         this.size = size;
     }
 
+
+    public ImageData fakeImageFile(){
+
+        displayName = "";
+        id = "";
+        title = "";
+        data = "";
+        bucketId = "";
+        bucketDisplayName = "";
+        return this;
+    }
+
     public ImageData(Cursor cursor){
         id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._ID));
         displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));

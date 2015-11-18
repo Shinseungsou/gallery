@@ -25,6 +25,7 @@ import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -126,7 +127,10 @@ public class ImageShow {
         String suffix = suffixCandidates[suffixCandidates.length - 1];
         String[] cSuffixCandidates = toName.split("\\.");
         String currentSuffix = cSuffixCandidates[cSuffixCandidates.length - 1];
+
         if(currentSuffix.equals(suffix))
+            return toName;
+        else if(suffixCandidates.length < 2 && suffix.length() > 5)
             return toName;
         return toName+"."+suffix;
     }
@@ -167,10 +171,19 @@ public class ImageShow {
         for(ImageData image : images){
             Timber.d("copy start : %s", image.toString());
             File fromFile = new File(image.data);
-            String newPath = addNewNameAndSuffix(fromFile.getPath(), image.title);
-            boolean iscopy = (new FileController()).copyFile(fromFile.getPath(), toDirectory + "/" + newPath);
-            Timber.d("copy result : %s %s", iscopy, newPath);
-            UseLogManager.getInstance().addLog(image, newPath, UseLog.Type.COPY);
+            String newName = addNewNameAndSuffix(fromFile.getPath(), image.title);
+            File targetFile = new File(toDirectory, newName);
+            boolean iscopy = (new FileController()).copyFile(fromFile.getPath(), targetFile.getPath());
+            if(iscopy){
+                ContentValues value = new ContentValues();
+                value.put(MediaStore.Images.Media.TITLE, image.title);
+                value.put(MediaStore.Images.Media.DATA, targetFile.getPath());
+                value.put(MediaStore.Images.Media.DISPLAY_NAME, image.displayName);
+                context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value);
+//                    MediaStore.Images.Media.insertImage(context.getContentResolver(), targetFile.getAbsolutePath(), targetFile.getName(), targetFile.getName());
+            }
+            Timber.d("copy result : %s %s %s", toDirectory, newName, toDirectory + "/" + newName);
+            UseLogManager.getInstance().addLog(image, newName, UseLog.Type.COPY);
         }
         refreshMediaStore(context, new String[]{toDirectory}, images.size());
         Toast.makeText(context, context.getResources().getQuantityString(R.plurals.success_copy, images.size(), images.size()), Toast.LENGTH_LONG).show();
@@ -249,7 +262,7 @@ public class ImageShow {
             values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, fakeImage.getPath());
 
             context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            UseLogManager.getInstance().addLog(new ImageData(), newDir.getPath(), UseLog.Type.NEWDIR);
+            UseLogManager.getInstance().addLog((new ImageData().fakeImageFile()), newDir.getPath(), UseLog.Type.NEWDIR);
         }else{
             Toast.makeText(context, R.string.error_exist, Toast.LENGTH_LONG).show();
         }

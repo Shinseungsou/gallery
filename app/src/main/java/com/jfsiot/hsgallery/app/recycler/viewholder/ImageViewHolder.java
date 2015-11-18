@@ -12,6 +12,7 @@ import com.jfsiot.hsgallery.app.AppConfig;
 import com.jfsiot.hsgallery.app.model.ImageData;
 import com.jfsiot.hsgallery.app.model.unique.Configuration;
 import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewItemClickListener;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

@@ -132,6 +132,8 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog> implem
 
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
+        if(items.get(position).getPictureId().equals(""))
+            return;
         CurrentUseLog.getInstance().setUseLog(this.useLogs.get(position));
         ((MainActivity) getActivity()).navigate(LogImageFragment.class, true);
     }

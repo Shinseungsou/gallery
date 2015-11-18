@@ -1,6 +1,7 @@
 package com.jfsiot.hsgallery.app.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -65,7 +66,6 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         this.setupRecyclerView(this.gallery);
 
         imageController = ImageController.getInstance();
-        this.notifyDataChange(ImageShow.getInstance().getBucketId());
 
         this.sidebar.setVisibility(View.VISIBLE);
 
@@ -102,17 +102,20 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ((MainActivity) this.getActivity()).setOnBack(null);
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(null);
     }
+
     @Override
     public void onResume() {
         super.onResume();
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         ((MainActivity) this.getActivity()).setOnBack(this);
+        this.notifyDataChange(ImageShow.getInstance().getBucketId());
         this.menuitemstate = 1;
         MenuItemManager.getInstance().menuItemVisible(menuitemstate);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.sidebar.getId(), ((MainActivity)getActivity()).getFragmentNavigator().instantiateFragment(SideBarFragment.class))
             .commit();
+        gallery.setItemAnimator(new DefaultItemAnimator());
     }
 
 
@@ -212,13 +215,13 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                     @Override
                     public void onNegative(MaterialDialog dialog) {
                         super.onNegative(dialog);
-                        dialog.getInputEditText().setText("");
                     }
 
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         super.onPositive(dialog);
                         ImageShow.getInstance().deleteImagedata(getActivity(), selectList);
+                        notifyDataChange(ImageShow.getInstance().getBucketId());
                     }
                 })
                 .show();
@@ -232,6 +235,8 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
             ImageShow.getInstance().sendInstagram(this.getActivity(), selectList.get(0));
             UseLogManager.getInstance().addLog(selectList.get(0), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
         }
+
+        this.notifyDataChange(ImageShow.getInstance().getBucketId());
     }
 
 }
