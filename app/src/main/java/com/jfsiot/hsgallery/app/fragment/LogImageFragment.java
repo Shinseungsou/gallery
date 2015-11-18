@@ -60,7 +60,9 @@ public class LogImageFragment extends Fragment implements View.OnClickListener{
     public void onResume() {
         super.onResume();
         useLog = CurrentUseLog.getInstance().getUseLog();
-        Uri uri = Uri.fromFile(new File(useLog.data));
+//        Uri uri = Uri.fromFile(new File( useLog.to_data == null ? useLog.data : useLog.to_data));
+        Uri uri = Uri.fromFile(new File(ImageController.getInstance().getImageData(this.getActivity(), useLog.pictureId).data));
+
         Picasso.with(getActivity()).load(uri).into(this.imageView);
         Timber.d("imageData : %s", CurrentUseLog.getInstance().getUseLog());
         this.titleView.setText(useLog.title);
