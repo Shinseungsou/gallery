@@ -206,9 +206,11 @@ public class ImageShow {
 
     public void deleteImagedata(Context context, ImageData image){
         File file = new File(image.data);
-        renameImagedata(context, image, ".del_siot_"+file.getName(), true);
-        UseLogManager.getInstance().addLog(image, UseLog.Type.DELETE);
+        File toPath = new File(file.getParent(), ".del_siot_"+file.getName());
+        renameImagedata(context, image, toPath, true);
+        UseLogManager.getInstance().addLog(image, UseLog.Type.DELETE, toPath.getPath(), null);
     }
+
     public void deleteImagedata(Context context, List<ImageData> images){
         for(ImageData image : images) {
             this.deleteImagedata(context, image);
