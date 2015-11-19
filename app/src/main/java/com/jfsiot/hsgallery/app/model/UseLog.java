@@ -15,8 +15,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-@AllArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
+@RequiredArgsConstructor(suppressConstructorProperties = true)
 @NoArgsConstructor
 @ToString
 @Accessors(chain = true)

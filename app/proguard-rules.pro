@@ -15,3 +15,20 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn java.nio.file.Files
+-dontwarn java.nio.file.Path
+-dontwarn java.nio.file.OpenOption
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn android.support.v7.**
+-dontwarn android.support.**
+-dontwarn com.github.**
+-dontwarn com.squareup.picasso.**
+-dontwarn com.etsy.android.grid.**
+-dontwarn butterknife.**
+-dontwarn rx.**
+-dontwarn com.sun.**
+-dontwarn javax.**
+#-keep class javax.**
+#-keep class com.sun.**
+#-keep class android.support.v7.** { *; }
+#-keep interface android.support.v7.** { *; }

@@ -3,7 +3,6 @@ package com.jfsiot.hsgallery.app.model.unique;
 import com.jfsiot.hsgallery.app.model.UseLog;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import lombok.Setter;
   * Created by SSS on 2015-08-06.
   */
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(suppressConstructorProperties = true)
 public class CurrentUseLog {
     @Getter @Setter private UseLog useLog;
 
