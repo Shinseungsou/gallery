@@ -27,7 +27,7 @@ public class ImageData {
     public Integer width;
     public Integer height;
     public String mimeType;
-    public String orientation;
+    public Integer orientation;
     public String description;
     public String isPrivate;
     public String latitude;
@@ -75,7 +75,7 @@ public class ImageData {
         width = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
         height = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
         mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
-        orientation = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
+        orientation = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
         description = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DESCRIPTION));
         isPrivate = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE));
         latitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));
@@ -99,7 +99,7 @@ public class ImageData {
         width = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.WIDTH));
         height = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.HEIGHT));
         mimeType = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MIME_TYPE));
-        orientation = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
+        orientation = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION));
         description = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DESCRIPTION));
         isPrivate = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.IS_PRIVATE));
         latitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));

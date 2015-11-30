@@ -79,6 +79,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
                 Timber.d("**image displayName : %s", list.get(position).displayName);
                 Timber.d("**image isPrivate : %s", list.get(position).isPrivate);
                 Timber.d("**image title : %s", list.get(position).title);
+                Timber.d("**image orientation : %s", list.get(position).orientation);
                 Timber.d("**image realname : %s", ImageController.getInstance().getRealName(list.get(position)));
                 Timber.d("**image real private %s", ImageController.getInstance().isPrivate(list.get(position)));
             }

@@ -303,6 +303,17 @@ public class ImageShow {
         }
         return null;
     }
+    public Integer relocateValue(Integer orientation){
+        if(orientation != null){
+            Integer value = orientation + 90;
+            if(value > 270){
+                return 0;
+            }else{
+                return value;
+            }
+        }
+        return null;
+    }
 
     public void initImageShow(){
         List<ImageData> lists = ImageController.getInstance().getImageDataList();
