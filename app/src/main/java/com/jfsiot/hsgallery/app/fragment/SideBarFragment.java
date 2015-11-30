@@ -25,7 +25,6 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     @InjectView(R.id.simple_recycler) protected RecyclerView gallery;
     @InjectView(R.id.list_title) protected TextView title;
     private OnMenuChange onMenuChange;
-    private int selectedPosition = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -45,7 +45,7 @@ public class BucketViewHolder extends RecyclerView.ViewHolder implements View.On
     public void bind(ImageBucket imageData, Configuration.GalleryMode mode){
         this.title.setVisibility(View.VISIBLE);
         this.bind(imageData);
-        this.title.setBackgroundColor(itemView.getResources().getColor(R.color.white_a70));
+        setSelected(false);
     }
 
     @Override
