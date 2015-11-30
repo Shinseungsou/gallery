@@ -24,7 +24,7 @@ public class MenuItemManager {
         Item.getItem(toolbar, Item.DELETE).setVisible(false);
         Item.getItem(toolbar, Item.MOVE).setVisible(false);
         Item.getItem(toolbar, Item.RENAME).setVisible(false);
-        Item.getItem(toolbar, Item.RELOCATE).setVisible(false);
+        Item.getItem(toolbar, Item.ROTATE).setVisible(false);
         Item.getItem(toolbar, Item.CROP).setVisible(false);
         Item.getItem(toolbar, Item.USELOG).setVisible(true);
         Item.getItem(toolbar, Item.MORE).setVisible(false);
@@ -46,6 +46,7 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.DELETE).setVisible(true);
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
                 Item.getItem(toolbar, Item.CROP).setVisible(true);
+                Item.getItem(toolbar, Item.ROTATE).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(false);
                 Item.getItem(toolbar, Item.KAKAO).setVisible(true);
                 Item.getItem(toolbar, Item.FACEBOOK).setVisible(true);
@@ -53,6 +54,52 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.NEW_DIR).setVisible(false);
                 break;
         }
+    }
+    enum State{
+        IMAGE, OPERATOR, SHARE, DEFAULT
+    }
+
+    public MenuItemManager clear(){
+        Item.getItem(toolbar, Item.SETTING).setVisible(false);
+        Item.getItem(toolbar, Item.DELETE).setVisible(false);
+        Item.getItem(toolbar, Item.MOVE).setVisible(false);
+        Item.getItem(toolbar, Item.RENAME).setVisible(false);
+        Item.getItem(toolbar, Item.ROTATE).setVisible(false);
+        Item.getItem(toolbar, Item.CROP).setVisible(false);
+        Item.getItem(toolbar, Item.USELOG).setVisible(true);
+        Item.getItem(toolbar, Item.MORE).setVisible(false);
+        Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
+        Item.getItem(toolbar, Item.NEW_DIR).setVisible(true);
+        Item.getItem(toolbar, Item.KAKAO).setVisible(false);
+        Item.getItem(toolbar, Item.FACEBOOK).setVisible(false);
+        Item.getItem(toolbar, Item.INSTAGRAM).setVisible(false);
+
+        return this;
+    }
+    public MenuItemManager setVisible(State state){
+        switch (state){
+            case IMAGE:
+                Item.getItem(toolbar, Item.CROP).setVisible(true);
+                Item.getItem(toolbar, Item.ROTATE).setVisible(true);
+                break;
+            case OPERATOR:
+                Item.getItem(toolbar, Item.MOVE).setVisible(true);
+                Item.getItem(toolbar, Item.DELETE).setVisible(true);
+                Item.getItem(toolbar, Item.RENAME).setVisible(true);
+                Item.getItem(toolbar, Item.NEW_DIR).setVisible(false);
+                break;
+            case SHARE:
+                Item.getItem(toolbar, Item.KAKAO).setVisible(true);
+                Item.getItem(toolbar, Item.FACEBOOK).setVisible(true);
+                Item.getItem(toolbar, Item.INSTAGRAM).setVisible(true);
+                break;
+            case DEFAULT:
+                Item.getItem(toolbar, Item.SETTING).setVisible(true);
+                Item.getItem(toolbar, Item.MORE).setVisible(false);
+                Item.getItem(toolbar, Item.MULTISELECT).setVisible(true);
+                break;
+        }
+        return this;
     }
 
     public enum MenuType{
@@ -76,7 +123,7 @@ public class MenuItemManager {
         public static final int NEW_DIR = R.id.menu_new_directory;
 
         /* image option */
-        public static final int RELOCATE = R.id.relocate;
+        public static final int ROTATE = R.id.relocate;
         public static final int CROP = R.id.crop;
 
         /* share */

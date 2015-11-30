@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
@@ -22,13 +23,16 @@ import timber.log.Timber;
 
 public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, ImageBucket> {
     @InjectView(R.id.simple_recycler) protected RecyclerView gallery;
+    @InjectView(R.id.list_title) protected TextView title;
     private OnMenuChange onMenuChange;
+    private int selectedPosition = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_simple_list, container, false);
         ButterKnife.inject(this, view);
         this.setupRecyclerView(this.gallery);
+        this.title.setText("ALBUM");
         return view;
     }
 
@@ -42,6 +46,7 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     public void onResume() {
         super.onResume();
         this.notifyDataChange();
+        this.adapter.setSelectedPosition(0);
     }
 
     public void notifyDataChange(){
@@ -64,6 +69,7 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     public void onRecyclerViewItemClick(View view, int position) {
         AppConfig.Option.MULTISELECT = false;
         MenuItemManager.getInstance().menuItemVisible(1);
+        this.adapter.setSelectedPosition(position);
         if(onMenuChange != null)
             this.onMenuChange.onMenuChange(this.items.get(position).id);
         else

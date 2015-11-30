@@ -2,6 +2,7 @@ package com.jfsiot.hsgallery.app.recycler.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.jfsiot.hsgallery.R;
@@ -21,6 +22,8 @@ public class GalleryDIRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<ImageBucket> imageList;
     private RecyclerViewItemClickListener listener;
     private Configuration.GalleryMode mode;
+    private int selectedPosition;
+    private BucketViewHolder selectedViewHolder;
 
     public GalleryDIRAdapter(List<ImageBucket> imageList, RecyclerViewItemClickListener listener){
         this.imageList = imageList;
@@ -37,6 +40,12 @@ public class GalleryDIRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
         try {
             ((BucketViewHolder) viewHolder).bind(this.imageList.get(i), this.mode);
+            if(selectedPosition == i) {
+                if(selectedViewHolder != null)
+                    selectedViewHolder.setSelected(false);
+                selectedViewHolder = ((BucketViewHolder) viewHolder);
+                selectedViewHolder.setSelected(true);
+            }
         }catch (NullPointerException e){
             Timber.d("error path : %s", this.imageList.get(i).imageData.data);
             Timber.d("<%s> <%s> <%s> <%s> ", imageList.get(i).imageData.data, imageList.get(i).imageData.title, imageList.get(i).displayName, imageList.get(i).id);
@@ -46,6 +55,10 @@ public class GalleryDIRAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public void setMode(Configuration.GalleryMode mode){
         this.mode = mode;
+    }
+    public void setSelectedPosition(int position){
+        selectedPosition = position;
+        this.notifyItemChanged(position);
     }
 
     @Override

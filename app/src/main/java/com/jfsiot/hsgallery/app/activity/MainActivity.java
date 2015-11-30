@@ -18,7 +18,7 @@ import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
 import com.jfsiot.hsgallery.app.AppConst;
 import com.jfsiot.hsgallery.app.AppManager;
-import com.jfsiot.hsgallery.app.fragment.GalleryDIRFragment;
+import com.jfsiot.hsgallery.app.fragment.GalleryPICFragment;
 import com.jfsiot.hsgallery.app.fragment.LogFragment;
 import com.jfsiot.hsgallery.app.fragment.MenuFragment;
 import com.jfsiot.hsgallery.app.fragment.OptionFragment;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
 
         UseLogManager.getInstance().setContext(getBaseContext());
 
-        navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryDIRFragment.class);
+        navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryPICFragment.class);
     }
     public Toolbar getToolbar(){
         return this.toolbar;
@@ -156,9 +156,11 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                         AppConfig.Option.MULTISELECT = !AppConfig.Option.MULTISELECT;
                         this.toolbarSimpleCallback.getCurrentAction(AppConfig.Option.MULTISELECT, MenuItemManager.Item.MULTISELECT);
                     }
-                    /*RELOCATE*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RELOCATE).getItemId()) {
-                    ImageShow.getInstance().relocateImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
+                    /*ROTATE*/
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.ROTATE).getItemId()) {
+//                    ImageShow.getInstance().relocateImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
+                    if(toolbarSimpleCallback != null)
+                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.ROTATE);
                     /*MORE*/
                 } else if (item.getItemId() == menuMore.getItemId()) {
                     if (this.menuLayout.getVisibility() == View.VISIBLE)

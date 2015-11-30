@@ -73,6 +73,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                Timber.d("&& onPage");
                 ImageShow.getInstance().setPosition(position);
                 Timber.d("**image data : %s", list.get(position).data);
                 Timber.d("**image displayName : %s", list.get(position).displayName);
@@ -111,6 +112,8 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
                 images.add(list.get(pager.getCurrentItem()));
                 ImageShow.getInstance().sendFacebook(getActivity(), images);
                 UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
+            }else if (item == MenuItemManager.Item.ROTATE) {
+                this.adapter.rotate(ImageShow.getInstance().getPosition());
             }
         }
     }

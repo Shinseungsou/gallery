@@ -7,6 +7,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jfsiot.hsgallery.R;
@@ -60,7 +61,8 @@ public class ImageViewPagerAdapter extends PagerAdapter {
             Uri uri = Uri.fromFile(new File(items.get(position).data));
 //        imageView.setImageBitmap(items.get(position).getImageBitmap());
 
-            Picasso.with(this.v.getContext()).load(uri).fit().centerInside().into(this.imageView);
+            Timber.d("&& degree : %s %s", items.get(position).degree, items.get(position).title);
+            Picasso.with(this.v.getContext()).load(uri).fit().rotate(items.get(position).degree).centerInside().into(this.imageView);
             titleView.setText(items.get(position).title);
 
             imageView.setOnClickListener(listener);
@@ -71,6 +73,8 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         }
         return v;
     }
+
+
 
     @Override
     public void destroyItem(View container, int position, Object object) {
@@ -88,16 +92,23 @@ public class ImageViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        Timber.d("call!! position !! %s", isChange);
-//        if(isChange) {
-//            return POSITION_NONE;
-//        }
+        if(isChange) {
+            return POSITION_NONE;
+        }
         return super.getItemPosition(object);
+    }
+
+    public void rotate(int position){
+        Uri uri = Uri.fromFile(new File(items.get(position).data));
+        items.get(position).degree += 90f;
+        Picasso.with(this.v.getContext()).load(uri).fit().rotate(items.get(position).degree).centerInside().into(this.imageView);
+        update();
     }
 
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+        Timber.d("&& noti");
         for(int i = 0; i < views.size(); i++){
             int key = views.keyAt(i);
             View view = views.get(key);
@@ -110,5 +121,4 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         pager.removeView((View) view);
         ButterKnife.reset(view);
     }
-
 }

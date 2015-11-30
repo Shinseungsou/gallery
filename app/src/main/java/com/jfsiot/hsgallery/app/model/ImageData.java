@@ -34,13 +34,18 @@ public class ImageData {
     public String longitude;
     public String miniThumbMagic;
 
-    public ImageData(){}
+    public Float degree;
+
+    public ImageData(){
+        this.degree = 0.0f;
+    }
 
     public ImageData(String id, String data, String displayName, String size){
         this.id = id;
         this.data = data;
         this.displayName = displayName;
         this.size = size;
+        this.degree = 0.0f;
     }
 
 
@@ -76,6 +81,8 @@ public class ImageData {
         latitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));
         longitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
         miniThumbMagic = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MINI_THUMB_MAGIC));
+
+        this.degree = 0.0f;
     }
     public void setImageData(Cursor cursor){
         id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._ID));
@@ -98,6 +105,8 @@ public class ImageData {
         latitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LATITUDE));
         longitude = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.LONGITUDE));
         miniThumbMagic = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.MINI_THUMB_MAGIC));
+
+        this.degree = 0.0f;
     }
     public Bitmap getImageBitmap(){
         BitmapFactory.Options bo = new BitmapFactory.Options();

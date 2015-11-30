@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">#ffffff</color>
     <color name="log_divider1">#dddddd</color>
     <color name="log_divider2">#ffffff</color>
+
+    <color name="black">#000000</color>
+    <color name="black_a90">#ea000000</color>
+    <color name="black_a70">#af000000</color>
+    <color name="black_a50">#7d000000</color>
+    <color name="black_a30">#4b000000</color>
+    <color name="black_a10">#19000000</color>
+
+    <color name="white">#ffffff</color>
+    <color name="white_a90">#eaffffff</color>
+    <color name="white_a70">#afffffff</color>
+    <color name="white_a50">#7dffffff</color>
+    <color name="white_a30">#4bffffff</color>
+    <color name="white_a10">#19ffffff</color>
+
+    <color name="green">#22b500</color>
+    <color name="green_a90">#ea22b500</color>
+    <color name="green_a70">#af22b500</color>
+    <color name="green_a50">#7d22b500</color>
+    <color name="green_a30">#4b22b500</color>
+    <color name="green_a10">#1922b500</color>
+
+    <color name="yellow">#ffeb35</color>
+    <color name="yellow_a90">#eaffeb35</color>
+    <color name="yellow_a70">#afffeb35</color>
+    <color name="yellow_a50">#7dffeb35</color>
+    <color name="yellow_a30">#4bffeb35</color>
+    <color name="yellow_a10">#19ffeb35</color>
+
+    <color name="color_chip_sky_blue">#6ab8c9</color>
+    <color name="color_chip_light_green">#49a17a</color>
+    <color name="color_chip_light_green_a50">#7d49a17a</color>
+    <color name="color_chip_dark_green">#2c6e68</color>
+    <color name="color_chip_dark_blue">#34425a</color>
+    <color name="color_chip_orange_red">#ff3f22</color>
+    <color name="color_chip_orange_yellow">#fd8258</color>
 </resources>
