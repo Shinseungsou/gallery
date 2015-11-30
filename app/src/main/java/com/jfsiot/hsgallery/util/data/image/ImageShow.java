@@ -25,7 +25,6 @@ import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -162,7 +161,7 @@ public class ImageShow {
 
     public void moveImagedata(Context context, List<ImageData> images, String toPath){
         for(ImageData image : images){
-            moveImagedata(context, image.id, toPath+"/"+image.title);
+            moveImagedata(context, image.id, toPath + "/" + image.title);
         }
         refreshMediaStore(context, new String[]{toPath}, images.size());
     }
@@ -243,12 +242,12 @@ public class ImageShow {
         MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, name, null);
     }
 
-    public void relocateImagedata(Context context, int position) {
+    public void rotateImagedata(Context context, ImageData image) {
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.ORIENTATION, relocateValue(images.get(position).orientation));
-
-        context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            values, "_id=" + images.get(position).id, null);
+        values.put(MediaStore.Images.Media.ORIENTATION, rotateValue(image.degree));
+        Timber.d("relotate : %s", rotateValue(image.degree));
+        context.getContentResolver().update(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values, "_id=" + image.id, null);
+        UseLogManager.getInstance().addLog(image, UseLog.Type.ROTATE, String.format("%.1f", image.degree));
     }
 
     public void insertBucket(Context context, String name){
@@ -292,7 +291,7 @@ public class ImageShow {
         return newImage;
     }
 
-    public Integer relocateValue(String orientation){
+    public Integer rotateValue(String orientation){
         if(orientation != null){
             Integer value = Integer.parseInt(orientation) + 90;
             if(value > 270){
@@ -303,7 +302,7 @@ public class ImageShow {
         }
         return null;
     }
-    public Integer relocateValue(Integer orientation){
+    public Integer rotateValue(Integer orientation){
         if(orientation != null){
             Integer value = orientation + 90;
             if(value > 270){
@@ -313,6 +312,16 @@ public class ImageShow {
             }
         }
         return null;
+    }
+    public Integer rotateValue(Float orientation){
+        if(orientation != null){
+            if(orientation > 270){
+                return 0;
+            }else{
+                return orientation.intValue();
+            }
+        }
+        return 0;
     }
 
     public void initImageShow(){

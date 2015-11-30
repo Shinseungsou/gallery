@@ -7,11 +7,11 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.model.ImageData;
+import com.jfsiot.hsgallery.util.data.image.ImageShow;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -103,6 +103,7 @@ public class ImageViewPagerAdapter extends PagerAdapter {
         items.get(position).degree += 90f;
         Picasso.with(this.v.getContext()).load(uri).fit().rotate(items.get(position).degree).centerInside().into(this.imageView);
         update();
+        ImageShow.getInstance().rotateImagedata(context, items.get(position));
     }
 
     @Override

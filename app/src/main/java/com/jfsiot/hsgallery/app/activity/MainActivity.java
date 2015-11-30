@@ -158,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                     }
                     /*ROTATE*/
                 } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.ROTATE).getItemId()) {
-//                    ImageShow.getInstance().relocateImagedata(this.getBaseContext(), ImageShow.getInstance().getPosition());
                     if(toolbarSimpleCallback != null)
                         toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.ROTATE);
                     /*MORE*/
