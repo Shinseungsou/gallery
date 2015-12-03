@@ -32,7 +32,7 @@
           android:icon="@drawable/ic_light_edit"
           android:orderInCategory="100"
           app:showAsAction="never"/>
-    <item android:id="@+id/crop"
+    <item android:id="@+id/edit"
           android:title="@string/crop"
           android:icon="@drawable/ic_light_edit"
           android:orderInCategory="100"

@@ -25,7 +25,7 @@ public class MenuItemManager {
         Item.getItem(toolbar, Item.MOVE).setVisible(false);
         Item.getItem(toolbar, Item.RENAME).setVisible(false);
         Item.getItem(toolbar, Item.ROTATE).setVisible(false);
-        Item.getItem(toolbar, Item.CROP).setVisible(false);
+        Item.getItem(toolbar, Item.EDIT).setVisible(false);
         Item.getItem(toolbar, Item.USELOG).setVisible(true);
         Item.getItem(toolbar, Item.MORE).setVisible(false);
         Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
@@ -45,7 +45,7 @@ public class MenuItemManager {
                 Item.getItem(toolbar, Item.MOVE).setVisible(true);
                 Item.getItem(toolbar, Item.DELETE).setVisible(true);
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
-                Item.getItem(toolbar, Item.CROP).setVisible(true);
+                Item.getItem(toolbar, Item.EDIT).setVisible(true);
                 Item.getItem(toolbar, Item.ROTATE).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(false);
                 Item.getItem(toolbar, Item.KAKAO).setVisible(true);
@@ -65,7 +65,7 @@ public class MenuItemManager {
         Item.getItem(toolbar, Item.MOVE).setVisible(false);
         Item.getItem(toolbar, Item.RENAME).setVisible(false);
         Item.getItem(toolbar, Item.ROTATE).setVisible(false);
-        Item.getItem(toolbar, Item.CROP).setVisible(false);
+        Item.getItem(toolbar, Item.EDIT).setVisible(false);
         Item.getItem(toolbar, Item.USELOG).setVisible(true);
         Item.getItem(toolbar, Item.MORE).setVisible(false);
         Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
@@ -79,7 +79,7 @@ public class MenuItemManager {
     public MenuItemManager setVisible(State state){
         switch (state){
             case IMAGE:
-                Item.getItem(toolbar, Item.CROP).setVisible(true);
+                Item.getItem(toolbar, Item.EDIT).setVisible(true);
                 Item.getItem(toolbar, Item.ROTATE).setVisible(true);
                 break;
             case OPERATOR:
@@ -124,7 +124,7 @@ public class MenuItemManager {
 
         /* image option */
         public static final int ROTATE = R.id.relocate;
-        public static final int CROP = R.id.crop;
+        public static final int EDIT = R.id.edit;
 
         /* share */
         public static final int KAKAO = R.id.menu_share_kakao;

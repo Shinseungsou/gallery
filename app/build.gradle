@@ -59,6 +59,10 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.7.5.1'
     provided 'org.projectlombok:lombok:1.16.6'
     compile 'javax.annotation:jsr250-api:1.0'
+    compile 'com.isseiaoki:simplecropview:1.0.13'
+}
+repositories{
+    jcenter()
 }
 retrolambda {
 //    jdk System.getenv("JAVA8_HOME")

@@ -115,7 +115,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
                 UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
             }else if (item == MenuItemManager.Item.ROTATE) {
                 this.adapter.rotate(ImageShow.getInstance().getPosition());
-            }else if (item == MenuItemManager.Item.CROP){
+            }else if (item == MenuItemManager.Item.EDIT){
                 ImageShow.getInstance().setImageData(this.list.get(ImageShow.getInstance().getPosition()));
                 ((MainActivity) this.getActivity()).navigate(EditImageFragment.class, true);
             }

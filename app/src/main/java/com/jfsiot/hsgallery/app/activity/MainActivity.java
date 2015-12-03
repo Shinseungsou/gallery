@@ -161,10 +161,10 @@ public class MainActivity extends AppCompatActivity implements Navigator{
                     if(toolbarSimpleCallback != null)
                         toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.ROTATE);
 
-                    /*CROP*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.CROP).getItemId()) {
+                    /*EDIT*/
+                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.EDIT).getItemId()) {
                     if(toolbarSimpleCallback != null)
-                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.CROP);
+                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.EDIT);
                     /*MORE*/
                 } else if (item.getItemId() == menuMore.getItemId()) {
                     if (this.menuLayout.getVisibility() == View.VISIBLE)

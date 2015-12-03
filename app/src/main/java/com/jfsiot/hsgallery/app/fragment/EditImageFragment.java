@@ -7,14 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.isseiaoki.simplecropview.CropImageView;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.ImageData;
-import com.jfsiot.hsgallery.app.model.unique.CurrentUseLog;
-import com.jfsiot.hsgallery.util.data.image.ImageController;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
 import com.squareup.picasso.Picasso;
 
@@ -22,13 +23,14 @@ import java.io.File;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import timber.log.Timber;
-import uk.co.senab.photoview.PhotoView;
 
 public class EditImageFragment extends Fragment implements View.OnClickListener{
 
-    @InjectView(R.id.image) protected ImageView imageView;
-    @InjectView(R.id.title) protected TextView titleView;
+    @InjectView(R.id.edit_image) protected ImageView imageView;
+    @InjectView(R.id.cropImageView) protected CropImageView cropImageView;
+    @InjectView(R.id.edit_title) protected TextView titleView;
+    @InjectView(R.id.edit_item_crop) protected RelativeLayout crop;
+    @InjectView(R.id.edit_save_button) protected TextView saveButton;
 
     private Toolbar toolbar;
 
@@ -36,7 +38,7 @@ public class EditImageFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_image_slide, container, false);
+        View view = inflater.inflate(R.layout.fragment_image_edit, container, false);
         ButterKnife.inject(this, view);
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.image);
@@ -60,8 +62,14 @@ public class EditImageFragment extends Fragment implements View.OnClickListener{
 //        Uri uri = Uri.fromFile(new File( image.to_data == null ? image.data : image.to_data));
         Uri uri = Uri.fromFile(new File(image.data));
 
-        Picasso.with(getActivity()).load(uri).into(this.imageView);
+        Picasso.with(getActivity()).load(uri).rotate(image.degree).into(this.cropImageView);
         this.titleView.setText(image.title);
+        this.crop.setOnClickListener(v->{
+            imageView.setImageBitmap(cropImageView.getCroppedBitmap());
+        });
+        this.saveButton.setOnClickListener(v -> {
+
+        });
     }
 
     @Override
