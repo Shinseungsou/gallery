@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
-import com.jfsiot.hsgallery.app.AppManager;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.ImageData;
 import com.jfsiot.hsgallery.app.model.UseLog;
@@ -110,7 +109,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ((MainActivity) this.getActivity()).setOnBack(this);
         this.notifyDataChange(ImageShow.getInstance().getBucketId());
         this.menuitemstate = 1;
-        MenuItemManager.getInstance().menuItemVisible(menuitemstate);
+        MenuItemManager.getInstance().setEnable(MenuItemManager.State.DEFAULT)
+            .setEnable(MenuItemManager.State.UNSELECTED)
+            .setEnable(MenuItemManager.State.IMAGE);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.sidebar.getId(), ((MainActivity)getActivity()).getFragmentNavigator().instantiateFragment(SideBarFragment.class))

@@ -55,8 +55,8 @@ public class MenuItemManager {
                 break;
         }
     }
-    enum State{
-        IMAGE, OPERATOR, SHARE, DEFAULT
+    public enum State{
+        IMAGE, OPERATOR, SHARE, UNSELECTED,DEFAULT
     }
 
     public MenuItemManager clear(){
@@ -76,27 +76,68 @@ public class MenuItemManager {
 
         return this;
     }
-    public MenuItemManager setVisible(State state){
+    public MenuItemManager setEnable(State... state){
+        for (State stateItem : state){
+            setEnable(stateItem);
+        }
+        return this;
+    }
+    public MenuItemManager setEnable(State state){
         switch (state){
-            case IMAGE:
+            case IMAGE: //PIC(selected), Image
                 Item.getItem(toolbar, Item.EDIT).setVisible(true);
-                Item.getItem(toolbar, Item.ROTATE).setVisible(true);
+                Item.getItem(toolbar, Item.ROTATE).setVisible(false);
                 break;
-            case OPERATOR:
+            case OPERATOR://PIC(selected)
                 Item.getItem(toolbar, Item.MOVE).setVisible(true);
                 Item.getItem(toolbar, Item.DELETE).setVisible(true);
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
-                Item.getItem(toolbar, Item.NEW_DIR).setVisible(false);
                 break;
-            case SHARE:
+            case SHARE: //PIC(selected), Image
                 Item.getItem(toolbar, Item.KAKAO).setVisible(true);
                 Item.getItem(toolbar, Item.FACEBOOK).setVisible(true);
                 Item.getItem(toolbar, Item.INSTAGRAM).setVisible(true);
                 break;
-            case DEFAULT:
+            case UNSELECTED: //PIC(unselected)
+                Item.getItem(toolbar, Item.MULTISELECT).setVisible(true);
+                Item.getItem(toolbar, Item.NEW_DIR).setVisible(true);
+                break;
+            case DEFAULT: //all
                 Item.getItem(toolbar, Item.SETTING).setVisible(true);
                 Item.getItem(toolbar, Item.MORE).setVisible(false);
-                Item.getItem(toolbar, Item.MULTISELECT).setVisible(true);
+                break;
+        }
+        return this;
+    }
+    public MenuItemManager setDisable(State... state){
+        for (State stateItem : state){
+            setDisable(stateItem);
+        }
+        return this;
+    }
+    public MenuItemManager setDisable(State state){
+        switch (state){
+            case IMAGE: //PIC(selected), Image
+                Item.getItem(toolbar, Item.EDIT).setVisible(false);
+                Item.getItem(toolbar, Item.ROTATE).setVisible(false);
+                break;
+            case OPERATOR://PIC(selected)
+                Item.getItem(toolbar, Item.MOVE).setVisible(false);
+                Item.getItem(toolbar, Item.DELETE).setVisible(false);
+                Item.getItem(toolbar, Item.RENAME).setVisible(false);
+                break;
+            case SHARE: //PIC(selected), Image
+                Item.getItem(toolbar, Item.KAKAO).setVisible(false);
+                Item.getItem(toolbar, Item.FACEBOOK).setVisible(false);
+                Item.getItem(toolbar, Item.INSTAGRAM).setVisible(false);
+                break;
+            case UNSELECTED: //PIC(unselected)
+                Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
+                Item.getItem(toolbar, Item.NEW_DIR).setVisible(false);
+                break;
+            case DEFAULT: //all
+                Item.getItem(toolbar, Item.SETTING).setVisible(false);
+                Item.getItem(toolbar, Item.MORE).setVisible(false);
                 break;
         }
         return this;
