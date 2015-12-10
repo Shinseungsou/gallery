@@ -33,7 +33,7 @@
           android:orderInCategory="100"
           app:showAsAction="never"/>
     <item android:id="@+id/edit"
-          android:title="@string/crop"
+          android:title="@string/edit"
           android:icon="@drawable/ic_light_edit"
           android:orderInCategory="100"
           app:showAsAction="never"/>

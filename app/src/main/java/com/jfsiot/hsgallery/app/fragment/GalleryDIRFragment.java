@@ -40,7 +40,7 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
 
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
-        MenuItemManager.getInstance().menuItemVisible(1);
+        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.UNSELECTED, MenuItemManager.State.DEFAULT);
         ImageShow.getInstance().initImageShow();
         this.setupRecyclerView(this.gallery);
         this.items.clear();

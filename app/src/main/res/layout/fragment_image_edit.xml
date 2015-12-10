@@ -58,7 +58,7 @@
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/white_a50"
                     android:textSize="12sp"
-                    android:text="16:9"/>
+                    android:text="@string/edit_crop_16_9"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/edit_crop_item_4_3"
@@ -86,7 +86,7 @@
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/white_a50"
                     android:textSize="12sp"
-                    android:text="4:3"/>
+                    android:text="@string/edit_crop_4_3"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/edit_crop_item_1_1"
@@ -114,7 +114,7 @@
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/white_a50"
                     android:textSize="12sp"
-                    android:text="1:1"/>
+                    android:text="@string/edit_crop_1_1"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/edit_crop_item_free"
@@ -142,7 +142,7 @@
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/white_a50"
                     android:textSize="12sp"
-                    android:text="free"/>
+                    android:text="@string/edit_crop_free"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/edit_crop_item_circle"
@@ -170,7 +170,7 @@
                     android:layout_marginEnd="8dp"
                     android:textColor="@color/white_a50"
                     android:textSize="12sp"
-                    android:text="circle"/>
+                    android:text="@string/edit_crop_circle"/>
             </RelativeLayout>
         </LinearLayout>
     </HorizontalScrollView>
@@ -189,7 +189,7 @@
             android:layout_marginEnd="16dp"
             android:gravity="center"
             android:textColor="@color/white_a50"
-            android:text="CANCEL"/>
+            android:text="@string/button_cancel"/>
         <TextView
             android:id="@+id/edit_save_button"
             android:layout_width="80dp"
@@ -200,7 +200,7 @@
             android:layout_marginEnd="16dp"
             android:gravity="center"
             android:textColor="@color/white_a50"
-            android:text="SAVE"/>
+            android:text="@string/button_save"/>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/edit_toolbar_container"
@@ -230,7 +230,7 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
                 android:textColor="@color/white_a50"
-                android:text="CANCEL"/>
+                android:text="@string/button_cancel"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/edit_item_crop"
@@ -254,7 +254,7 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
                 android:textColor="@color/white_a50"
-                android:text="CROP"/>
+                android:text="@string/button_crop"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/edit_item_rotate"
@@ -278,7 +278,7 @@
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
                 android:textColor="@color/white_a50"
-                android:text="ROTATE"/>
+                android:text="@string/button_rotate"/>
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

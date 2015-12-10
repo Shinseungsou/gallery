@@ -67,7 +67,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     public void onResume() {
         super.onResume();
         MenuItemManager.getInstance().clear()
-            .setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.OPERATOR, MenuItemManager.State.SHARE, MenuItemManager.State.UNSELECTED);
+            .setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.OPERATOR, MenuItemManager.State.IMAGE, MenuItemManager.State.SHARE, MenuItemManager.State.UNSELECTED);
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){

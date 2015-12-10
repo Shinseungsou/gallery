@@ -41,7 +41,7 @@
     <string name="delete">delete</string>
     <string name="rename">rename</string>
     <string name="relocate">relocate</string>
-    <string name="crop">crop</string>
+    <string name="edit">edit</string>
     <string name="multi_select">Multi Select</string>
     <string name="new_directory">New Directory</string>
     <string name="share_kakao">Kakao Talk</string>
@@ -51,6 +51,18 @@
     <string name="view_all">View All Images</string>
     <string name="view_dir">View Directorys</string>
     <string name="view_img">View Images</string>
+
+    <!-- edit -->
+    <string name="edit_crop_16_9">16:9</string>
+    <string name="edit_crop_4_3">4:3</string>
+    <string name="edit_crop_1_1">1:1</string>
+    <string name="edit_crop_free">free</string>
+    <string name="edit_crop_circle">circle</string>
+
+    <string name="button_cancel">CANCEL</string>
+    <string name="button_save">SAVE</string>
+    <string name="button_crop">CROP</string>
+    <string name="button_rotate">ROTATE</string>
 
     <!-- log fragment-->
     <string name="date">DATE</string>

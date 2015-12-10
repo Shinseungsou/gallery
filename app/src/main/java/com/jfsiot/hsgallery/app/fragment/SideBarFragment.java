@@ -67,7 +67,7 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
         AppConfig.Option.MULTISELECT = false;
-        MenuItemManager.getInstance().menuItemVisible(1);
+        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.UNSELECTED);
         this.adapter.setSelectedPosition(position);
         if(onMenuChange != null)
             this.onMenuChange.onMenuChange(this.items.get(position).id);

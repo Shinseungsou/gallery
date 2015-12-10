@@ -109,7 +109,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ((MainActivity) this.getActivity()).setOnBack(this);
         this.notifyDataChange(ImageShow.getInstance().getBucketId());
         this.menuitemstate = 1;
-        MenuItemManager.getInstance().setEnable(MenuItemManager.State.DEFAULT)
+        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT)
             .setEnable(MenuItemManager.State.UNSELECTED)
             .setEnable(MenuItemManager.State.IMAGE);
         this.getFragmentManager()
@@ -152,12 +152,13 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
             else {
                 this.selectList.add(this.items.get(position));
             }
-            if(!this.selectList.isEmpty()){
-                this.menuitemstate = 2;
+            if(this.selectList.isEmpty()) {
+                MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.UNSELECTED);
+            }else if(this.selectList.size() == 1){
+                MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.IMAGE, MenuItemManager.State.OPERATOR, MenuItemManager.State.SHARE);
             }else{
-                this.menuitemstate = 1;
+                MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.SHARE, MenuItemManager.State.OPERATOR);
             }
-            MenuItemManager.getInstance().menuItemVisible(this.menuitemstate);
 
             Timber.d("list : %s", this.selectList.toString());
         }
@@ -177,7 +178,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         if(AppConfig.Option.MULTISELECT) {
             this.getCurrentAction(false, MenuItemManager.Item.MULTISELECT);
             AppConfig.Option.MULTISELECT = false;
-            MenuItemManager.getInstance().menuItemVisible(1);
+            MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.UNSELECTED, MenuItemManager.State.DEFAULT);
             this.selectList.clear();
             return true;
         }else {

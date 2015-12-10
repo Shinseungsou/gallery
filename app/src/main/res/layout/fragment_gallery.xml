@@ -11,7 +11,7 @@
         android:layout_marginRight="4dp"
         android:padding="2dp"
         android:visibility="gone"
-        android:background="@color/switch_thumb_disabled_material_light" />
+        android:background="@color/black_a90" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gallery"
         android:scrollbars="vertical"
