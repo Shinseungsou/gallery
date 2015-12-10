@@ -118,7 +118,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
                 this.adapter.rotate(ImageShow.getInstance().getPosition());
             }else if (item == MenuItemManager.Item.EDIT){
                 ImageShow.getInstance().setImageData(this.list.get(ImageShow.getInstance().getPosition()));
-                ((MainActivity) this.getActivity()).navigate(EditImageFragment.class, true);
+                ((MainActivity) this.getActivity()).navigate(ImageEditFragment.class, true);
             }
         }
     }

@@ -17,21 +17,25 @@ import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.ImageData;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
 import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.view.navigator.Navigator;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class EditImageFragment extends Fragment implements View.OnClickListener{
+public class ImageEditFragment extends Fragment implements View.OnClickListener{
 
     @InjectView(R.id.cropImageView) protected CropImageView cropImageView;
     @InjectView(R.id.edit_title) protected TextView titleView;
     @InjectView(R.id.edit_save_button) protected TextView saveButton;
     @InjectView(R.id.edit_cancel_button) protected TextView cancelButton;
 
-    @InjectView(R.id.edit_item_cancel) protected RelativeLayout cancelEdit;
+    @InjectView(R.id.edit_item_ok) protected RelativeLayout confirmEdit;
     @InjectView(R.id.edit_item_crop) protected RelativeLayout crop;
     @InjectView(R.id.edit_item_rotate) protected RelativeLayout rotate;
 
@@ -46,7 +50,15 @@ public class EditImageFragment extends Fragment implements View.OnClickListener{
     private Toolbar toolbar;
 
     private ImageData image;
+    private Navigator mNavigator;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        enableCrop = false;
+        mNavigator = (Navigator) getActivity();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_edit, container, false);
@@ -56,12 +68,6 @@ public class EditImageFragment extends Fragment implements View.OnClickListener{
         return view;
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        enableCrop = false;
-    }
 
     @Override
     public void onDestroy() {
@@ -81,24 +87,29 @@ public class EditImageFragment extends Fragment implements View.OnClickListener{
         this.titleView.setText(image.title);
         this.crop.setOnClickListener(v -> {
             enableCrop = !enableCrop;
-            if (enableCrop) {
-                cropItemContainer.setVisibility(View.VISIBLE);
-            } else {
-                cropItemContainer.setVisibility(View.GONE);
-                cropImageView.setImageBitmap(cropImageView.getCroppedBitmap());
-            }
+            cropItemContainer.setVisibility(enableCrop ? View.VISIBLE : View.GONE);
             cropImageView.setCropEnabled(enableCrop);
         });
-        this.cancelEdit.setOnClickListener(v->{
+        this.confirmEdit.setOnClickListener(v -> {
             cropImageView.setCropEnabled(enableCrop = false);
             cropItemContainer.setVisibility(View.GONE);
+            if (enableCrop) {
+                cropImageView.setImageBitmap(cropImageView.getCroppedBitmap());
+            }
         });
         cropImageView.setCropEnabled(false);
         this.rotate.setOnClickListener(v -> {
+            if(enableCrop) {
+                cropImageView.setCropEnabled(enableCrop = false);
+                cropItemContainer.setVisibility(View.GONE);
+            }
             cropImageView.rotateImage(CropImageView.RotateDegrees.ROTATE_90D);
         });
         this.saveButton.setOnClickListener(v -> {
             save();
+        });
+        this.cancelButton.setOnClickListener(v -> {
+            mNavigator.back();
         });
 
         this.cropItemFree.setOnClickListener(v->{
@@ -119,7 +130,10 @@ public class EditImageFragment extends Fragment implements View.OnClickListener{
     }
 
     private void save(){
-
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssSSS", Locale.KOREA);
+        ImageShow.getInstance().insertImage(getActivity(), String.format("%s.jpg", dateFormat.format(calendar.getTime())), cropImageView.getImageBitmap());
+        mNavigator.back();
     }
     @Override
     public void onClick(View v) {

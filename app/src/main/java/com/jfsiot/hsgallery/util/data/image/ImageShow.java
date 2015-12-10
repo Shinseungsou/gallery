@@ -250,6 +250,39 @@ public class ImageShow {
         UseLogManager.getInstance().addLog(image, UseLog.Type.ROTATE, String.format("%.1f", image.degree));
     }
 
+    private final String PATH = "/storage/emulated/0/DCIM/hsgallery/";
+    public void insertImage(Context context, String name, Bitmap image){
+        File newImage = new File(PATH, name);
+        if(!newImage.getParentFile().exists()){
+            new FileController().makeDir(PATH);
+        }
+
+        OutputStream out = null;
+
+        try {
+            newImage.createNewFile();
+            out = new FileOutputStream(newImage);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            Timber.d("new Image : %s", newImage.getPath());
+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.ImageColumns.DATA, newImage.getPath());
+            values.put(MediaStore.Images.ImageColumns.TITLE, newImage.getName());
+            values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, newImage.getPath());
+
+            context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            UseLogManager.getInstance().addLog((new ImageData().fakeImageFile()), newImage.getPath(), UseLog.Type.EDIT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void insertBucket(Context context, String name){
         File newDir = (new FileController()).makeDir("/storage/emulated/0/DCIM/"+name);
         if(newDir != null) {

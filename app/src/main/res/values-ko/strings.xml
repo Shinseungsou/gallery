@@ -72,6 +72,7 @@
     <string name="edit_crop_free">free</string>
     <string name="edit_crop_circle">circle</string>
 
+    <string name="button_ok">확인</string>
     <string name="button_cancel">취소</string>
     <string name="button_save">저장</string>
     <string name="button_crop">잘라내기</string>

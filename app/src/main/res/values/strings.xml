@@ -59,6 +59,7 @@
     <string name="edit_crop_free">free</string>
     <string name="edit_crop_circle">circle</string>
 
+    <string name="button_ok">Ok</string>
     <string name="button_cancel">CANCEL</string>
     <string name="button_save">SAVE</string>
     <string name="button_crop">CROP</string>

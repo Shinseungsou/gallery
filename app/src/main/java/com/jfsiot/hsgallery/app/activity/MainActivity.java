@@ -278,8 +278,10 @@ public class MainActivity extends AppCompatActivity implements Navigator{
     @Override
     public boolean back() {
         Timber.d("activity back!");
-        if(this.onBack != null)
-            return onBack.onBack();
+//        if(this.onBack != null)
+//            return onBack.onBack();
+        if(navigator.getCurrentFragment() instanceof OnBack)
+            ((OnBack) navigator.getCurrentFragment()).onBack();
         return this.navigator.back();
     }
 

@@ -236,6 +236,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         }else if(item == MenuItemManager.Item.INSTAGRAM){
             ImageShow.getInstance().sendInstagram(this.getActivity(), selectList.get(0));
             UseLogManager.getInstance().addLog(selectList.get(0), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
+        }else if(item == MenuItemManager.Item.EDIT){
+            ImageShow.getInstance().setImageData(selectList.get(0));
+            navigator.navigate(ImageEditFragment.class, true);
         }
 
         this.notifyDataChange(ImageShow.getInstance().getBucketId());

@@ -38,7 +38,7 @@ public class UseLog extends DBModel {
 
 
     public enum Type{
-        SAVE, READ, UPDATE, DELETE, ALL, DISKDEL, RENAME, COPY, MOVE, SHARE, NEWDIR, ROTATE, CROP
+        SAVE, READ, UPDATE, DELETE, ALL, DISKDEL, RENAME, COPY, MOVE, SHARE, NEWDIR, ROTATE, EDIT
     }
     public enum Share{
         KAKAO, INSTAGRAM, FACEBOOK
@@ -57,7 +57,7 @@ public class UseLog extends DBModel {
             case SHARE  :   return "share";
             case NEWDIR :   return "new directory";
             case ROTATE :   return "rotate";
-            case CROP   :   return "crop";
+            case EDIT   :   return "edit";
             default     :   return null;
         }
     }
