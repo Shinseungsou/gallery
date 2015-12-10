@@ -181,12 +181,8 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
             MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.UNSELECTED, MenuItemManager.State.DEFAULT);
             this.selectList.clear();
             return true;
-        }else {
-            Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_hide);
-            this.sidebar.startAnimation(anim);
-
-            return false;
         }
+        return false;
     }
 
     public void setOnMenuListener(){
