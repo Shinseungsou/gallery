@@ -28,7 +28,7 @@ import java.util.Locale;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ImageEditFragment extends Fragment implements View.OnClickListener{
+public class ImageEditFragment extends Fragment{
 
     @InjectView(R.id.cropImageView) protected CropImageView cropImageView;
     @InjectView(R.id.edit_title) protected TextView titleView;
@@ -135,9 +135,4 @@ public class ImageEditFragment extends Fragment implements View.OnClickListener{
         ImageShow.getInstance().insertImage(getActivity(), String.format("%s.jpg", dateFormat.format(calendar.getTime())), cropImageView.getImageBitmap());
         mNavigator.back();
     }
-    @Override
-    public void onClick(View v) {
-
-    }
-
 }

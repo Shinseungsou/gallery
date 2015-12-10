@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+def key = new Properties()
+key.load(new FileInputStream(rootProject.file("release.properties")))
 android {
     signingConfigs {
         config {
-            keyAlias 'hsgallery'
-            keyPassword 'asd456'
-            storeFile file('C:/Users/SSS/Documents/gallery/hsgallery_key.keystore')
-            storePassword 'asd456'
+            keyAlias key.keyAlias
+            keyPassword key.keyPassword
+            storeFile rootProject.file(key.storeFile)
+            storePassword key.storePassword
         }
     }
     compileSdkVersion 23
