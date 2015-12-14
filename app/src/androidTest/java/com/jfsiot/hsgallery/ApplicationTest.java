@@ -1,4 +1,4 @@
-package com.jfsiot;
+package com.jfsiot.hsgallery;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -13,12 +13,12 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "com.jfsiot.hsgallery"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 2
+        versionCode 4
         versionName "1.10"
         signingConfig signingConfigs.config
     }
