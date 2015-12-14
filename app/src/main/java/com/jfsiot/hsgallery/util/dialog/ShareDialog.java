@@ -37,25 +37,22 @@ public class ShareDialog {
                     }
                 })
                 .items(images.size() > 1 ? shareListSome : shareListOnly)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        switch (which) {
-                            case 0:
-                                ImageShow.getInstance().sendKaKao(context, images);
-                                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
-                                break;
-                            case 1:
-                                ImageShow.getInstance().sendFacebook(context, images);
-                                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
-                                break;
-                            case 2:
-                                ImageShow.getInstance().sendInstagram(context, images.get(0));
-                                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
-                                break;
-                            default:
-                                break;
-                        }
+                .itemsCallback((dialog, itemView, which, text) -> {
+                    switch (which) {
+                        case 0:
+                            ImageShow.getInstance().sendKaKao(context, images);
+                            UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
+                            break;
+                        case 1:
+                            ImageShow.getInstance().sendFacebook(context, images);
+                            UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
+                            break;
+                        case 2:
+                            ImageShow.getInstance().sendInstagram(context, images.get(0));
+                            UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
+                            break;
+                        default:
+                            break;
                     }
                 })
                 .build();
