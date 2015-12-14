@@ -244,16 +244,8 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                     }
                 })
                 .show();
-        }else if(item == ToolbarHelper.Item.FACEBOOK){
+        }else if(item == ToolbarHelper.Item.SHARE){
             ShareDialog.build(getActivity(), selectList).show();
-//            ImageShow.getInstance().sendFacebook(this.getActivity(), selectList);
-//            UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
-        }else if(item == ToolbarHelper.Item.KAKAO){
-            ImageShow.getInstance().sendKaKao(this.getActivity(), selectList);
-            UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
-        }else if(item == ToolbarHelper.Item.INSTAGRAM){
-            ImageShow.getInstance().sendInstagram(this.getActivity(), selectList.get(0));
-            UseLogManager.getInstance().addLog(selectList.get(0), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
         }else if(item == ToolbarHelper.Item.EDIT){
             ImageShow.getInstance().setImageData(selectList.get(0));
             mNavigator.navigate(ImageEditFragment.class, true);

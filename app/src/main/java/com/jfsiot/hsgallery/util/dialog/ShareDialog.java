@@ -6,6 +6,8 @@ import android.view.View;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.model.ImageData;
+import com.jfsiot.hsgallery.app.model.UseLog;
+import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class ShareDialog {
     private static MaterialDialog shareDialog;
 
     public static MaterialDialog build(Context context, List<ImageData> images){
-        String[] shareListSome = {context.getString(R.string.share_kakao), context.getString(R.string.share_facebook), context.getString(R.string.share_instagram)};
-        String[] shareListOnly = {context.getString(R.string.share_kakao), context.getString(R.string.share_facebook)};
+        String[] shareListOnly = {context.getString(R.string.share_kakao), context.getString(R.string.share_facebook), context.getString(R.string.share_instagram)};
+        String[] shareListSome = {context.getString(R.string.share_kakao), context.getString(R.string.share_facebook)};
         Timber.d("share : %s %s %s", images.size(), images.size() > 1, images.size() > 1 ? shareListSome.length : shareListOnly.length);
 
         shareDialog = new MaterialDialog.Builder(context)
@@ -41,12 +43,15 @@ public class ShareDialog {
                         switch (which) {
                             case 0:
                                 ImageShow.getInstance().sendKaKao(context, images);
+                                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
                                 break;
                             case 1:
                                 ImageShow.getInstance().sendFacebook(context, images);
+                                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
                                 break;
                             case 2:
                                 ImageShow.getInstance().sendInstagram(context, images.get(0));
+                                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
                                 break;
                             default:
                                 break;

@@ -127,15 +127,9 @@ public class ToolbarHelper {
                             }
                         })
                         .show();
-                } else if (item.getItemId() == ToolbarHelper.Item.getItem(toolbar, ToolbarHelper.Item.KAKAO).getItemId()) {
+                } else if (item.getItemId() == ToolbarHelper.Item.getItem(toolbar, ToolbarHelper.Item.SHARE).getItemId()) {
                     if(navigator.getCurrentFragment() instanceof ToolbarCallback.ToolbarSimpleCallback)
-                        ((ToolbarCallback.ToolbarSimpleCallback) navigator.getCurrentFragment()).getCurrentAction(true, Item.KAKAO);
-                } else if (item.getItemId() == ToolbarHelper.Item.getItem(toolbar, ToolbarHelper.Item.FACEBOOK).getItemId()) {
-                    if(navigator.getCurrentFragment() instanceof ToolbarCallback.ToolbarSimpleCallback)
-                        ((ToolbarCallback.ToolbarSimpleCallback) navigator.getCurrentFragment()).getCurrentAction(true, Item.FACEBOOK);
-                } else if (item.getItemId() == ToolbarHelper.Item.getItem(toolbar, ToolbarHelper.Item.INSTAGRAM).getItemId()) {
-                    if(navigator.getCurrentFragment() instanceof ToolbarCallback.ToolbarSimpleCallback)
-                        ((ToolbarCallback.ToolbarSimpleCallback) navigator.getCurrentFragment()).getCurrentAction(true, Item.INSTAGRAM);
+                        ((ToolbarCallback.ToolbarSimpleCallback) navigator.getCurrentFragment()).getCurrentAction(true, Item.SHARE);
                 }
                 return true;
             }
@@ -158,9 +152,7 @@ public class ToolbarHelper {
         Item.getItem(toolbar, Item.MORE).setVisible(false);
         Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
         Item.getItem(toolbar, Item.NEW_DIR).setVisible(true);
-        Item.getItem(toolbar, Item.KAKAO).setVisible(false);
-        Item.getItem(toolbar, Item.FACEBOOK).setVisible(false);
-        Item.getItem(toolbar, Item.INSTAGRAM).setVisible(false);
+        Item.getItem(toolbar, Item.SHARE).setVisible(false);
 
         return this;
     }
@@ -182,9 +174,7 @@ public class ToolbarHelper {
                 Item.getItem(toolbar, Item.RENAME).setVisible(true);
                 break;
             case SHARE: //PIC(selected), Image
-                Item.getItem(toolbar, Item.KAKAO).setVisible(true);
-                Item.getItem(toolbar, Item.FACEBOOK).setVisible(true);
-                Item.getItem(toolbar, Item.INSTAGRAM).setVisible(true);
+                Item.getItem(toolbar, Item.SHARE).setVisible(true);
                 break;
             case UNSELECTED: //PIC(unselected)
                 Item.getItem(toolbar, Item.MULTISELECT).setVisible(true);
@@ -215,9 +205,7 @@ public class ToolbarHelper {
                 Item.getItem(toolbar, Item.RENAME).setVisible(false);
                 break;
             case SHARE: //PIC(selected), Image
-                Item.getItem(toolbar, Item.KAKAO).setVisible(false);
-                Item.getItem(toolbar, Item.FACEBOOK).setVisible(false);
-                Item.getItem(toolbar, Item.INSTAGRAM).setVisible(false);
+                Item.getItem(toolbar, Item.SHARE).setVisible(false);
                 break;
             case UNSELECTED: //PIC(unselected)
                 Item.getItem(toolbar, Item.MULTISELECT).setVisible(false);
@@ -249,9 +237,7 @@ public class ToolbarHelper {
         public static final int EDIT = R.id.edit;
 
         /* share */
-        public static final int KAKAO = R.id.menu_share_kakao;
-        public static final int FACEBOOK = R.id.menu_share_facebook;
-        public static final int INSTAGRAM = R.id.menu_share_instagram;
+        public static final int SHARE = R.id.menu_share;
 
         public static MenuItem getItem(Toolbar toolbar, int menuItem){
             return toolbar.getMenu().findItem(menuItem);

@@ -16,6 +16,7 @@ import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
+import com.jfsiot.hsgallery.util.dialog.ShareDialog;
 import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.ToolbarCallback;
 import com.jfsiot.hsgallery.util.view.viewpager.FixedViewPager;
@@ -33,7 +34,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     private Toolbar toolbar;
     private ImageViewPagerAdapter adapter;
 
-    private List<ImageData> list;
+    private List<ImageData> imageDataList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
         ButterKnife.inject(this, view);
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.image);
-        this.adapter = new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, list);
+        this.adapter = new ImageViewPagerAdapter(this.getActivity().getApplicationContext(), this, imageDataList);
         pager.setAdapter(adapter);
         return view;
     }
@@ -50,11 +51,11 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list = new ArrayList<>();
+        imageDataList = new ArrayList<>();
         if(ImageShow.getInstance().getBucketId() != null)
-            list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
+            imageDataList.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
         else
-            list.addAll(ImageShow.getInstance().getImages());
+            imageDataList.addAll(ImageShow.getInstance().getImages());
     }
 
     @Override
@@ -76,13 +77,13 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
                 super.onPageSelected(position);
                 Timber.d("&& onPage");
                 ImageShow.getInstance().setPosition(position);
-                Timber.d("**image data : %s", list.get(position).data);
-                Timber.d("**image displayName : %s", list.get(position).displayName);
-                Timber.d("**image isPrivate : %s", list.get(position).isPrivate);
-                Timber.d("**image title : %s", list.get(position).title);
-                Timber.d("**image orientation : %s", list.get(position).orientation);
-                Timber.d("**image realname : %s", ImageController.getInstance().getRealName(list.get(position)));
-                Timber.d("**image real private %s", ImageController.getInstance().isPrivate(list.get(position)));
+                Timber.d("**image data : %s", imageDataList.get(position).data);
+                Timber.d("**image displayName : %s", imageDataList.get(position).displayName);
+                Timber.d("**image isPrivate : %s", imageDataList.get(position).isPrivate);
+                Timber.d("**image title : %s", imageDataList.get(position).title);
+                Timber.d("**image orientation : %s", imageDataList.get(position).orientation);
+                Timber.d("**image realname : %s", ImageController.getInstance().getRealName(imageDataList.get(position)));
+                Timber.d("**image real private %s", ImageController.getInstance().isPrivate(imageDataList.get(position)));
             }
         });
         Timber.d("image data %s", ImageShow.getInstance().getImageData().toString());
@@ -97,27 +98,18 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
         if (isRun) {
             if (item == ToolbarHelper.Item.RENAME) {
                 if(ImageShow.getInstance().getBucketId() != null)
-                    list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
+                    imageDataList.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
                 else
-                    list.addAll(ImageShow.getInstance().getImages());
+                    imageDataList.addAll(ImageShow.getInstance().getImages());
                 this.adapter.update();
-            }else if (item == ToolbarHelper.Item.INSTAGRAM) {
-                ImageShow.getInstance().sendInstagram(getActivity(), list.get(pager.getCurrentItem()));
-                UseLogManager.getInstance().addLog(list.get(pager.getCurrentItem()), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
-            }else if (item == ToolbarHelper.Item.KAKAO) {
+            }else if (item == ToolbarHelper.Item.SHARE) {
                 List<ImageData> images = new ArrayList<>();
-                images.add(list.get(pager.getCurrentItem()));
-                ImageShow.getInstance().sendKaKao(getActivity(), images);
-                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
-            }else if (item == ToolbarHelper.Item.FACEBOOK) {
-                List<ImageData> images = new ArrayList<>();
-                images.add(list.get(pager.getCurrentItem()));
-                ImageShow.getInstance().sendFacebook(getActivity(), images);
-                UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
+                images.add(imageDataList.get(pager.getCurrentItem()));
+                ShareDialog.build(getActivity(), images).show();
             }else if (item == ToolbarHelper.Item.ROTATE) {
                 this.adapter.rotate(ImageShow.getInstance().getPosition());
             }else if (item == ToolbarHelper.Item.EDIT){
-                ImageShow.getInstance().setImageData(this.list.get(ImageShow.getInstance().getPosition()));
+                ImageShow.getInstance().setImageData(this.imageDataList.get(ImageShow.getInstance().getPosition()));
                 ((MainActivity) this.getActivity()).navigate(ImageEditFragment.class, true);
             }
         }
