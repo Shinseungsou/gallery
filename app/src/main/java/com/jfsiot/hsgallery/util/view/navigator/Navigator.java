@@ -13,4 +13,5 @@ public interface Navigator {
     public void navigate(Class<? extends Fragment> target, Bundle bundle, boolean addToBackStack,  boolean clear);
     public boolean back();
     public String getBackStackNameAt(int index);
+    public Fragment getCurrentFragment();
 }

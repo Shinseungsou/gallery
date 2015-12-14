@@ -10,18 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.unique.CurrentUseLog;
 import com.jfsiot.hsgallery.app.recycler.adapter.LogAdapter;
 import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.util.data.db.table.DBOpenHelper;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -73,6 +72,7 @@ public class LogFragment extends RecyclerViewFragment<LogAdapter, UseLog> implem
     @Override
     public void onResume() {
         super.onResume();
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT);
         DBOpenHelper helper = new DBOpenHelper(this.getActivity().getBaseContext());
         this.items.clear();
         helper.open();

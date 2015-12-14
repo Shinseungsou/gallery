@@ -9,19 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.app.model.unique.CurrentUseLog;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
-import com.jfsiot.hsgallery.util.data.image.ImageShow;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -59,6 +55,7 @@ public class LogImageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT);
         useLog = CurrentUseLog.getInstance().getUseLog();
 //        Uri uri = Uri.fromFile(new File( useLog.to_data == null ? useLog.data : useLog.to_data));
         Uri uri = Uri.fromFile(new File(ImageController.getInstance().getImageData(this.getActivity(), useLog.pictureId).data));

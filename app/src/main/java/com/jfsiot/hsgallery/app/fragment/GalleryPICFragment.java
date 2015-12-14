@@ -22,7 +22,7 @@ import com.jfsiot.hsgallery.app.recycler.adapter.GalleryAdapter;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.Navigator;
 import com.jfsiot.hsgallery.util.view.navigator.OnBack;
 import com.jfsiot.hsgallery.util.view.navigator.ToolbarCallback;
@@ -45,22 +45,20 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     @InjectView(R.id.sidebar) protected LinearLayout sidebar;
 
     private CompositeSubscription subscription;
-    private Toolbar toolbar;
-    private Navigator navigator;
+    private Toolbar mToolbar;
+    private Navigator mNavigator;
     private ImageController imageController;
-    private boolean isMultiSelect;
 
     private List<ImageData> selectList;
-    private int menuitemstate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ButterKnife.inject(this, view);
-        this.navigator = (MainActivity) this.getActivity();
+        this.mNavigator = (MainActivity) this.getActivity();
 
-        this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
-        this.toolbar.setTitle(R.string.gallery);
+        this.mToolbar = ((MainActivity)this.getActivity()).getToolbar();
+        this.mToolbar.setTitle(R.string.gallery);
 
         this.setupRecyclerView(this.gallery);
 
@@ -70,13 +68,21 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
         Animation anim = AnimationUtils.loadAnimation(getActivity().getBaseContext(), R.anim.slide_right_show);
         anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override public void onAnimationStart(Animation animation) { }
             @Override
-            public void onAnimationEnd(Animation animation) { Timber.d("end!");setOnMenuListener(); }
-            @Override public void onAnimationRepeat(Animation animation) { }
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Timber.d("end!");
+                setOnMenuListener();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
         });
         this.sidebar.setAnimation(anim);
-        this.isMultiSelect = false;
         return view;
     }
 
@@ -92,6 +98,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.selectList = new ArrayList<>();
+
     }
 
     @Override
@@ -108,10 +115,8 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         ((MainActivity) this.getActivity()).setOnBack(this);
         this.notifyDataChange(ImageShow.getInstance().getBucketId());
-        this.menuitemstate = 1;
-        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT)
-            .setEnable(MenuItemManager.State.UNSELECTED)
-            .setEnable(MenuItemManager.State.IMAGE);
+
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.UNSELECTED);
         this.getFragmentManager()
             .beginTransaction()
             .add(this.sidebar.getId(), ((MainActivity)getActivity()).getFragmentNavigator().instantiateFragment(SideBarFragment.class))
@@ -144,7 +149,7 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
             ImageShow.getInstance().setImageData(this.items.get(position));
             ImageShow.getInstance().setPosition(position);
             UseLogManager.getInstance().addLog(this.items.get(position), UseLog.Type.READ);
-            this.navigator.navigate(ImageFragment.class, true);
+            this.mNavigator.navigate(ImageFragment.class, true);
         }else{
             int i;
             if((i = contains(this.items.get(position).id)) >= 0)
@@ -153,11 +158,11 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                 this.selectList.add(this.items.get(position));
             }
             if(this.selectList.isEmpty()) {
-                MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.UNSELECTED);
+                ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.UNSELECTED);
             }else if(this.selectList.size() == 1){
-                MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.IMAGE, MenuItemManager.State.OPERATOR, MenuItemManager.State.SHARE);
+                ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.IMAGE, ToolbarHelper.State.OPERATOR, ToolbarHelper.State.SHARE);
             }else{
-                MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.SHARE, MenuItemManager.State.OPERATOR);
+                ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.SHARE, ToolbarHelper.State.OPERATOR);
             }
 
             Timber.d("list : %s", this.selectList.toString());
@@ -176,9 +181,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public boolean onBack() {
         Timber.d("fragment back!");
         if(AppConfig.Option.MULTISELECT) {
-            this.getCurrentAction(false, MenuItemManager.Item.MULTISELECT);
+            this.getCurrentAction(false, ToolbarHelper.Item.MULTISELECT);
             AppConfig.Option.MULTISELECT = false;
-            MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.UNSELECTED, MenuItemManager.State.DEFAULT);
+            ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.UNSELECTED, ToolbarHelper.State.DEFAULT);
             this.selectList.clear();
             return true;
         }
@@ -198,14 +203,14 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
     @Override
     public void getCurrentAction(boolean isRun, int item) {
-        if(item == MenuItemManager.Item.MULTISELECT){
+        if (item == ToolbarHelper.Item.MULTISELECT){
             this.adapter.notifyDataSetChanged();
-        }else if (item == MenuItemManager.Item.MOVE){
+        }else if (item == ToolbarHelper.Item.MOVE){
             ImageShow.getInstance().move(this.getActivity(), selectList);
             this.notifyDataChange(ImageShow.getInstance().getBucketId());
-        }else if(item == MenuItemManager.Item.DELETE){
+        }else if (item == ToolbarHelper.Item.DELETE){
             MaterialDialog renameDialog = new MaterialDialog.Builder(getActivity())
-            .title(R.string.delete_upper)
+                .title(R.string.delete_upper)
                 .content(getResources().getQuantityString(R.plurals.dialog_select, selectList.size(), selectList.size()))
                 .positiveText(R.string.confirm_upper)
                 .negativeText(R.string.cancel_upper)
@@ -223,18 +228,18 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                     }
                 })
                 .show();
-        }else if(item == MenuItemManager.Item.FACEBOOK){
+        }else if(item == ToolbarHelper.Item.FACEBOOK){
             ImageShow.getInstance().sendFacebook(this.getActivity(), selectList);
             UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
-        }else if(item == MenuItemManager.Item.KAKAO){
+        }else if(item == ToolbarHelper.Item.KAKAO){
             ImageShow.getInstance().sendKaKao(this.getActivity(), selectList);
             UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
-        }else if(item == MenuItemManager.Item.INSTAGRAM){
+        }else if(item == ToolbarHelper.Item.INSTAGRAM){
             ImageShow.getInstance().sendInstagram(this.getActivity(), selectList.get(0));
             UseLogManager.getInstance().addLog(selectList.get(0), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
-        }else if(item == MenuItemManager.Item.EDIT){
+        }else if(item == ToolbarHelper.Item.EDIT){
             ImageShow.getInstance().setImageData(selectList.get(0));
-            navigator.navigate(ImageEditFragment.class, true);
+            mNavigator.navigate(ImageEditFragment.class, true);
         }
 
         this.notifyDataChange(ImageShow.getInstance().getBucketId());

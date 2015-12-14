@@ -13,7 +13,7 @@ import com.jfsiot.hsgallery.app.AppConfig;
 import com.jfsiot.hsgallery.app.model.ImageBucket;
 import com.jfsiot.hsgallery.app.recycler.adapter.GalleryDIRAdapter;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.recyclerview.OnMenuChange;
 import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
@@ -67,7 +67,7 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     @Override
     public void onRecyclerViewItemClick(View view, int position) {
         AppConfig.Option.MULTISELECT = false;
-        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.UNSELECTED);
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.UNSELECTED);
         this.adapter.setSelectedPosition(position);
         if(onMenuChange != null)
             this.onMenuChange.onMenuChange(this.items.get(position).id);

@@ -13,7 +13,7 @@ import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.ImageBucket;
 import com.jfsiot.hsgallery.app.recycler.adapter.GalleryDIRAdapter;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.Navigator;
 import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
@@ -40,7 +40,7 @@ public class GalleryDIRFragment extends RecyclerViewFragment<GalleryDIRAdapter, 
 
         this.toolbar = ((MainActivity)this.getActivity()).getToolbar();
         this.toolbar.setTitle(R.string.gallery);
-        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.UNSELECTED, MenuItemManager.State.DEFAULT);
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.UNSELECTED, ToolbarHelper.State.DEFAULT);
         ImageShow.getInstance().initImageShow();
         this.setupRecyclerView(this.gallery);
         this.items.clear();

@@ -55,6 +55,7 @@ public class FragmentNavigator implements Navigator {
         this.navigate(target, bundle, addToBackStack, false);
     }
 
+    @Override
     public Fragment getCurrentFragment(){
         return this.manager.findFragmentById(containerViewId);
     }

@@ -16,7 +16,7 @@ import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.activity.MainActivity;
 import com.jfsiot.hsgallery.app.model.ImageData;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.Navigator;
 import com.squareup.picasso.Picasso;
 
@@ -78,7 +78,7 @@ public class ImageEditFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        MenuItemManager.getInstance().clear().setEnable(MenuItemManager.State.DEFAULT);
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT);
         image = ImageShow.getInstance().getImageData();
 //        Uri uri = Uri.fromFile(new File( image.to_data == null ? image.data : image.to_data));
         Uri uri = Uri.fromFile(new File(image.data));

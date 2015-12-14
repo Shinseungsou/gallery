@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.jfsiot.hsgallery.app.AppConst;
 import com.jfsiot.hsgallery.app.AppManager;
 import com.jfsiot.hsgallery.app.model.Mail;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 
 import java.io.File;
 
@@ -63,6 +63,7 @@ public class OptionFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onResume() {
         super.onResume();
+        ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT);
         password.setOnKeyListener((view, keycode, action) -> {
             Timber.d("key down %s", action);
             if(action.getAction() == KeyEvent.ACTION_DOWN && (action.getKeyCode() == KeyEvent.KEYCODE_ENTER || action.getKeyCode() == KeyEvent.KEYCODE_ENDCALL)) {

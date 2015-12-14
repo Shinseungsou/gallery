@@ -8,25 +8,19 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
 import com.jfsiot.hsgallery.app.AppConfig;
 import com.jfsiot.hsgallery.app.AppConst;
 import com.jfsiot.hsgallery.app.AppManager;
 import com.jfsiot.hsgallery.app.fragment.GalleryPICFragment;
-import com.jfsiot.hsgallery.app.fragment.LogFragment;
 import com.jfsiot.hsgallery.app.fragment.MenuFragment;
-import com.jfsiot.hsgallery.app.fragment.OptionFragment;
 import com.jfsiot.hsgallery.app.model.unique.Configuration;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
-import com.jfsiot.hsgallery.util.data.image.ImageShow;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.FragmentNavigator;
 import com.jfsiot.hsgallery.util.view.navigator.Navigator;
 import com.jfsiot.hsgallery.util.view.navigator.OnBack;
@@ -57,9 +51,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         ButterKnife.inject(this);
 
         this.toolbar.inflateMenu(R.menu.menu_main);
-        MenuItemManager.getInstance().setManager(this.toolbar);
         toolbar.setOnMenuItemClickListener(super::onOptionsItemSelected);
-        this.setToolbarItem(this.toolbar.getMenu());
         ImageController.getInstance().init(this.getBaseContext());
 
         AppConfig.Option.SUPER_USER = false;
@@ -69,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         UseLogManager.getInstance().setContext(getBaseContext());
 
         navigator = new FragmentNavigator(this.getFragmentManager(), R.id.container, GalleryPICFragment.class);
+        ToolbarHelper.getInstance().setManager(this, this.toolbar, navigator);
     }
     public Toolbar getToolbar(){
         return this.toolbar;
@@ -100,127 +93,6 @@ public class MainActivity extends AppCompatActivity implements Navigator{
             .commit();
     }
 
-    private MenuItem menuLog;
-    private MenuItem menuMore;
-    private void setToolbarItem(Menu menu){
-        this.menuLog = menu.findItem(R.id.menu_log);
-        this.menuMore = menu.findItem(R.id.menu_more);
-        toolbar.setOnMenuItemClickListener(
-            item -> {
-                    /*LOG*/
-                if (item.getItemId() == menuLog.getItemId()) {
-                    this.navigate(LogFragment.class, true);
-
-                    /*MOVE*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.MOVE).getItemId()) {
-                    if(toolbarSimpleCallback != null)
-                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.MOVE);
-
-                    /*RENAME*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.RENAME).getItemId()) {
-                    MaterialDialog renameDialog = new MaterialDialog.Builder(this)
-                        .title("rename")
-                        .content(ImageShow.getInstance().getImageData().displayName)
-                        .input("rename to", "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-
-                            }
-                        })
-                        .positiveText("rename")
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                                dialog.getInputEditText().setText("");
-                            }
-
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                                ImageShow.getInstance().renameImagedata(getBaseContext(), ImageShow.getInstance().getImageData().id, dialog.getInputEditText().getText().toString(), false);
-                                if(toolbarSimpleCallback != null)
-                                    toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.RENAME);
-                            }
-                        })
-                        .show();
-
-                    /* DELETE */
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.DELETE).getItemId()) {
-                    if(toolbarSimpleCallback != null)
-                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.DELETE);
-
-                    /*SELECT*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.MULTISELECT).getItemId()) {
-                    if(toolbarSimpleCallback != null) {
-                        AppConfig.Option.MULTISELECT = !AppConfig.Option.MULTISELECT;
-                        this.toolbarSimpleCallback.getCurrentAction(AppConfig.Option.MULTISELECT, MenuItemManager.Item.MULTISELECT);
-                    }
-                    /*ROTATE*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.ROTATE).getItemId()) {
-                    if(toolbarSimpleCallback != null)
-                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.ROTATE);
-
-                    /*EDIT*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.EDIT).getItemId()) {
-                    if(toolbarSimpleCallback != null)
-                        toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.EDIT);
-                    /*MORE*/
-                } else if (item.getItemId() == menuMore.getItemId()) {
-                    if (this.menuLayout.getVisibility() == View.VISIBLE)
-                        this.menuLayout.setVisibility(View.GONE);
-                    else
-                        this.menuLayout.setVisibility(View.VISIBLE);
-                    /* OPTION */
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.SETTING).getItemId()) {
-                    this.navigate(OptionFragment.class, true);
-
-                    /*NEW DIRECTORY*/
-                } else if (item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.NEW_DIR).getItemId()) {
-                    MaterialDialog newDirDialog = new MaterialDialog.Builder(this)
-                        .title("rename")
-                        .content(getString(R.string.dialog_new_dir))
-                        .input("rename to", "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-
-                            }
-                        })
-                        .positiveText(getString(R.string.create_upper))
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                super.onNegative(dialog);
-                                dialog.getInputEditText().setText("");
-                            }
-
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
-                                ImageShow.getInstance().insertBucket(getBaseContext(), dialog.getInputEditText().getText().toString());
-                                if(toolbarSimpleCallback != null)
-                                    toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.NEW_DIR);
-                            }
-                        })
-                        .show();
-                } else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.KAKAO).getItemId()){
-                    if(toolbarSimpleCallback != null) {
-                        this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.KAKAO);
-                    }
-                } else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.FACEBOOK).getItemId()){
-                    if(toolbarSimpleCallback != null) {
-                        this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.FACEBOOK);
-                    }
-                } else if(item.getItemId() == MenuItemManager.Item.getItem(toolbar, MenuItemManager.Item.INSTAGRAM).getItemId()){
-                    if(toolbarSimpleCallback != null) {
-                        this.toolbarSimpleCallback.getCurrentAction(true, MenuItemManager.Item.INSTAGRAM);
-                    }
-                }
-                return true;
-            }
-        );
-    }
-
     private void initShareIntent(String type, String title, String filePath) {
         String fileName = "image-3116.jpg";//Name of an image
         String externalStorageDirectory = Environment.getExternalStorageDirectory().toString();
@@ -238,8 +110,9 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         return this.getFragmentManager().findFragmentById(container.getId()).getClass().getSimpleName();
     }
 
+    @Override
     public Fragment getCurrentFragment(){
-        return this.getFragmentManager().findFragmentById(container.getId());
+        return this.navigator.getCurrentFragment();
     }
 
     public FragmentNavigator getFragmentNavigator(){

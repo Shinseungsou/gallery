@@ -16,7 +16,7 @@ import com.jfsiot.hsgallery.app.model.UseLog;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
-import com.jfsiot.hsgallery.util.view.MenuItemManager;
+import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.ToolbarCallback;
 import com.jfsiot.hsgallery.util.view.viewpager.FixedViewPager;
 
@@ -66,8 +66,8 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     @Override
     public void onResume() {
         super.onResume();
-        MenuItemManager.getInstance().clear()
-            .setEnable(MenuItemManager.State.DEFAULT, MenuItemManager.State.OPERATOR, MenuItemManager.State.IMAGE, MenuItemManager.State.SHARE, MenuItemManager.State.UNSELECTED);
+        ToolbarHelper.getInstance().clear()
+            .setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.OPERATOR, ToolbarHelper.State.IMAGE, ToolbarHelper.State.SHARE, ToolbarHelper.State.UNSELECTED);
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
         pager.setCurrentItem(ImageShow.getInstance().getPosition());
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
@@ -95,28 +95,28 @@ public class ImageFragment extends Fragment implements View.OnClickListener, Too
     @Override
     public void getCurrentAction(boolean isRun, int item) {
         if (isRun) {
-            if (item == MenuItemManager.Item.RENAME) {
+            if (item == ToolbarHelper.Item.RENAME) {
                 if(ImageShow.getInstance().getBucketId() != null)
                     list.addAll(ImageController.getInstance().getImageDataList(ImageShow.getInstance().getBucketId()));
                 else
                     list.addAll(ImageShow.getInstance().getImages());
                 this.adapter.update();
-            }else if (item == MenuItemManager.Item.INSTAGRAM) {
+            }else if (item == ToolbarHelper.Item.INSTAGRAM) {
                 ImageShow.getInstance().sendInstagram(getActivity(), list.get(pager.getCurrentItem()));
                 UseLogManager.getInstance().addLog(list.get(pager.getCurrentItem()), new String(), UseLog.getShareString(UseLog.Share.INSTAGRAM));
-            }else if (item == MenuItemManager.Item.KAKAO) {
+            }else if (item == ToolbarHelper.Item.KAKAO) {
                 List<ImageData> images = new ArrayList<>();
                 images.add(list.get(pager.getCurrentItem()));
                 ImageShow.getInstance().sendKaKao(getActivity(), images);
                 UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
-            }else if (item == MenuItemManager.Item.FACEBOOK) {
+            }else if (item == ToolbarHelper.Item.FACEBOOK) {
                 List<ImageData> images = new ArrayList<>();
                 images.add(list.get(pager.getCurrentItem()));
                 ImageShow.getInstance().sendFacebook(getActivity(), images);
                 UseLogManager.getInstance().addLogList(images, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
-            }else if (item == MenuItemManager.Item.ROTATE) {
+            }else if (item == ToolbarHelper.Item.ROTATE) {
                 this.adapter.rotate(ImageShow.getInstance().getPosition());
-            }else if (item == MenuItemManager.Item.EDIT){
+            }else if (item == ToolbarHelper.Item.EDIT){
                 ImageShow.getInstance().setImageData(this.list.get(ImageShow.getInstance().getPosition()));
                 ((MainActivity) this.getActivity()).navigate(ImageEditFragment.class, true);
             }
