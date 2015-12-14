@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements Navigator{
     private List<ToolbarCallback.ToolbarSimpleCallback> toolbarSimpleCallbackList;
 
     private FragmentNavigator navigator;
-    private OnBack onBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -199,9 +198,5 @@ public class MainActivity extends AppCompatActivity implements Navigator{
         for(ToolbarCallback.ToolbarSimpleCallback callback : toolbarSimpleCallbackList){
             callback.getCurrentAction(isRun, item);
         }
-    }
-
-    public void setOnBack(OnBack onBack){
-        this.onBack = onBack;
     }
 }

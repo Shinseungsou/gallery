@@ -31,9 +31,14 @@ import com.jfsiot.hsgallery.util.view.recyclerview.RecyclerViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -43,6 +48,7 @@ import timber.log.Timber;
 public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, ImageData> implements OnBack, OnMenuChange, ToolbarCallback.ToolbarSimpleCallback {
     @InjectView(R.id.gallery) protected RecyclerView gallery;
     @InjectView(R.id.sidebar) protected LinearLayout sidebar;
+    @InjectView(R.id.progress_bar) protected MaterialProgressBar progressBar;
 
     private CompositeSubscription subscription;
     private Toolbar mToolbar;
@@ -104,8 +110,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     @Override
     public void onDestroy() {
         super.onDestroyView();
+        AppConfig.Option.MULTISELECT = false;
+        this.selectList.clear();
 
-        ((MainActivity) this.getActivity()).setOnBack(null);
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(null);
     }
 
@@ -113,7 +120,6 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
     public void onResume() {
         super.onResume();
         ((MainActivity) this.getActivity()).setToolbarSimpleCallback(this);
-        ((MainActivity) this.getActivity()).setOnBack(this);
         this.notifyDataChange(ImageShow.getInstance().getBucketId());
 
         ToolbarHelper.getInstance().clear().setEnable(ToolbarHelper.State.DEFAULT, ToolbarHelper.State.UNSELECTED);
@@ -196,9 +202,18 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
 
     @Override
     public void onMenuChange(String id) {
+        progressBar.setVisibility(View.VISIBLE);
         ImageShow.getInstance().setBucketId(id);
         this.notifyDataChange(id);
         this.selectList.clear();
+        Observable.timer(500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        timer -> {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                );
     }
 
     @Override

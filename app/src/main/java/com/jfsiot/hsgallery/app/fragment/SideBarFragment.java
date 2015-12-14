@@ -76,7 +76,6 @@ public class SideBarFragment extends RecyclerViewFragment<GalleryDIRAdapter, Ima
     }
 
     public void setOnMenuChange(OnMenuChange onMenuChange){
-        Timber.d("regist!");
         this.onMenuChange = onMenuChange;
     }
 }
