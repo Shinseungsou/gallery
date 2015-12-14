@@ -91,11 +91,11 @@ public class ImageEditFragment extends Fragment{
             cropImageView.setCropEnabled(enableCrop);
         });
         this.confirmEdit.setOnClickListener(v -> {
-            cropImageView.setCropEnabled(enableCrop = false);
-            cropItemContainer.setVisibility(View.GONE);
             if (enableCrop) {
                 cropImageView.setImageBitmap(cropImageView.getCroppedBitmap());
             }
+            cropImageView.setCropEnabled(enableCrop = false);
+            cropItemContainer.setVisibility(View.GONE);
         });
         cropImageView.setCropEnabled(false);
         this.rotate.setOnClickListener(v -> {

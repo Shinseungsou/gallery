@@ -118,4 +118,6 @@
     <string name="hint_input_name">Your name</string>
     <string name="hint_nospace"></string>
 
+    <string name="dialog_title_share">Share</string>
+    <string name="dialog_content_share">Select service you share to image</string>
 </resources>

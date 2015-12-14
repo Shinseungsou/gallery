@@ -22,6 +22,7 @@ import com.jfsiot.hsgallery.app.recycler.adapter.GalleryAdapter;
 import com.jfsiot.hsgallery.util.data.db.UseLogManager;
 import com.jfsiot.hsgallery.util.data.image.ImageController;
 import com.jfsiot.hsgallery.util.data.image.ImageShow;
+import com.jfsiot.hsgallery.util.dialog.ShareDialog;
 import com.jfsiot.hsgallery.util.helper.ToolbarHelper;
 import com.jfsiot.hsgallery.util.view.navigator.Navigator;
 import com.jfsiot.hsgallery.util.view.navigator.OnBack;
@@ -244,8 +245,9 @@ public class GalleryPICFragment extends RecyclerViewFragment<GalleryAdapter, Ima
                 })
                 .show();
         }else if(item == ToolbarHelper.Item.FACEBOOK){
-            ImageShow.getInstance().sendFacebook(this.getActivity(), selectList);
-            UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
+            ShareDialog.build(getActivity(), selectList).show();
+//            ImageShow.getInstance().sendFacebook(this.getActivity(), selectList);
+//            UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.FACEBOOK));
         }else if(item == ToolbarHelper.Item.KAKAO){
             ImageShow.getInstance().sendKaKao(this.getActivity(), selectList);
             UseLogManager.getInstance().addLogList(selectList, new String(), UseLog.getShareString(UseLog.Share.KAKAO));
