@@ -1,7 +1,6 @@
 package com.jfsiot.hsgallery.util.dialog;
 
 import android.content.Context;
-import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.jfsiot.hsgallery.R;
@@ -58,8 +57,8 @@ public class ShareDialog {
                 .build();
         return shareDialog;
     }
-    public static void show(){
-        if(shareDialog != null)
-            shareDialog.show();
+
+    public static void show(Context context, List<ImageData> images){
+        build(context, images).show();
     }
 }
